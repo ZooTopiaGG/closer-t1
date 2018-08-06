@@ -1,43 +1,60 @@
 {
-  "name": "closer-h5-new",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "vue": "^2.5.16"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-rc.10",
-    "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
-    "@vue/cli-service": "^3.0.0-rc.10",
-    "vue-template-compiler": "^2.5.16"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    "name": "closer",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint"
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+    "dependencies": {
+        "axios": "^0.18.0",
+        "install": "^0.12.1",
+        "js-cookie": "^2.2.0",
+        "mint-ui": "^2.2.13",
+        "mobile-detect": "^1.4.2",
+        "npm": "^6.1.0",
+        "promise-polyfill": "^8.0.0",
+        "vconsole": "^3.2.0",
+        "vue": "^2.5.16",
+        "vue-axios": "^2.1.1",
+        "vue-router": "^3.0.1",
+        "vuex": "^3.0.1",
+        "weixin-js-sdk": "^1.3.2"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^3.0.0-rc.10",
+        "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
+        "@vue/cli-service": "^3.0.0-rc.10",
+        "@vue/eslint-config-standard": "^3.0.0-rc.10",
+        "less": "^3.0.4",
+        "less-loader": "^4.1.0",
+        "postcss": "^6.0.22",
+        "postcss-cssnext": "^3.1.0",
+        "postcss-import": "^11.1.0",
+        "postcss-loader": "^2.1.5",
+        "postcss-pr": "^1.1.0",
+        "postcss-pxtorem": "^4.0.1",
+        "serve": "^6.5.8",
+        "vue-template-compiler": "^2.5.16"
+    },
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "plugin:vue/essential",
+            "@vue/standard"
+        ],
+        "rules": {},
+        "parserOptions": {
+            "parser": "babel-eslint"
+        }
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
 }
