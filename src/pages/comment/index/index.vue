@@ -74,9 +74,11 @@
       })
     },
     mounted() {
-      this.getSubject({
-        "subjectid": "wmJ8ptL07jte"
-      });
+      if (this.$route.params.sid) {
+        this.getSubject({
+          "subjectid": this.$route.params.sid
+        });
+      }
     },
     methods: {
       ...mapActions("comment", [

@@ -14,7 +14,7 @@ Vue.use(Router)
 const router = new Router({
     mode: 'history',
     routes: [{
-        path: '/comment',
+        path: '/comment/:sid',
         name: 'comment',
         component: Comment,
     }]
