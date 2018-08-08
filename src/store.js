@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import article from './pages/article/index/module'
+import essay from './pages/essay/index/module'
 
 
 
@@ -16,5 +17,6 @@ export default new Vuex.Store({
     },
     modules: {
         article,
+        essay
     }
 })
