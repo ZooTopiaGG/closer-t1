@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import App from './App'
-// import './reset.css'
 import './assets/style/reset.less'
 import './assets/style/common.css'
-import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import router from './router'
 import store from './store'
@@ -11,16 +9,16 @@ import axio from './utils/axio'
 import Cookies from 'js-cookie';
 import Vconsole from 'vconsole';
 import MobileDetect from 'mobile-detect';
-import wx from 'weixin-js-sdk';
+import Wx from 'weixin-js-sdk';
+import VueLazyLoad from 'vue-lazyload';
 
-if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /10.3.0.107/.test(window.location.href)) {
+if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /10.3.0.18/.test(window.location.href)) {
     const vconsole = new Vconsole()
     store.state.IS_DEV = true
-    Cookies.set("IS_DEV", true, { expires: 1 });
 }
 
-window.wx = wx;
-window.axios = axio;
+store.state.UA =
+    window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;
 
@@ -35,7 +33,13 @@ window.setupWebViewJavascriptBridge = function(callback) { //jsBridge
     setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
 }
 
-Vue.use(MintUI)
+
+Vue.use(VueLazyLoad, {
+    preload: 1.3,
+    error: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
+    loading: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
+    attempt: 1,
+})
 
 // 运行时动态设置
 pageResize()
@@ -45,7 +49,6 @@ function pageResize() { //px2rem
     let fontSize = Math.min(screen.width, document.documentElement.getBoundingClientRect().width) / 375 * 16
     document.documentElement.style.fontSize = (fontSize >= 32 ? 32 : fontSize) + 'px'
 }
-
 
 new Vue({
     store,

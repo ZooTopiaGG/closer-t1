@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
-import article from './pages/article/index/module'
-
-
+import comment from './pages/comment/index/module'
 
 Vue.use(Vuex)
 
@@ -15,6 +12,6 @@ export default new Vuex.Store({
         IS_DEV: false
     },
     modules: {
-        article,
+        comment,
     }
 })

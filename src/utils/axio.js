@@ -1,28 +1,20 @@
 import axios from 'axios'
-import { Indicator } from 'mint-ui';
-import { Toast } from 'mint-ui';
-import feConfig from '../utils/api';
+import settings from '../config';
 import Store from '../store'
 const axio = axios.create({ 
         baseURL: process.env.BASE_API, // node环境的不同，对应不同的baseURL
          timeout: 15000, // 请求的超时时间
-          //设置默认请求头，使post请求发送的是formdata格式数据// axios的header默认的Content-Type好像是'application/json;charset=UTF-8',我的项目都是用json格式传输，如果需要更改的话，可以用这种方式修改
-          // headers: { 
-          // "Content-Type": "application/x-www-form-urlencoded"
-          // },
-         withCredentials: true // 允许携带cookie
+          withCredentials: true // 允许携带cookie
     })
     // http request 拦截器 
 axio.interceptors.request.use(
     config => {
-        console.log(config)
-        let reqUrl = feConfig.serverDevUrl + config.url
+        let reqUrl = settings.serverDevUrl + config.url
         if (/a-sandbox.tiejin/.test(window.location.href)) {
-            reqUrl = feConfig.serverDevUrl + config.url;
+            reqUrl = settings.serverDevUrl + config.url;
         } else if (/a.tiejin/.test(window.location.href)) {
-            reqUrl = feConfig.serverUrl + config.url;
+            reqUrl = settings.serverUrl + config.url;
         }
-        // //console.log("requrl", reqUrl)
         config.url = reqUrl;
         if (!Store.state.IS_APP) {
             config.headers['Closer-Agent'] = 'Closer-H5';
@@ -43,18 +35,15 @@ axio.interceptors.request.use(
             config.headers.Authorization = Cookies.get("GroukAuth");
         }
 
-        Indicator.open()
         return config;
 
     },
     err => {
-        Indicator.close()
         return Promise.reject(err).catch(err);
     });
 // http response 拦截器 
 axio.interceptors.response.use(
     response => {
-        Indicator.close()
         return response;
     },
     (err) => {
@@ -117,7 +106,6 @@ axio.interceptors.response.use(
         } else {
             console.warn(err.message)
         }
-        Indicator.close()
         return Promise.reject(err).catch(err)
     });
 export default axio

@@ -1,6 +1,6 @@
 export default {
     fileUrl: 'https://file.tiejin.cn',
-    fileDevURL: 'https://file-sandbox.tiejin.cn',
+    fileDevUrl: 'https://file-sandbox.tiejin.cn',
     serverUrl: 'https://api.tiejin.cn/command/',
     devserverUrl: 'http://10.3.0.11:8080/command/',
     subdevserverUrl: 'http://oms-sandbox.tiejin.cn/command',
