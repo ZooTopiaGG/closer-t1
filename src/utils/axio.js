@@ -55,6 +55,7 @@ axio.interceptors.request.use(
 axio.interceptors.response.use(
     response => {
         Indicator.close()
+        console.log('response：',response);
         return response;
     },
     (err) => {
