@@ -1,8 +1,16 @@
 import { fetchContent, getCommunityFocusStat } from './service';
 
-import { makeHtmlContent } from "../../../utils/utils";
+import { makeHtmlContent, compareVersion } from "../../../utils/utils";
 const state = {
   GET_MESSAGE_STATE: false,
+  GET_IS_APP: false,
+  GET_APP_TOKEN: '',
+  version_1_2: false,
+  agent: '',
+  isPre: false,
+  nvgversion: '',
+  nvgtype: '',
+  nvgTypeToPowerCase: '',
   res: {},
   content: {},
   discuss: {},
@@ -65,7 +73,6 @@ const actions = {
               }
               return x;
             });
-            commit("SET_DISSCUSS", discuss);
           }
           // 返回在渲染页面之前得结果
           commit("SET_CONTENT", content);
@@ -87,6 +94,25 @@ const actions = {
           communityFocusStat.result.isFollowed
         );
       }
+    }
+  },
+  async get_incr_view({ commit }) {
+    let self = this;
+    try {
+      let para = {
+        subjectid: self.$route.params.id
+      };
+      let view = await axios.get(
+        `${api.command.incr_view}?subjectid=${
+          self.$route.params.id
+        }&timestamp=${Date.now()}`
+      );
+      // 静态增加 阅读量
+      if (view.code === 0) {
+        self.$store.commit("GET_INCR_VIEW", view.result);
+      }
+    } catch (e) {
+      console.log(e);
     }
   },
   // 通过code进行登录，如果get_wx_auth被调用，get_code_by_login才会被调用
@@ -302,6 +328,51 @@ const actions = {
 }
 
 const mutations = {
+  // 设置特殊状态
+  GET_USER_AGENT(state, para) {
+    // 通过中间件。判断在路由之前执行 判断路由类型
+    let nvg = para.nvg.toLowerCase(),
+     refer = para.ref,
+     r = nvg.indexOf('closer-ios') > -1 || nvg.indexOf('closer-android') > -1,
+     _result = r || refer.indexOf('/invite') > -1;
+    state.version_1_2 = compareVersion(nvg);     
+    state.GET_MESSAGE_STATE = !_result;
+    state.GET_IS_APP = r
+    state.agent = nvg;
+    state.isPre = refer.indexOf('?view=pre') > -1;
+  },
+  // 前端获取手机浏览器版本以及内核
+  GET_VERSION(state) {
+    let nvg = navigator.userAgent.toLowerCase(),
+      nvgtype, nvgversion, nvgTypeToPowerCase;
+    // window.navigator.appVersion 获取手机版本
+    if (nvg.indexOf('android') > -1 || nvg.indexOf('adr') > -1 || nvg.indexOf('linux') > -1) {
+      // android终端
+      nvgtype = 'android';
+      nvgTypeToPowerCase = 'Android';
+      // android版本
+      if (!!nvg.match(new RegExp("android\\s(\\d+(?:\\.\\d*)+)"))) {
+        let v = nvg.match(new RegExp("android\\s(\\d+(?:\\.\\d*)+)"))
+        nvgversion = v[1].replace(/\./g, "_")
+      }
+    } else if (nvg.indexOf('iphone') > -1 || nvg.indexOf('ipad') > -1 || nvg.indexOf('safari') > -1) {
+      // ios终端
+      nvgtype = 'ios'
+      nvgTypeToPowerCase = 'IOS'
+      // ios版本 new RegExp("version/(\\d+(?:\\.\\d*)?)") // 匹配尽量少的一项
+      // new RegExp("version/(\\d+(?:\\.\\d*)+)") 匹配尽量多的项
+      if (!!nvg.match(new RegExp("version/(\\d+(?:\\.\\d*)+)"))) {
+        let v = nvg.match(new RegExp("version/(\\d+(?:\\.\\d*)+)"))
+        nvgversion = v[1].replace(/\./g, "_")
+      }
+    } else {
+      nvgtype = 'windows'
+      nvgTypeToPowerCase = 'Windows'
+    }
+    state.nvgversion = nvgversion;
+    state.nvgtype = nvgtype;
+    state.nvgTypeToPowerCase = nvgTypeToPowerCase
+  },
   // 设置贴子详情内容
   SET_CONTENT(state, para) {
     state.content = para
@@ -309,27 +380,6 @@ const mutations = {
   // 设置贴子返回详情
   SET_RES(state, para) {
     state.res = para
-  },
-  // 设置神议论列表信息
-  SET_DISSCUSS(state, para) {
-    state.discuss = para
-  },
-  // 设置阅读量
-  GET_INCR_VIEW(state, para) {
-    state.incr_view = para
-  },
-  // 显示alert弹窗组件
-  SHOW_ALERT(state, para) {
-    state.alert_stat = para
-  },
-
-  // 竖视频
-  ITS_LONG_VIDEO(state, para) {
-    state.isLongVideo = para
-  },
-  // 设置底部悬浮显示状态
-  SET_NO_FOOTER(state, para) {
-    state.webNoFooter = para
   },
   // 设置贴子是否被删除
   GET_EXIST_STATUS(state, para) {
