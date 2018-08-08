@@ -137,7 +137,6 @@
             margin-bottom: 16pr;
             .time {
               float: right;
-              margin-right: 40pr;
             }
           }
           .link {
