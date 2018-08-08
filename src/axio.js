@@ -42,7 +42,6 @@ axio.interceptors.request.use(
         if (Cookies.get("GroukAuth") && config.url.indexOf("auth") == -1 && config.url.indexOf("account") == -1 || Cookies.get("GroukAuth") && config.url.indexOf("closer_account.bind_phone") != -1) {
             config.headers.Authorization = Cookies.get("GroukAuth");
         }
-
         Indicator.open()
         return config;
 
