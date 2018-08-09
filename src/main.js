@@ -13,7 +13,7 @@ import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
 import VueLazyLoad from 'vue-lazyload';
 
-if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /10.3.0.18/.test(window.location.href)) {
+if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /local.tiejin.cn/.test(window.location.href)) {
     const vconsole = new Vconsole()
     store.state.IS_DEV = true
 }
