@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import api from './utils/api';
-import { compareVersion } from './utils'
+import { compareVersion, isApp } from './utils'
 import Store from './store';
 import { Toast } from 'mint-ui'
 
@@ -31,7 +31,8 @@ router.beforeEach(({
     let ua = navigator.userAgent || window.navigator.userAgent;
     ua = ua.toLowerCase();
     Store.state.UA = ua;
-    Store.state.V_1_2 = compareVersion(ua)
+    Store.state.V_1_2 = compareVersion(ua);
+    Store.state.IS_APP = isApp(ua);
     next();
 })
 

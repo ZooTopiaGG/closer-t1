@@ -339,3 +339,7 @@ export function compareVersion(nvg) {
         return false
     }
 }
+
+export function isApp(ua) {
+    return ua.indexOf("closer-ios") > -1 || ua.indexOf("closer-android") > -1
+}

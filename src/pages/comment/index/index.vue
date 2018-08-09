@@ -91,10 +91,12 @@
         return getCommonTime(time, type);
       },
       showVideo(event) {
-        if (!(event.target.dataset.vid || event.target.dataset.uid)) {
-          return;
+        if (this.$store.state.IS_APP) {
+          if (!(event.target.dataset.vid || event.target.dataset.uid)) {
+            return;
+          }
+          appPlayVideo(event.target.dataset.vid, event.target.dataset.uid)
         }
-        appPlayVideo(event.target.dataset.vid, event.target.dataset.uid)
       },
       tofeed(fid) {
         location.href = `closer://feed/${fid}`;
