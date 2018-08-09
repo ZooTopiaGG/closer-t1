@@ -5,15 +5,22 @@ import { compareVersion, isApp } from './utils'
 import Store from './store';
 import { Toast } from 'mint-ui'
 
-
 const Comment = () =>
     import ('@/pages/comment/index')
+
+// 长图文
+const Article = () =>
+    import ('@/pages/article/index/index')
 
 Vue.use(Router)
 
 const router = new Router({
     mode: 'history',
     routes: [{
+        path: '/article/:id',
+        name: 'article',
+        component: Article,
+    }, {
         path: '/comment/:sid',
         name: 'comment',
         component: Comment,
