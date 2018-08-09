@@ -107,6 +107,43 @@ export function dateFormat(time) {
   return year + "-" + month + "-" + day;
 }
 
+/**
+ * 替换文本中的img
+ * @param {String} content 文本内容
+ * @param {Boolean} lazy 是否添加懒加载标志
+ */
+export function replaceImgTag(content, lazyLoad) {
+  const imgWrap = ['<div class="img-box">','</div>'],
+    regExp = /(<img [^>]*)src(=['"][^'"]+[^>]*>)/gi,
+    lazySign = lazyLoad ? 'v-lazy' : 'src';
+  return content.replace(regExp, ($0, $1, $2) => {
+    return imgWrap.join($1 + lazySign + $2)
+  })
+}
+
+export function replaceVideoTag(content, nativePlay) {
+  const classSign = nativePlay ? 'video-box-native' : '',
+    tagSign = '',
+    videoWrap = [
+      `<div class="video-box ${classSign}">`,
+      '</div>'
+    ],
+    regExp = /<video [^>]*(?:\/>|(?:>.*<\/video>))/gi,
+    regexUrl = /src=[\'\"]?([^\'\"]*)[\'\"]?/i,
+    regexVid = /vid=[\'\"]?([^\'\"]*)[\'\"]?/i,
+    regexCover = /imageUrl=[\'\"]?([^\'\"]*)[\'\"]?/i,
+    regexPoster = /poster=[\'\"]?([^\'\"]*)[\'\"]?/i,
+    regexWidth = /width=[\'\"]?([^\'\"]*)[\'\"]?/i,
+    regexHeight = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
+
+
+
+    return content.replace(regExp, ($0, $1, $2) => {
+      return imgWrap.join($1 + lazySign + $2)
+    })
+}
+
+
 // 富文本处理
 export function makeHtmlContent(html, status) {
   let _html;
@@ -144,10 +181,7 @@ export function makeHtmlContent(html, status) {
       // fix 图片是中文带路径 补丁
       if (srcArray) {
         _src = srcArray[1].replace(/\+/g, "%2b");
-        newM = x.replace(/src=/g, `style="width: ${nW};height: 0; padding-bottom: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" class="imgbox" data-index="${i+1}" data-src=`);
-        // flag = `<section class='imgbox tiejin-imgbox' style="width: 100%;max-width: 100%;height: ${nH};min-height: ${minH}">
-        //           <img style="width: ${nW};height: ${nH}; max-width: 100%;" data-index="${i+1}" src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==' data-src='${_src}'/>
-        //       </section>`;
+        newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" class="imgbox" data-index="${i+1}" data-src=`);
       } else {
         _src = ''
         newM = '';
@@ -156,6 +190,7 @@ export function makeHtmlContent(html, status) {
       // 替换不同文本
       html = html.replace(x, newM);
     });
+    console.log(html)
   }
   const regexVideo = /<video.*?(?:>|\/>|<\/video>)/gi;
   let pVideo = html.match(regexVideo);
@@ -224,8 +259,7 @@ export function makeHtmlContent(html, status) {
                   class='video-box video-box-native'
                   data-vid='${v}'
                   data-uid='${u}'
-                  data-bg='${c}'
-                  style='background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==");'>
+                  data-bg='${c}'>
                   <section 
                     class='flex 
                     flex-align-center 
