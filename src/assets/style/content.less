@@ -34,6 +34,7 @@ audio::-webkit-media-controls-enclosure,
 video::-webkit-media-controls-enclosure,
 audio::-webkit-media-controls-panel,
 video::-webkit-media-controls-panel {
+  // display: none;
   background: rgba(0, 0, 0, 0);
 }
 
@@ -42,7 +43,7 @@ video::-webkit-media-controls-panel {
   video::-webkit-media-controls-enclosure,
   audio::-webkit-media-controls-panel,
   video::-webkit-media-controls-panel {
-    display: none;
+    // display: none;
     background: rgba(0, 0, 0, 0);
   }
   .hasControlVideo audio::-webkit-media-controls-enclosure,
@@ -58,7 +59,7 @@ video::-webkit-media-controls-panel {
 
 .content {
   font-size: 36pr;
-  line-height: 1.67;
+  line-height: 60pr;
   letter-spacing: 1pr;
   text-align: justify;
   >p,
@@ -68,24 +69,33 @@ video::-webkit-media-controls-panel {
   >section,
   >article,
   >aside {
-    margin-bottom: 20pr;
+    margin-bottom: 60pr;
     word-break: break-all;
   }
   video {
+    width: 100%;
+    max-height: 100%;
     display: block;
     margin: 0 auto;
   }
-
   .video-box {
+    width: 670pr;
+    height: 376.875pr;
     background: #000;
   }
-
+  .video-box-vertical {
+    width: 450pr;
+    height: 800pr;
+  }
+  .video-box-h5 {
+    // height: 376.875pr;
+    // max-height: 760pr;
+  }
   .video-box-native {
     background-size: cover;
     background-repeat: no-repeat;
-    width: 100%;
-    height: 51.75vw;
     position: relative;
+    height: 376.875pr;
   }
   .video-box-native > section {
     position: absolute;
@@ -94,7 +104,7 @@ video::-webkit-media-controls-panel {
     bottom: 0;
     right: 0;
   }
-  .video-play-wrap {
+  .video-wrap {
     position: relative;
     width: 100%;
     height: 100%;
@@ -109,12 +119,17 @@ video::-webkit-media-controls-panel {
     transform: translate(-50%, -50%);
   }
   .video-play-icon {
-    width: 13vw;
-    height: 13vw;
+    width: 80pr;
+    height: 80pr;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background: url(../images/play.png);
+    background-size: 80pr;
+  }
+  .video-play-icon.pause {
+    background-image: url(../images/pause.png);
   }
 
 }
