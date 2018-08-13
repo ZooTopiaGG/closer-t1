@@ -26,7 +26,7 @@
     mapMutations
   } = createNamespacedHelpers('article');
   import {
-    h5PlayVideo
+    appPlayVideo
   } from "../../../utils";
   
   export default {
@@ -63,7 +63,7 @@
         //     if (!(target.dataset.vid || target.dataset.uid)) {
         //       return;
         //     }
-        //     h5PlayVideo(
+        //     appPlayVideo(
         //       target.dataset.uid,
         //       target.dataset.vid
         //     );
@@ -101,7 +101,7 @@
           if (!(target.dataset.vid || target.dataset.uid)) {
             return;
           }
-          h5PlayVideo(
+          appPlayVideo(
             target.dataset.uid,
             target.dataset.vid
           );
@@ -110,13 +110,11 @@
     },
     mounted() {
       let self = this;
-      alert('mounted')
       self.GET_USER_AGENT({
         nvg: navigator.userAgent,
         ref: location.pathname
       });
       self.fetch();
-      
     }
   };
 </script>
