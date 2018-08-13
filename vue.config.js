@@ -1,7 +1,7 @@
 module.exports = {
     lintOnSave: false,
     devServer: {
-        // host: '127.0.0.1',
+        host: 'local.tiejin.cn',
         port: 9999
     }
 }
