@@ -17,6 +17,7 @@ if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.locat
     const vconsole = new Vconsole()
     store.state.IS_DEV = true
 }
+store.state.IS_DEV = true
 
 store.state.UA = window.Axios = axio;
 window.Cookies = Cookies;
