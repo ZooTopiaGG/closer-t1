@@ -8,3 +8,4 @@ COPY ./dist/ /apps/closer-h5-new
 WORKDIR /apps/closer-h5-new
 
 EXPOSE 3604
+
