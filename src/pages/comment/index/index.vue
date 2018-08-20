@@ -46,6 +46,7 @@
       </div>
       <div class="line"></div>
     </div>
+    <FeedList></FeedList>
   </div>
 </template>
 
@@ -59,8 +60,15 @@
     mapState,
     mapActions
   } from "vuex";
+  
+  import FeedList from "../../../components/feedList.vue";
+  
+  
   export default {
     name: "commentIndex",
+     components: {
+       FeedList
+     },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
