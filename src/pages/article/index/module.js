@@ -21,7 +21,7 @@ const actions = {
       let res = await fetchContent(id)
       if (res.code != 0) {
         // 贴子被删除状态
-        store.commit("GET_EXIST_STATUS", false);
+        commit("GET_EXIST_STATUS", false);
       } else {
         // 验证content
         if (res.result.content) {
