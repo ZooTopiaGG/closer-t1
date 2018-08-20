@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import api from './utils/api';
-import { compareVersion, isApp } from './utils'
-import Store from './store';
-import { Toast } from 'mint-ui'
+import { Toast } from 'mint-ui';
+import { checkType } from './utils'
 
 const Comment = () =>
     import ('@/pages/comment/index')
@@ -34,13 +32,12 @@ router.beforeEach(({
     name,
     params
 }, from, next) => {
-    document.title = meta.title ? meta.title : '贴近';
-    let ua = navigator.userAgent || window.navigator.userAgent;
-    ua = ua.toLowerCase();
-    Store.state.UA = ua;
-    Store.state.V_1_2 = compareVersion(ua);
-    Store.state.IS_APP = isApp(ua);
-    next();
+    if (path.includes('feed') && query.int_type && query.category_type) {
+        let routerPath = checkType(parseInt(query.int_type), parseInt(query.category_type));
+        router.push(path.replace("feed", routerPath));
+        next();
+    } else {
+        next();
+    }
 })
-
 export default router

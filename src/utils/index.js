@@ -343,3 +343,39 @@ export function compareVersion(nvg) {
 export function isApp(ua) {
     return ua.indexOf("closer-ios") > -1 || ua.indexOf("closer-android") > -1
 }
+
+
+/**
+ * 
+ * @param {*} type 
+ * @param {*} catogry_type 
+ * @return  path  
+ */
+export function checkType(t, ct) {
+    let path = "error"
+    switch (t) {
+        case 0:
+            path = "photo"
+            break;
+        case 1:
+            path = "video"
+            break;
+        case 2:
+            path = checkCatogryType(ct);
+            break;
+    }
+    return path;
+}
+
+export function checkCatogryType(ct) {
+    let path = "error"
+    if (ct >= 0 && ct <= 3) {
+        path = "article"
+    } else if (ct == 4) {
+        path = "draft"
+    } else if (ct == 5) {
+        path = "comment"
+
+    }
+    return path
+}
