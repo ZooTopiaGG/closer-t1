@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { Toast } from 'mint-ui';
-import { checkType } from './utils'
+import api from './utils/api';
+import Store from './store';
+import {
+    Toast
+} from 'mint-ui'
 
 const Comment = () =>
     import ('@/pages/comment/index')
@@ -23,7 +26,6 @@ const router = new Router({
         name: 'comment',
         component: Comment,
     }]
-
 })
 router.beforeEach(({
     meta,
@@ -32,12 +34,41 @@ router.beforeEach(({
     name,
     params
 }, from, next) => {
-    if (path.includes('feed') && query.int_type && query.category_type) {
-        let routerPath = checkType(parseInt(query.int_type), parseInt(query.category_type));
-        router.push(path.replace("feed", routerPath));
-        next();
-    } else {
-        next();
+    let pathName = path.match(/(?<=\/)[^\/]*(?=\/)?/g),
+        pathLength = pathName.length,
+        {
+            int_type,
+            int_category
+        } = query;
+    // 根据meta设置页面title
+    document.title = meta.title ? meta.title : '贴近';
+    // 根据path和query跳转到对应页面
+    switch (pathName[0]) {
+        case 'feed':
+            if (int_type == '2' && int_category == '0') {
+                // 长图文
+                router.replace({
+                    path: `/article/${pathName[pathLength - 1]}`
+                })
+            } else if (int_type == '2' && int_category == '1') {
+                // 征稿
+                router.replace({
+                    path: `/article/${pathName[pathLength - 1]}`
+                })
+            } else if (int_type == '2' && int_category == '2') {
+                // 神议论
+                router.replace({
+                    path: `/comment/${pathName[pathLength - 1]}`
+                })
+            } else {
+                next();
+            }
+            break;
+        default:
+            next();
+            break;
     }
+
 })
+
 export default router
