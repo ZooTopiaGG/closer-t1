@@ -1,5 +1,5 @@
 <template>
-  <section class="article">
+  <section class="article" v-if="exist">
     <!-- 帖子内容 -->
     <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
     <section class="article-wrap">
@@ -8,18 +8,22 @@
         <section class="article-title"> {{ res.title }} </section>
         <!-- 暂时隐藏 -->
         <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                  <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                </section> -->
+                    <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                  </section> -->
         <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </section>
       </section>
     </section>
   </section>
+  <Notfound v-else></Notfound>
 </template>
 
 <script>
   import Cookie from "js-cookie";
-  import { createNamespacedHelpers } from 'vuex'
+  import {
+    createNamespacedHelpers
+  } from 'vuex'
+  
   const {
     mapState,
     mapActions,
@@ -28,9 +32,14 @@
   import {
     appPlayVideo
   } from "../../../utils";
+  import Notfound from '../../../components/error/notfound'
+  
   
   export default {
     name: "Feed",
+    components: {
+      Notfound
+    },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
@@ -95,7 +104,7 @@
         //       playIcon.style.display = 'none';
         //     }, 2e3)
         //   }
-          
+  
         // }
         if (this.$store.state.IS_APP) {
           if (!(target.dataset.vid || target.dataset.uid)) {
