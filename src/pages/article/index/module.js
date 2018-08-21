@@ -10,7 +10,7 @@ const state = {
     isPre: false,
     res: {},
     content: {},
-    exist: false,
+    exist: true,
 }
 
 const actions = {
