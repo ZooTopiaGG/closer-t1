@@ -48,17 +48,17 @@ router.beforeEach(({
             if (int_type == '2' && int_category == '0') {
                 // 长图文
                 router.replace({
-                    path: `/article/${pathName[pathLength - 1]}`
+                    path: path.replace("feed", "article")
                 })
             } else if (int_type == '2' && int_category == '1') {
                 // 征稿
                 router.replace({
-                    path: `/article/${pathName[pathLength - 1]}`
+                    path: path.replace("feed", "draft")
                 })
             } else if (int_type == '2' && int_category == '2') {
                 // 神议论
                 router.replace({
-                    path: `/comment/${pathName[pathLength - 1]}`
+                    path: path.replace("feed", "comment")
                 })
             } else {
                 next();
