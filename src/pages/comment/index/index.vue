@@ -46,7 +46,7 @@
       </div>
       <div class="line"></div>
     </div>
-    <FeedList></FeedList>
+    <FeedList v-if="hotSubjects"></FeedList>
   </div>
 </template>
 
@@ -63,7 +63,6 @@
   
   import FeedList from "../../../components/feedList.vue";
   
-  
   export default {
     name: "commentIndex",
      components: {
@@ -79,7 +78,11 @@
         subject: state => state.subject,
         content: state => state.content,
         discuss: state => state.discuss
+      }),
+      ...mapState("common",{
+        hotSubjects:state=>state.hotSubjects
       })
+    
     },
     mounted() {
       if (this.$route.params.sid) {
@@ -87,10 +90,14 @@
           "subjectid": this.$route.params.sid
         });
       }
+      this.getHotSubject();
     },
     methods: {
       ...mapActions("comment", [
         "getSubject"
+      ]),
+       ...mapActions("common", [
+        "getHotSubject"
       ]),
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
