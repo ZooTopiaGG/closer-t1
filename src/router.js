@@ -6,6 +6,7 @@ import {
     Toast
 } from 'mint-ui'
 
+//神议论
 const Comment = () =>
     import ('@/pages/comment/index')
 
@@ -37,28 +38,28 @@ router.beforeEach(({
     let pathName = path.match(/(?<=\/)[^\/]*(?=\/)?/g),
         pathLength = pathName.length,
         {
-            int_type,
-            int_category
+            type,
+            category
         } = query;
     // 根据meta设置页面title
     document.title = meta.title ? meta.title : '贴近';
     // 根据path和query跳转到对应页面
     switch (pathName[0]) {
         case 'feed':
-            if (int_type == '2' && int_category == '0') {
+            if (type == '2' && category == '0') {
                 // 长图文
                 router.replace({
-                    path: `/article/${pathName[pathLength - 1]}`
+                    path: path.replace("feed", "article")
                 })
-            } else if (int_type == '2' && int_category == '1') {
+            } else if (type == '2' && category == '1') {
                 // 征稿
                 router.replace({
-                    path: `/article/${pathName[pathLength - 1]}`
+                    path: path.replace("feed", "draft")
                 })
-            } else if (int_type == '2' && int_category == '2') {
+            } else if (type == '2' && category == '2') {
                 // 神议论
                 router.replace({
-                    path: `/comment/${pathName[pathLength - 1]}`
+                    path: path.replace("feed", "comment")
                 })
             } else {
                 next();

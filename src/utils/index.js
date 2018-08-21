@@ -143,7 +143,7 @@ export function makeHtmlContent(html, status) {
                         nH = heightArray[1] * 100 / widthArray[1] + "%";
                     }
                     minH = nH;
-                    newM = x.replace(/src=/g, `style="width: ${nW};height: 0; padding-bottom: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;" data-index="${i+1}" data-src=`);
                 } else {
                     nW = '100%';
                     nH = "auto";
@@ -167,6 +167,8 @@ export function makeHtmlContent(html, status) {
         const regexVid = /vid=[\'\"]?([^\'\"]*)[\'\"]?/i;
         const regexCover = /imageUrl=[\'\"]?([^\'\"]*)[\'\"]?/i;
         const regexPoster = /poster=[\'\"]?([^\'\"]*)[\'\"]?/i;
+        const regexWidth = /width=[\'\"]?([^\'\"]*)[\'\"]?/i;
+        const regexHeight = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
         let flg;
         pVideo.forEach((x, i) => {
             // 匹配imageurl属性下的值
@@ -175,49 +177,63 @@ export function makeHtmlContent(html, status) {
                 vidArray = x.match(regexVid),
                 coverArray = x.match(regexCover),
                 posterArray = x.match(regexPoster),
-                v, u, c
+                widthArray = x.match(regexWidth),
+                heightArray = x.match(regexHeight),
+                v, u, c, r, 
+                boxClass = '';
                 // // 替换插入需要的值flg
             v = vidArray ? vidArray[1] : '';
             u = urlArray ? urlArray[1] : '';
+            r = parseInt(heightArray[1]) / parseInt(widthArray[1]);
             if (coverArray) {
                 c = coverArray[1]
             } else {
                 c = posterArray ? posterArray[1] : ''
             }
+            if (r > 1) {
+                boxClass = 'video-box-vertical'
+            }
             // let temp = pVideo[i].split('<p>');
             if (status) {
                 flg = `<section 
-                    class='imgbox tiejin-videobox'
+                    class='video-box video-box-h5 ${boxClass}'
                     data-vid='${v}'
                     data-uid='${u}'
                     >
-                    <video src='${urlArray[1]}'
-                      class='feed-video-bg'
-                      controls
-                      preload='none'
-                      data-bg='${c}'>
-                    </video>
-                  </section>`;
-            } else {
-                flg = `<section 
-                    class='imgbox video-native-player tiejin-videobox-native feed-video-bg'
-                    data-vid='${v}'
-                    data-uid='${u}'
-                    data-bg='${c}'
-                    style='background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==");'>
                     <section 
-                      class='flex 
-                      flex-align-center 
-                      flex-pack-center'
+                      class='video-wrap'
                       data-vid='${v}'
                       data-uid='${u}'
                       >
-                      <span 
-                        class='icon-shipin-2' 
-                        data-vid='${v}'
-                        data-uid='${u}'
+                        <video src='${urlArray[1]}'
+                        class='video-tag'
+                        preload='none'
+                        controls
+                        controlsList='nodownload'
+                        poster='${c}'
+                        data-bg='${c}'
+                        playsinline="true"
+                        webkit-playsinline="true"
+                        x5-playsinline="true"
                         >
-                      </span>
+                        </video>
+                    </section>
+                  </section>`;
+            } else {
+                flg = `<section 
+                    class='video-box video-box-native'
+                    data-vid='${v}'
+                    data-uid='${u}'
+                    data-bg='${c}'>
+                    <section 
+                      class='video-wrap'
+                      data-vid='${v}'
+                      data-uid='${u}'
+                      >
+                      <img data-src='${c}'
+                        class='video-play-poster'/>
+                      <span
+                        class='video-play-icon'></span>
                     </section>
                   </section>`;
             }

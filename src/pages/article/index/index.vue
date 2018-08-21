@@ -1,118 +1,129 @@
 <template>
-  <section class="article">
+  <section class="article" v-if="exist">
     <!-- 帖子内容 -->
     <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
     <section class="article-wrap">
       <section class="article-container">
         <!-- 标题 -->
-        <h1>test</h1>
-        <section class="article-title"> {{ $store.state.article.res.title }} </section>
+        <section class="article-title"> {{ res.title }} </section>
         <!-- 暂时隐藏 -->
         <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                  <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                </section> -->
-        <section class="content article-content" v-html="$store.state.article.content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+                    <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                  </section> -->
+        <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </section>
       </section>
     </section>
   </section>
+  <Notfound v-else></Notfound>
 </template>
 
 <script>
   import Cookie from "js-cookie";
   import {
-    mapActions
-  } from 'vuex';
+    createNamespacedHelpers
+  } from 'vuex'
+  
+  const {
+    mapState,
+    mapActions,
+    mapMutations
+  } = createNamespacedHelpers('article');
   import {
-    makeHtmlContent,
-    h5PlayVideo
-  } from "../../../utils/utils";
-  import service from "./service";
+    appPlayVideo
+  } from "../../../utils";
+  import Notfound from '../../../components/error/notfound'
+  
   
   export default {
     name: "Feed",
+    components: {
+      Notfound
+    },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
         vid: "",
-        video: {}
+        video: {},
+        playIconTimer: null
       };
     },
-    // beforeRouteEnter(to, from, next) {
-    //   if (typeof window != "undefined") {
-    //     if (document.getElementById("wrapper")) {
-    //       document.getElementById("wrapper").scrollTop = 0;
-    //     }
-    //   }
-    //   next();
-    // },
+    computed: {
+      ...mapState([
+        'res',
+        'content',
+        'GET_MESSAGE_STATE',
+        'version_1_2',
+        'agent'
+      ])
+    },
     methods: {
-      // int_type
-      // 0-图片,1-视频,2-长图文 （判断贴子类型）
-      // 贴子类型：int_category（判断是否有留言功能）
-      // 0 - 普通贴子(用户投到栏目的) 有
-      // 1 - 征稿(栏目运营人员发出) 没有留言功能
-      // 2 - 投稿到征稿(用户投的)
-      // 3 - 神议论(班长合成的)
-      // 5 - 官方普通(栏目运营人员发出的)
       ...mapActions(['fetch_content']),
-  
-      fetch() {
-        // this.$store.dispatch('fetch_content', this.$route.params)
-        this.fetch_content(this.$route.params)
-  
+      ...mapMutations(['GET_USER_AGENT']),
+      async fetch() {
+        await this.fetch_content(this.$route.params)
       },
       // 在app端 长图文贴子 打开原生视频
       openClick(event) {
-        if (!(event.target.dataset.vid || event.target.dataset.uid)) {
-          return;
+        const target = event.target,
+          classList = target.classList;
+        // if (classList.contains('video-play-icon')) {
+        //   if (this.$store.state.IS_APP) {
+        //     if (!(target.dataset.vid || target.dataset.uid)) {
+        //       return;
+        //     }
+        //     appPlayVideo(
+        //       target.dataset.uid,
+        //       target.dataset.vid
+        //     );
+        //   } else {
+        //     let parentNode = target.parentNode,
+        //       video = parentNode.querySelector('video');
+        //     if (video.paused) {
+        //       video.play();
+        //       target.style.display = 'none';
+        //       target.classList.add('pause');
+        //     } else {
+        //       video.pause();
+        //       clearTimeout(this.playIconTimer);
+        //       target.classList.remove('pause');
+        //     }
+        //   }
+        // } else if (classList.contains('video-wrap') || classList.contains('video-tag')) {
+        //   let parentNode = target;
+        //   if (classList.contains('video-tag')) {
+        //     parentNode = target.parentNode;
+        //   }
+        //   const playIcon = parentNode.querySelector('.video-play-icon'),
+        //     video = parentNode.querySelector('video');
+        //     console.log(video.paused,playIcon.style.display);
+        //   if (!video.paused && playIcon.style.display == 'none') {
+        //     playIcon.style.display = 'block';
+        //     this.playIconTimer = setTimeout(() => {
+        //       this.playIconTimer = null;
+        //       playIcon.style.display = 'none';
+        //     }, 2e3)
+        //   }
+  
+        // }
+        if (this.$store.state.IS_APP) {
+          if (!(target.dataset.vid || target.dataset.uid)) {
+            return;
+          }
+          appPlayVideo(
+            target.dataset.uid,
+            target.dataset.vid
+          );
         }
-        h5PlayVideo(
-          event.target.dataset.uid,
-          event.target.dataset.vid,
-          this.$store.state.article.GET_MESSAGE_STATE,
-          this.$store.state.article.version_1_2,
-          this.$store.state.article.agent.indexOf("closer-ios") > -1
-        );
       }
     },
     mounted() {
       let self = this;
-      console.log(self.$store);
-      self.$store.commit('GET_USER_AGENT', {
+      self.GET_USER_AGENT({
         nvg: navigator.userAgent,
         ref: location.pathname
       });
       self.fetch();
-      // 懒加载监听
-      self.$Lazyload.$on("loaded", function({
-        el,
-        src
-      }) {
-        let h = el.style.paddingBottom,
-          f = el.dataset.feedlazy;
-        if (f === "feedlazy" && h && parseInt(h) != 0) {
-          el.style.cssText = `max-width: 100%;height: ${h}; padding-bottom: 0; box-sizing: content-box;`;
-        }
-      });
-    },
-    updated() {
-      this.$nextTick(() => {
-        if (typeof window != "undefined") {
-          // 视频封面异步加载
-          let videobg = document.querySelectorAll(".video-box");
-          console.log(videobg.length)
-          if (videobg.length) {
-            videobg.forEach(item => {
-              if (item.dataset.bg) {
-                setTimeout(() => {
-                  item.style.backgroundImage = `url('${item.dataset.bg}')`;
-                }, 300);
-              }
-            });
-          }
-        }
-      });
     }
   };
 </script>
