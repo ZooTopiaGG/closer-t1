@@ -54,7 +54,8 @@
         'content',
         'GET_MESSAGE_STATE',
         'version_1_2',
-        'agent'
+        'agent',
+        'exist'
       ])
     },
     methods: {
