@@ -1,74 +1,76 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import api from './utils/api';
-import Store from './store';
+import Vue from 'vue'
+import App from './App'
+import './assets/style/reset.less'
+import './assets/style/common.css'
+import './assets/style/content.less'
+import 'mint-ui/lib/style.css'
+import router from './router'
+import store from './store'
+import axio from './utils/axio'
+import Cookies from 'js-cookie';
+import Vconsole from 'vconsole';
+import MobileDetect from 'mobile-detect';
+import Wx from 'weixin-js-sdk';
+import VueLazyLoad from 'vue-lazyload';
 import {
-    Toast
-} from 'mint-ui'
+    compareVersion,
+    isApp
+} from './utils'
 
-const Comment = () =>
-    import ('@/pages/comment/index')
+if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /local.tiejin.cn/.test(window.location.href)) {
+    const vconsole = new Vconsole()
+    store.state.IS_DEV = true
+}
 
-// 长图文
-const Article = () =>
-    import ('@/pages/article/index/index')
+store.state.UA = window.Axios = axio;
+window.Cookies = Cookies;
+window.MobileDetect = MobileDetect;
 
-Vue.use(Router)
-
-const router = new Router({
-    mode: 'history',
-    routes: [{
-        path: '/article/:id',
-        name: 'article',
-        component: Article,
-    }, {
-        path: '/comment/:sid',
-        name: 'comment',
-        component: Comment,
-    }]
-})
-router.beforeEach(({
-    meta,
-    path,
-    query,
-    name,
-    params
-}, from, next) => {
-    let pathName = path.match(/(?<=\/)[^\/]*(?=\/)?/g),
-        pathLength = pathName.length,
-        {
-            int_type,
-            int_category
-        } = query;
-    // 根据meta设置页面title
-    document.title = meta.title ? meta.title : '贴近';
-    // 根据path和query跳转到对应页面
-    switch (pathName[0]) {
-        case 'feed':
-            if (int_type == '2' && int_category == '0') {
-                // 长图文
-                router.replace({
-                    path: `/article/${pathName[pathLength - 1]}`
-                })
-            } else if (int_type == '2' && int_category == '1') {
-                // 征稿
-                router.replace({
-                    path: `/article/${pathName[pathLength - 1]}`
-                })
-            } else if (int_type == '2' && int_category == '2') {
-                // 神议论
-                router.replace({
-                    path: `/comment/${pathName[pathLength - 1]}`
-                })
-            } else {
-                next();
-            }
-            break;
-        default:
-            next();
-            break;
+window.setupWebViewJavascriptBridge = function(callback) { //jsBridge
+    if (window.WebViewJavascriptBridge) {
+        return callback(WebViewJavascriptBridge);
     }
+    if (window.WVJBCallbacks) {
+        return window.WVJBCallbacks.push(callback);
+    }
+    window.WVJBCallbacks = [callback];
+    var WVJBIframe = document.createElement('iframe');
+    WVJBIframe.style.display = 'none';
+    WVJBIframe.src = 'https://__bridge_loaded__';
+    document.documentElement.appendChild(WVJBIframe);
+    setTimeout(function() {
+        document.documentElement.removeChild(WVJBIframe)
+    }, 0)
+}
 
+
+Vue.use(VueLazyLoad, {
+    preload: 1.3,
+    error: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
+    loading: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
+    attempt: 1,
 })
 
-export default router
+// 运行时动态设置
+pageResize()
+init();
+window.onresize = pageResize;
+
+function pageResize() { //px2rem
+    let fontSize = Math.min(screen.width, document.documentElement.getBoundingClientRect().width) / 375 * 16
+    document.documentElement.style.fontSize = (fontSize >= 32 ? 32 : fontSize) + 'px'
+}
+
+function init() {
+    let ua = navigator.userAgent || window.navigator.userAgent;
+    ua = ua.toLowerCase();
+    store.state.UA = ua;
+    store.state.V_1_2 = compareVersion(ua);
+    store.state.IS_APP = isApp(ua);
+}
+
+new Vue({
+    store,
+    router,
+    render: h => h(App)
+}).$mount('#app')
