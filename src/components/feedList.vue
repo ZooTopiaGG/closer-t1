@@ -1,14 +1,14 @@
 <template>
-  <div class="feed">
+  <div class="feed" v-if="hotSubjects.length>0">
     <div class="head">热门文章</div>
-    <div class="feed-content">
+    <div class="feed-content" v-for="(value,key) in hotSubjects" :key="key">
       <div class="top">
-        <img class="icon" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1534764538167&di=9f3d7a71a4d8aa44d64f88244536ea82&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0102cc5940cc55a8012193a3804c80.png" />
-        <div class="column">ONAT媒体</div>
-        <div class="time">3小时前</div>
+        <img class="icon" :src="value.blogo" />
+        <div class="column">{{value.communityName}}</div>
+        <div class="time">{{dateFormate(value.long_publish_time,'yy-mm-dd hh:MM')}}</div>
       </div>
       <div class="middle">
-        <div class="title">徐梦圆和双笙什么关系徐梦圆后“科幻哥”讲的Hi,成都刷爆微博爆微 </div>
+        <div class="title">{{value.title}} </div>
         <div class="feed-img">
           <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
           <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import {getCommonTime} from '../utils'
   import {
     mapActions,
     mapState
@@ -31,7 +32,9 @@
   
   export default {
     name: "feedList",
-    props: {},
+    props: {
+      hotSubjects:Array
+    },
     data() {
       return {}
     },
@@ -41,6 +44,9 @@
     
     },
     methods: {
+      dateFormate(t,f){
+        return getCommonTime(t,f);
+      }
     }
   }
 </script>
@@ -93,9 +99,9 @@
           margin-right: 0 !important;
         }
         .img {
-          width: 212pr;
+          width: 216pr;
           height: 216pr;
-          margin: 8pr 12pr 0 0;
+          margin: 8pr 10pr 0 0;
         }
       }
     }

@@ -33,7 +33,7 @@
             </div>
           </div>
           <div v-else-if="item.type===3">
-            帖子
+            <!-- 帖子 -->
             <div class="feed" @click="tofeed(item.feed.feedId)">
               <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
               <div class="feed-info">
@@ -46,7 +46,8 @@
       </div>
       <div class="line"></div>
     </div>
-    <FeedList v-if="hotSubjects"></FeedList>
+   
+    <FeedList v-if="hotSubjects.length>0" :hotSubjects="hotSubjects"></FeedList>
   </div>
 </template>
 
