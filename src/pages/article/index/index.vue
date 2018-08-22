@@ -1,16 +1,36 @@
 <template>
   <section class="article">
-    <!-- 帖子内容 -->
-    <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
-    <section class="article-wrap">
+    <!-- 端外显示 -->
+    <section v-if="!V_1_2 || !IS_APP" class="article-hd">
+      <!-- 顶部下载按钮，只在端外环境下显示 -->
+      <download-bar v-if="!IS_APP"></download-bar>
+      <!-- 头部图片封面，端外以及1.2以下版本的端内显示 -->
+      <section class="article-img-box">
+        <!-- 封面 -->
+        <img class="article-img" v-lazy="coverImg" data-index= "0" 
+        >
+        <section class="article-cover"></section>
+      </section>
+    </section>
+    <!-- 正文内容 -->
+    <section class="article-bd">
       <section class="article-container">
         <!-- 标题 -->
-        <section class="article-title"> {{ res.title }} </section>
+        <div class="article-title"> {{ res.title }} </div>
         <!-- 暂时隐藏 -->
         <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                  <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                  <span> {{ getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
                 </section> -->
-        <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+        <section v-if="!IS_APP">
+          <!--logo-tab></logo-tab-->
+          <focus-bar></focus-bar>
+        </section>
+        <div class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+        </div>
+        <section v-if="!IS_APP">
+          <!--logo-tab></logo-tab-->
+          <author-bar></author-bar>
+          <like-bar></like-bar>
         </section>
       </section>
     </section>
@@ -19,18 +39,21 @@
 
 <script>
   import Cookie from "js-cookie";
-  import { createNamespacedHelpers } from 'vuex'
-  const {
-    mapState,
-    mapActions,
-    mapMutations
-  } = createNamespacedHelpers('article');
   import {
-    appPlayVideo
+    mapState,
+    mapActions
+  } from 'vuex';
+  import downloadBar from '../../../components/downloadBar.vue';
+  import focusBar from '../../../components/focusBar.vue';
+  import authorBar from '../../../components/authorBar.vue';
+  import likeBar from '../../../components/likeBar.vue';
+  import {
+    appPlayVideo,
+    makeFileUrl
   } from "../../../utils";
   
   export default {
-    name: "Feed",
+    name: `articleIndex`,
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
@@ -39,18 +62,20 @@
         playIconTimer: null
       };
     },
+    components: {
+      downloadBar,
+      focusBar,
+      authorBar,
+      likeBar
+    },
     computed: {
-      ...mapState([
-        'res',
-        'content',
-        'GET_MESSAGE_STATE',
-        'version_1_2',
-        'agent'
-      ])
+      ...mapState(['UA', 'IS_APP', 'V_1_2', 'content', 'res']),
+      coverImg() {
+        return makeFileUrl(this.res.bigcover ? this.res.bigcover : this.res.cover)
+      }
     },
     methods: {
       ...mapActions(['fetch_content']),
-      ...mapMutations(['GET_USER_AGENT']),
       async fetch() {
         await this.fetch_content(this.$route.params)
       },
@@ -59,7 +84,7 @@
         const target = event.target,
           classList = target.classList;
         // if (classList.contains('video-play-icon')) {
-        //   if (this.$store.state.IS_APP) {
+        //   if (this.IS_APP) {
         //     if (!(target.dataset.vid || target.dataset.uid)) {
         //       return;
         //     }
@@ -110,10 +135,7 @@
     },
     mounted() {
       let self = this;
-      self.GET_USER_AGENT({
-        nvg: navigator.userAgent,
-        ref: location.pathname
-      });
+      console.log(self.$store);
       self.fetch();
     }
   };

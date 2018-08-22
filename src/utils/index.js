@@ -359,3 +359,141 @@ export function compareVersion(nvg) {
 export function isApp(ua) {
     return ua.indexOf("closer-ios") > -1 || ua.indexOf("closer-android") > -1
 }
+
+export function isJumpOut() {
+  if (typeof window != 'undefined') {
+    let ua = navigator.userAgent.toLowerCase();
+    var iswx = false,
+      isqq = false,
+      iswb = false;
+    // 微信内置浏览器
+    iswx = /micromessenger/i.test(ua);
+
+    // QQ内置浏览器
+    isqq = /qq/i.test(ua);
+    if (/mqqbrowser/i.test(ua)) {
+      isqq = false;
+    }
+    // 微博内置浏览器
+    iswb = /weibo/i.test(ua);
+    return iswx || isqq || iswb;
+  }
+}
+
+export function getParam(paramName, str) {
+  var paramValue = "";
+  var isFound = false;
+  if (
+      str.indexOf("?") > -1 &&
+      str.indexOf("=") > -1
+  ) {
+      var arrSource = unescape(str).substring(str.indexOf("?") + 1, str.length).split('&')
+      var i = 0;
+      while (i < arrSource.length && !isFound) {
+      if (arrSource[i].indexOf("=") > -1) {
+          if (
+          arrSource[i].split("=")[0].toLowerCase() ==
+          paramName.toLowerCase()
+          ) {
+          paramValue = arrSource[i].split("=")[1];
+          isFound = true;
+          }
+      }
+      i++;
+      }
+  }
+  return paramValue;
+}
+
+export function downApp(url) {
+  if (url) {
+    if (!isJumpOut()) {
+      if (url.indexOf('?from=group') > -1) {
+        let id = getParam('groupid', url);
+        location.href = `closer://group/${id}`;
+      } else if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      } else {
+        location.href = url;
+      }
+      setTimeout(() => {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      }, 1500)
+      return;
+    } else {
+      if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) {
+        location.href = url
+      } else if (url.indexOf('?downurl=closer://') > -1) {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      } else {
+        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
+      }
+    }
+  } else {
+    location.href = `${location.protocol}//${location.host}`;
+  }
+}
+
+export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
+  let result = await store.dispatch("common/down_adcookies");
+  if (result) {
+    let _page, url, did = route.params.id || route.params.messageid,
+      progress, _str;
+    if (route.path.indexOf("/community") > -1) {
+      _page = "community";
+      url = `closer://community/${did}`;
+    } else if (route.path.indexOf("/feed") > -1) {
+      _page = "article";
+      url = `closer://feed/${did}`;
+      if (store.state.res.int_type === 0) {
+        _page = "article";
+        progress = 1;
+      } else if (store.state.res.int_type === 1) {
+        _page = "video";
+        progress =
+          store.state.current_time / store.state.duration_time;
+        progress = progress.toFixed(2);
+      } else {
+        progress = 0.5;
+        _page = "article";
+      }
+    } else if (route.path.indexOf("/group") > -1) {
+      _page = "group";
+      url = `closer://group/${did}`;
+    } else {
+      _page = "inviter";
+    }
+    _str = typeof (str) === 'string' && str ? str : defaultStr;
+    let p1 = {
+      objectType: _page || "article", //		'统计对象类型（文章 视频 栏目 群组 H5分享的群组，栏目，帖子）,参数取值:article video community group'
+      objectId: route.params.id || "", //		'统计对象唯一标识'
+      position: _str, //		'点击位置，若action为download时必填,参数取值：top bottom'
+      progress: progress || 0, //		'浏览进度，文章为阅读的进度，图集为当前阅读的图片/总的图片数，视频为当前播放时间/总时间 小数点两位：0.95'
+      recommendId: "" //		'本次推荐的唯一标识 推荐内容ID'
+    };
+    let res = await store.dispatch("common/down_statistics", {
+      p1
+    });
+    console.log('res:', res)
+    if (res) {
+      if (redirectUrl) {
+        downApp(redirectUrl);
+        return
+      } else {
+        downApp(url);
+      }
+    }
+  }
+}
+
+// 合并json
+export function mergeJsonObject(jsonbject1, jsonbject2) {
+  var resultJsonObject = {};
+  for (var attr in jsonbject1) {
+    resultJsonObject[attr] = jsonbject1[attr];
+  }
+  for (var attr in jsonbject2) {
+    resultJsonObject[attr] = jsonbject2[attr];
+  }
+  return resultJsonObject;
+}

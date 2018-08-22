@@ -11,7 +11,7 @@ const Comment = () =>
 
 // 长图文
 const Article = () =>
-  import ('@/pages/article/index/index')
+  import ('@/pages/article/index')
 
 Vue.use(Router)
 
