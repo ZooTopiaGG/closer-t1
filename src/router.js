@@ -46,12 +46,7 @@ router.beforeEach(({
     switch (pathName[0]) {
         case 'feed':
             if (type == '2') {
-                if (category == '1') {
-                    // 征稿
-                    router.replace({
-                        path: path.replace("feed", "draft")
-                    })
-                } else if (category == '2') {
+                if (category == '2') {
                     // 神议论
                     router.replace({
                         path: path.replace("feed", "comment")
