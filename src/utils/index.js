@@ -179,9 +179,9 @@ export function makeHtmlContent(html, status) {
                 posterArray = x.match(regexPoster),
                 widthArray = x.match(regexWidth),
                 heightArray = x.match(regexHeight),
-                v, u, c, r, 
+                v, u, c, r,
                 boxClass = '';
-                // // 替换插入需要的值flg
+            // // 替换插入需要的值flg
             v = vidArray ? vidArray[1] : '';
             u = urlArray ? urlArray[1] : '';
             r = parseInt(heightArray[1]) / parseInt(widthArray[1]);
@@ -233,7 +233,7 @@ export function makeHtmlContent(html, status) {
                       <img data-src='${c}'
                         class='video-play-poster'/>
                       <span
-                        class='video-play-icon'></span>
+                        class='video-play-icon' data-vid='${v}' data-uid='${u}'></span>
                     </section>
                   </section>`;
             }

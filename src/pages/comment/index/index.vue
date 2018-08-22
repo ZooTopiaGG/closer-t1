@@ -23,7 +23,7 @@
             </div>
             <div v-else-if="item.type===1">
               <!-- 图片 -->
-              <img class="image" v-lazy="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+              <img class="image"  v-lazy="fileUrlParse(item.image.link)" :data-src="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
             <div v-else-if="item.type===2">
               <!-- 视频 -->

@@ -46,7 +46,7 @@ router.beforeEach(({
     switch (pathName[0]) {
         case 'feed':
             if (type == '2') {
-                if (category == '2') {
+                if (category == '3') {
                     // 神议论
                     router.replace({
                         path: path.replace("feed", "comment")
