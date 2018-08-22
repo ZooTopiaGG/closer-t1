@@ -329,7 +329,7 @@ export function appPlayVideo(v, u) {
     if (Store.state.V_1_2) {
         if (isIos) {
             if (window.WebViewJavascriptBridge) {
-                this.setupWebViewJavascriptBridge(function(bridge) {
+                setupWebViewJavascriptBridge(function(bridge) {
                     bridge.callHandler("playVideo", {
                         vid: vid,
                         url: uid
