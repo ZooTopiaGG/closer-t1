@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <div class="title">
+    <!-- <div class="title">
       {{subject.title}}
     </div>
     <div class="summary">{{content.summary}}</div>
@@ -13,7 +13,6 @@
             <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span>
           </div>
           <div v-if="item.type===0">
-            <!-- 文字链接 -->
             <div class="link" v-if="item.weblink" v-html="item.newText">
             </div>
             <div class="text" v-else>
@@ -21,11 +20,9 @@
             </div>
           </div>
           <div v-else-if="item.type===1">
-            <!-- 图片 -->
             <img class="image" v-lazy="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
           </div>
           <div v-else-if="item.type===2">
-            <!-- 视频 -->
             <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
               <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                 <div class="play-icon" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
@@ -33,7 +30,6 @@
             </div>
           </div>
           <div v-else-if="item.type===3">
-            <!-- 帖子 -->
             <div class="feed" @click="tofeed(item.feed.feedId)">
               <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
               <div class="feed-info">
@@ -45,7 +41,7 @@
         </div>
       </div>
       <div class="line"></div>
-    </div>
+    </div> -->
    
     <FeedList v-if="hotSubjects.length>0" :hotSubjects="hotSubjects"></FeedList>
   </div>

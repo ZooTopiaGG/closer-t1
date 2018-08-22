@@ -1,30 +1,38 @@
 <template>
   <div class="feed" v-if="hotSubjects.length>0">
     <div class="head">热门文章</div>
-    <div class="feed-content" v-for="(value,key) in hotSubjects" :key="key">
+    <div class="feed-content" v-for="(item,key) in hotSubjects" :key="key">
       <div class="top">
-        <img class="icon" :src="value.blogo" />
-        <div class="column">{{value.communityName}}</div>
-        <div class="time">{{dateFormate(value.long_publish_time,'yy-mm-dd hh:MM')}}</div>
+        <img class="icon" :src="item.blogo" />
+        <span class="column">{{item.communityName}}</span>
+        <span class="time">{{dateFormate(item.long_publish_time,'yy-mm-dd hh:MM')}}</span>
       </div>
-      <div class="middle">
-        <div class="title">{{value.title}} </div>
-        <div class="feed-img">
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535361690&di=bb320d9c3874743ef97e12c9bc244803&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.photophoto.cn%2F20140815%2F0032017361003192_b.jpg" class="img" />
+      <div class="middle" v-if="item.int_type===0">
+        <div class="title">{{item.content.text}} </div>
+        <div class="feed-img" v-if="item.content.images&&item.content.images.length>0">
+          <div class="img" v-if="index < 3" v-for="(img, index) in item.content.images" v-lazy:background-image="fileUrlParse(img.link)" :key="index">
+            <!-- <span class="cover-icon" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span> -->
+            <!-- <span class="cover-icon" v-else-if="img.width / img.height >= 3 ">全景</span> -->
+            <!-- <span class="cover-icon" v-else-if="img.height / img.width >= 3">长图</span> -->
+            <div class="cover-icon">全景</div>
+            <span class="more-image" v-if="index === 2 && item.content.images.length > 3">{{ item.content.images.length - 3 }}张更多</span>
+          </div>
+        </div>
+      </div>
+      <div class="middle" v-else-if="item.int_type===1">
+        <div class="title">{{item.content.text}} </div>
+        <div v-if="item.content.videos[0].width > item.content.videos[0].height" v-lazy:background-image="item.content.videos[0].imageUrl" :style="{width: '100vw',height: item.content.videos[0].height * 100 / item.content.videos[0].width + 'vw'}">
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
-import {getCommonTime} from '../utils'
+  import {
+    getCommonTime,
+    makeFileUrl
+  } from '../utils'
   import {
     mapActions,
     mapState
@@ -33,19 +41,24 @@ import {getCommonTime} from '../utils'
   export default {
     name: "feedList",
     props: {
-      hotSubjects:Array
+      hotSubjects: Array,
+      default: () => {
+        return [];
+      }
     },
     data() {
       return {}
     },
-    computed: {
-    },
-    mouted(){
-    
+    computed: {},
+    mouted() {
+  
     },
     methods: {
-      dateFormate(t,f){
-        return getCommonTime(t,f);
+      dateFormate(t, f) {
+        return getCommonTime(t, f);
+      },
+      fileUrlParse(url, type, size) {
+        return makeFileUrl(url, type, size);
       }
     }
   }
@@ -63,8 +76,6 @@ import {getCommonTime} from '../utils'
     .feed-content {
       margin-top: 30pr;
       .top {
-        display: flex;
-        flex-direction: row;
         .icon {
           margin-left: 38pr;
           width: 72pr;
@@ -81,8 +92,9 @@ import {getCommonTime} from '../utils'
         .time {
           font-size: 24pr;
           line-height: 34pr;
-          margin: 20pr 0 0 300pr;
           color: #94928E;
+          margin-right: 40pr;
+          float: right;
         }
       }
     }
@@ -94,6 +106,8 @@ import {getCommonTime} from '../utils'
         font-weight: 600;
       }
       .feed-img {
+        display: flex;
+        flex-direction: row;
         margin-top: 16pr;
          :nth-child(3n) {
           margin-right: 0 !important;
@@ -102,6 +116,19 @@ import {getCommonTime} from '../utils'
           width: 216pr;
           height: 216pr;
           margin: 8pr 10pr 0 0;
+        }
+        .cover-icon {
+          width: 80pr;
+          height: 40pr;
+          background: #000000;
+          border-radius: 26pr;
+          opacity: 0.6;
+          margin: 166pr 16pr 10pr 120pr;
+          padding-top:5pr;
+          text-align: center;
+          color: #ffffff;
+          font-size: 20pr;
+          line-height: 28pr;
         }
       }
     }
