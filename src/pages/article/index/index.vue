@@ -1,39 +1,47 @@
 <template>
-  <section class="article">
-    <!-- 端外显示 -->
-    <section v-if="!V_1_2 || !IS_APP" class="article-hd">
-      <!-- 顶部下载按钮，只在端外环境下显示 -->
-      <download-bar v-if="!IS_APP"></download-bar>
-      <!-- 头部图片封面，端外以及1.2以下版本的端内显示 -->
-      <section class="article-img-box">
-        <!-- 封面 -->
-        <img class="article-img" v-lazy="coverImg" data-index= "0" 
-        >
-        <section class="article-cover"></section>
-      </section>
-    </section>
-    <!-- 正文内容 -->
-    <section class="article-bd">
-      <section class="article-container">
-        <!-- 标题 -->
-        <div class="article-title"> {{ res.title }} </div>
-        <!-- 暂时隐藏 -->
-        <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                  <span> {{ getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                </section> -->
-        <section v-if="!IS_APP">
-          <!--logo-tab></logo-tab-->
-          <focus-bar></focus-bar>
+  <section v-if="exist" class="article">
+    <section class="article-wrap">
+      <!-- 端外显示 -->
+      <section v-if="!V_1_2 || !IS_APP" class="article-hd">
+        <!-- 顶部下载按钮，只在端外环境下显示 -->
+        <download-bar v-if="!IS_APP"></download-bar>
+        <!-- 头部图片封面，端外以及1.2以下版本的端内显示 -->
+        <section class="article-img-box">
+          <!-- 封面 -->
+          <img class="article-img" v-lazy="coverImg" data-index= "0" 
+          >
+          <section class="article-cover"></section>
         </section>
-        <div class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
-        </div>
+      </section>
+      <!-- 正文内容 -->
+      <section class="article-bd">
+        <section class="article-container">
+          <!-- 标题 -->
+          <div class="article-title"> {{ res.title }} </div>
+          <!-- 暂时隐藏 -->
+          <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
+                    <span> {{ getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                  </section> -->
+          <section v-if="!IS_APP">
+            <!-- 关注栏 -->
+            <focus-bar></focus-bar>
+          </section>
+          <div class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          </div>
+        </section>
         <section v-if="!IS_APP">
-          <!--logo-tab></logo-tab-->
+          <!-- 小编+作者 -->
           <author-bar></author-bar>
+          <!--（阅读量+点赞数）/ 编稿时间 -->
           <like-bar></like-bar>
         </section>
       </section>
     </section>
+
+    <!-- 精彩留言 -->
+
+    <!-- 热门文章 -->
+    
   </section>
   <Notfound v-else></Notfound>
 </template>
@@ -72,7 +80,7 @@
       likeBar
     },
     computed: {
-      ...mapState(['UA', 'IS_APP', 'V_1_2', 'content', 'res']),
+      ...mapState(['UA', 'IS_APP', 'V_1_2', 'content', 'res', 'exist']),
       coverImg() {
         return makeFileUrl(this.res.bigcover ? this.res.bigcover : this.res.cover)
       }
@@ -86,45 +94,6 @@
       openClick(event) {
         const target = event.target,
           classList = target.classList;
-        // if (classList.contains('video-play-icon')) {
-        //   if (this.IS_APP) {
-        //     if (!(target.dataset.vid || target.dataset.uid)) {
-        //       return;
-        //     }
-        //     appPlayVideo(
-        //       target.dataset.uid,
-        //       target.dataset.vid
-        //     );
-        //   } else {
-        //     let parentNode = target.parentNode,
-        //       video = parentNode.querySelector('video');
-        //     if (video.paused) {
-        //       video.play();
-        //       target.style.display = 'none';
-        //       target.classList.add('pause');
-        //     } else {
-        //       video.pause();
-        //       clearTimeout(this.playIconTimer);
-        //       target.classList.remove('pause');
-        //     }
-        //   }
-        // } else if (classList.contains('video-wrap') || classList.contains('video-tag')) {
-        //   let parentNode = target;
-        //   if (classList.contains('video-tag')) {
-        //     parentNode = target.parentNode;
-        //   }
-        //   const playIcon = parentNode.querySelector('.video-play-icon'),
-        //     video = parentNode.querySelector('video');
-        //     console.log(video.paused,playIcon.style.display);
-        //   if (!video.paused && playIcon.style.display == 'none') {
-        //     playIcon.style.display = 'block';
-        //     this.playIconTimer = setTimeout(() => {
-        //       this.playIconTimer = null;
-        //       playIcon.style.display = 'none';
-        //     }, 2e3)
-        //   }
-  
-        // }
         if (this.$store.state.IS_APP) {
           if (!(target.dataset.vid || target.dataset.uid)) {
             return;

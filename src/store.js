@@ -30,7 +30,7 @@ export default new Vuex.Store({
     get_login_type: '',
     visibleLogin: '',
     content: {},
-    exist: false,
+    exist: true,
   },
   actions: {
     // 获取文章内容

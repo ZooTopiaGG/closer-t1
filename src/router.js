@@ -35,7 +35,7 @@ router.beforeEach(({
     name,
     params
 }, from, next) => {
-    let pathName = path.match(/(?<=\/)[^\/]*(?=\/)?/g),
+    let pathName = path.split('/').slice(1),
         pathLength = pathName.length,
         {
             type,

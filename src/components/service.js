@@ -9,5 +9,8 @@ export default {
   },
   subscription(payload) {
     return Axios.post(api.community.subscription, payload).then(res => res.data);
+  },
+  incr_view(payload) {
+    return Axios.post(api.command.incr_view, payload).then(res => res.data);
   }
 }

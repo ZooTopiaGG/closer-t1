@@ -497,3 +497,9 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
   }
   return resultJsonObject;
 }
+
+// 数字缩写，如：129833 => 12.9W
+export function getSingleCount(count) {
+  count = parseInt(count) || 0;
+  return count > 1e4 ? (count / 1e4).toFixed(1) : count;
+}
