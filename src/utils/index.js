@@ -376,7 +376,7 @@ export function isJumpOut() {
     }
     // 微博内置浏览器
     iswb = /weibo/i.test(ua);
-    return iswx || isqq || iswb;
+    return (iswx || isqq || iswb);
   }
 }
 
@@ -501,5 +501,5 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
 // 数字缩写，如：129833 => 12.9W
 export function getSingleCount(count) {
   count = parseInt(count) || 0;
-  return count > 1e4 ? (count / 1e4).toFixed(1) : count;
+  return count > 1e4 ? (count / 1e4).toFixed(1) + 'W' : count;
 }

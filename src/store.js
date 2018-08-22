@@ -5,6 +5,9 @@ import { makeHtmlContent } from "./utils";
 import common from './components/module'
 import article from './pages/article/index/module'
 import comment from './pages/comment/index/module'
+import draft from './pages/draft/index/module'
+import message from './pages/message/index/module'
+import login from './components/login/module'
 
 import { fetchContent } from './pages/article/index/service';
 
@@ -134,6 +137,9 @@ export default new Vuex.Store({
   modules: {
     common,
     article,
-    comment
+    comment,
+    draft,
+    message,
+    login
   }
 })

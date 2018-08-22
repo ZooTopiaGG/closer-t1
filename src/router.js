@@ -14,19 +14,36 @@ const Comment = () =>
 const Article = () =>
   import ('@/pages/article/index')
 
+// 留言板 
+const Draft = () =>
+  import ('@/pages/draft/index/index')
+
+// 留言板 
+const Message = () =>
+  import ('@/pages/message/index/index')
+
 Vue.use(Router)
 
 const router = new Router({
-    mode: 'history',
-    routes: [{
-        path: '/article/:id',
-        name: 'article',
-        component: Article,
-    }, {
-        path: '/comment/:sid',
-        name: 'comment',
-        component: Comment,
-    }]
+  mode: 'history',
+  routes: [{
+    path: '/article/:id',
+    name: 'article',
+    component: Article,
+  }, {
+    path: '/comment/:sid',
+    name: 'comment',
+    component: Comment,
+  }, {
+    path: '/draft/:sid',
+    name: 'draft',
+    component: Draft,
+  }, {
+    path: '/message/:sid?/:id?',
+    name: 'message',
+    component: Message,
+  }]
+
 })
 router.beforeEach(({
     meta,

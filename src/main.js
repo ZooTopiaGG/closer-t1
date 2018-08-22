@@ -36,7 +36,7 @@ if (/sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.locat
   store.state.IS_DEV = true
 }
 
-store.state.UA = window.Axios = axio;
+window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;
 
