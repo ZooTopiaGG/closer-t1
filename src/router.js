@@ -35,8 +35,7 @@ router.beforeEach(({
     name,
     params
 }, from, next) => {
-    console.log(path)
-    let pathName = path.match(new RegExp(/(?<=\/)[^\/]*(?=\/)?/g)),
+    let pathName = path.split('/').slice(1),
         {
             type,
             category
@@ -46,21 +45,22 @@ router.beforeEach(({
     // 根据path和query跳转到对应页面
     switch (pathName[0]) {
         case 'feed':
-            if (type == '2' && category == '0') {
-                // 长图文
-                router.replace({
-                    path: path.replace("feed", "article")
-                })
-            } else if (type == '2' && category == '1') {
-                // 征稿
-                router.replace({
-                    path: path.replace("feed", "draft")
-                })
-            } else if (type == '2' && category == '2') {
-                // 神议论
-                router.replace({
-                    path: path.replace("feed", "comment")
-                })
+            if (type == '2') {
+                if (category == '1') {
+                    // 征稿
+                    router.replace({
+                        path: path.replace("feed", "draft")
+                    })
+                } else if (category == '2') {
+                    // 神议论
+                    router.replace({
+                        path: path.replace("feed", "comment")
+                    })
+                } else {
+                    router.replace({
+                        path: path.replace("feed", "article")
+                    })
+                }
             } else {
                 next();
             }
