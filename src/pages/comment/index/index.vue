@@ -1,51 +1,54 @@
 <template>
   <div class="comment">
-    <div class="title">
-      {{subject.title}}
-    </div>
-    <div class="summary">{{content.summary}}</div>
-    <div class="discuss" v-for="(item,key) in discuss" :key="key">
-      <div class="discuss-content">
-        <img class="avatar" v-lazy="fileUrlParse(item.avatar)">
-        <div class="info">
-          <div class="info-up">
-            <span class="nickname">{{item.nickname}}</span>
-            <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span>
-          </div>
-          <div v-if="item.type===0">
-            <!-- 文字链接 -->
-            <div class="link" v-if="item.weblink" v-html="item.newText">
+    <div v-if="subjectExist">
+      <div class="title">
+        {{subject.title}}
+      </div>
+      <div class="summary">{{content.summary}}</div>
+      <div class="discuss" v-for="(item,key) in discuss" :key="key">
+        <div class="discuss-content">
+          <img class="avatar" v-lazy="fileUrlParse(item.avatar)">
+          <div class="info">
+            <div class="info-up">
+              <span class="nickname">{{item.nickname}}</span>
+              <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span>
             </div>
-            <div class="text" v-else>
-              {{ item.text }}
-            </div>
-          </div>
-          <div v-else-if="item.type===1">
-            <!-- 图片 -->
-            <img class="image" v-lazy="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
-          </div>
-          <div v-else-if="item.type===2">
-            <!-- 视频 -->
-            <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
-              <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
-                <div class="play-icon" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
+            <div v-if="item.type===0">
+              <!-- 文字链接 -->
+              <div class="link" v-if="item.weblink" v-html="item.newText">
+              </div>
+              <div class="text" v-else>
+                {{ item.text }}
               </div>
             </div>
-          </div>
-          <div v-else-if="item.type===3">
-            帖子
-            <div class="feed" @click="tofeed(item.feed.feedId)">
-              <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
-              <div class="feed-info">
-                <div class="feed-title">{{ item.feed.title }}</div>
-                <div class="feed-summary">{{ item.feed.summary }}</div>
+            <div v-else-if="item.type===1">
+              <!-- 图片 -->
+              <img class="image" v-lazy="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+            </div>
+            <div v-else-if="item.type===2">
+              <!-- 视频 -->
+              <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
+                <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
+                  <div class="play-icon" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
+                </div>
+              </div>
+            </div>
+            <div v-else-if="item.type===3">
+              <!-- 帖子 -->
+              <div class="feed" @click="tofeed(item.feed.feedId)">
+                <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
+                <div class="feed-info">
+                  <div class="feed-title">{{ item.feed.title }}</div>
+                  <div class="feed-summary">{{ item.feed.summary }}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="line"></div>
       </div>
-      <div class="line"></div>
     </div>
+    <Notfound v-else></Notfound>
   </div>
 </template>
 
@@ -59,8 +62,12 @@
     mapState,
     mapActions
   } from "vuex";
+  import Notfound from '../../../components/error/notfound'
   export default {
     name: "commentIndex",
+    components: {
+      Notfound
+    },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
@@ -70,7 +77,8 @@
       ...mapState("comment", {
         subject: state => state.subject,
         content: state => state.content,
-        discuss: state => state.discuss
+        discuss: state => state.discuss,
+        subjectExist: state => state.subjectExist
       })
     },
     mounted() {

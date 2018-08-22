@@ -35,6 +35,7 @@
       </section>
     </section>
   </section>
+  <Notfound v-else></Notfound>
 </template>
 
 <script>
@@ -51,6 +52,8 @@
     appPlayVideo,
     makeFileUrl
   } from "../../../utils";
+  import Notfound from '../../../components/error/notfound'
+  
   
   export default {
     name: `articleIndex`,
@@ -120,7 +123,7 @@
         //       playIcon.style.display = 'none';
         //     }, 2e3)
         //   }
-          
+  
         // }
         if (this.$store.state.IS_APP) {
           if (!(target.dataset.vid || target.dataset.uid)) {
