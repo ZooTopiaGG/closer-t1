@@ -48,7 +48,7 @@
         <div class="line"></div>
       </div>
     </div>
-    <Notfound v-else></Notfound>
+    <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
 </template>
 
