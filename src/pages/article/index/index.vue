@@ -15,7 +15,7 @@
       </section>
     </section>
   </section>
-  <Notfound v-else></Notfound>
+  <Notfound v-else :isDelete="res.bool_delete"></Notfound>
 </template>
 
 <script>
