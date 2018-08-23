@@ -18,7 +18,8 @@
       <div class="down-btn" @click="download">
         <span>立即下载</span>
       </div>
-      <div class="todown-bottom">
+      <div >
+        <img src="../../assets/images/illustrations.png" class="todown-bottom" />
       </div>
     </div>
   </div>
@@ -98,6 +99,7 @@
 
 <style lang="less" scoped>
   .not-found {
+    text-align: center;
     .delete-icon {
       background: url("../../assets/images/not_found_icon.png");
       background-size: cover;
@@ -118,14 +120,12 @@
         .todown-top-left {
           width: 396pr;
           height: 114pr;
-          padding-left: 4vw;
-          padding-top: 2vw;
-          padding-right: 6.93vw;
+          margin:0 20pr 0 20pr;
         }
         .todown-top-right {
           width: 248pr;
           height: 210pr;
-          display: none;
+          // display: none;
         }
       }
       .todown-body {
@@ -134,21 +134,15 @@
       }
       .down-btn {
         padding: 10pr;
-        margin-top: 100pr;
-        width: 500pr;
-        height: 80pr;
-        margin-left: 100pr;
+        margin: 100pr 80pr 0 80pr;
         background: #fddb00;
         border-radius: 10pr;
-        text-align: center;
         font-size: 36pr;
         opacity: 0;
       }
       .todown-bottom {
         position: relative;
         margin-top: 40pr;
-        background: url(../../assets/images/illustrations.png);
-        background-size: cover;
         width: 698pr;
         height: 666pr;
       }
