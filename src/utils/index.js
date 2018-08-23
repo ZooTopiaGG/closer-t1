@@ -321,7 +321,7 @@ export function getCommonTime(milliseconds, type) {
 }
 
 
-export function appPlayVideo(v, u) {
+export function appPlayVideo(u, v) {
     let vid = v ? v : null,
         uid = u ? u : null;
     console.log(v, "---", u)
@@ -331,8 +331,8 @@ export function appPlayVideo(v, u) {
             if (window.WebViewJavascriptBridge) {
                 setupWebViewJavascriptBridge(function(bridge) {
                     bridge.callHandler("playVideo", {
+                        url: uid,
                         vid: vid,
-                        url: uid
                     });
                 });
             }
@@ -358,6 +358,33 @@ export function compareVersion(nvg) {
 
 export function isApp(ua) {
     return ua.indexOf("closer-ios") > -1 || ua.indexOf("closer-android") > -1
+}
+
+
+export function tabImg() {
+    let imgs = [
+        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+    ]
+    let index = 0;
+    if (isIos) {
+        if (window.WebViewJavascriptBridge) {
+            setupWebViewJavascriptBridge(function(bridge) {
+                bridge.callHandler("tapImage", {
+                    imgs: imgs,
+                    index: 0
+                });
+            });
+        }
+    } else {
+        if (typeof window.bridge != "undefined") {
+            window.bridge.tapImage(vid, uid);
+        }
+    }
 }
 
 

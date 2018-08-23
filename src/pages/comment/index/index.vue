@@ -23,7 +23,7 @@
             </div>
             <div v-else-if="item.type===1">
               <!-- 图片 -->
-              <img class="image"  v-lazy="fileUrlParse(item.image.link)" :data-src="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+              <img class="image"  v-lazy="fileUrlParse(item.image.link)"  @click="tabImg" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
             <div v-else-if="item.type===2">
               <!-- 视频 -->
@@ -57,7 +57,8 @@
   import {
     makeFileUrl,
     getCommonTime,
-    appPlayVideo
+    appPlayVideo,
+    tabImg
   } from '../../../utils'
   import {
     mapState,
@@ -104,8 +105,11 @@
           if (!(event.target.dataset.vid || event.target.dataset.uid)) {
             return;
           }
-          appPlayVideo(event.target.dataset.vid, event.target.dataset.uid)
+          appPlayVideo(event.target.dataset.uid, event.target.dataset.vid)
         }
+      },
+      tabImg(){
+          tabImg();
       },
       tofeed(fid) {
         location.href = `closer://feed/${fid}`;
