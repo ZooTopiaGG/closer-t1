@@ -31,14 +31,13 @@ const actions = {
                                 res.result.int_category != 6) ||
                             res.result.bool_delete)
                     ) {
-                        store.commit("GET_EXIST_STATUS", false);
+                        commit("GET_EXIST_STATUS", false);
                         return;
                     }
                 }
                 // 验证content
                 if (res.result.content) {
                     var content = JSON.parse(res.result.content);
-
                     // 解析长图文html
                     if (res.result.int_type === 2) {
                         let _html = makeHtmlContent(
