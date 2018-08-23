@@ -15,7 +15,7 @@ const state = {
 
 const actions = {
     // 获取文章内容
-    async fetch_content({ commit, state }, { id }) {
+    async fetch_content({ commit, state, rootState }, { id }) {
         try {
             // 获取贴子详情
             let res = await fetchContent(id)
@@ -23,6 +23,18 @@ const actions = {
                 // 贴子被删除状态
                 commit("GET_EXIST_STATUS", false);
             } else {
+                if (!rootState.IS_APP) {
+                    if (
+                        res.result.int_verify === 0 ||
+                        ((res.result.int_verify === -1 &&
+                                res.result.int_category != 4 &&
+                                res.result.int_category != 6) ||
+                            res.result.bool_delete)
+                    ) {
+                        store.commit("GET_EXIST_STATUS", false);
+                        return;
+                    }
+                }
                 // 验证content
                 if (res.result.content) {
                     var content = JSON.parse(res.result.content);
