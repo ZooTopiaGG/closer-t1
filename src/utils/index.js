@@ -384,7 +384,10 @@ export function tabImg() {
         }
     } else {
         if (typeof window.bridge != "undefined") {
-            window.bridge.tapImage(imgs, index);
+            window.bridge.tapImage({
+                imgs: imgs,
+                index: index
+            });
         }
     }
 }
