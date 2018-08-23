@@ -8,8 +8,8 @@
     </div>
     <div class="todown" v-else>
       <div class="todown-top">
-        <img class="todown-top-left" src="../../assets/images/tiejin.png" alt="">
-        <img class="todown-top-right" src="../../assets/images/open_browser.png" alt="">
+        <img class="todown-top-left" src="../../assets/images/tiejin.png">
+        <img class="todown-top-right" src="../../assets/images/open_browser.png" >
       </div>
       <div class="todown-body">
         <div>根据国家法律规定</div>
@@ -115,18 +115,22 @@
     .todown {
       padding: 50pr 20pr 0 20pr;
       text-align: center;
-      box-sizing: border-box;
       .todown-top {
-        .todown-top-left {
-          width: 396pr;
-          height: 114pr;
-          margin:0 10pr 0 10pr;
-        }
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         .todown-top-right {
           width: 248pr;
           height: 210pr;
-          // display: none;
+          display: none;
         }
+        .todown-top-left {
+          width: 396pr;
+          height: 114pr;
+          margin:50pr 10pr 0 10pr;
+        }
+        
       }
       .todown-body {
         margin-top: 30pr;
