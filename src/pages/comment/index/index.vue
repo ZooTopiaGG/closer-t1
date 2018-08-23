@@ -101,7 +101,6 @@
         return getCommonTime(time, type);
       },
       showVideo(event) {
-        console.log("click", event.target.dataset.vid, "---", event.target.dataset.uid)
         if (this.$store.state.IS_APP) {
           if (event.target.dataset.vid && event.target.dataset.uid) {
             appPlayVideo(event.target.dataset.uid, event.target.dataset.vid)
