@@ -46,25 +46,9 @@ export default {
                 }
                 if (data.result.content) {
                     let content = JSON.parse(data.result.content);
-                    if (data.result.int_type === 2) {
-                        let _html = makeHtmlContent(
-                            content.html,
-                            false
-                        );
-                        if (_html) {
-                            content.html = _html;
-                        }
-                        if (data.result.int_category === 3 && content.end_html) {
-                            let end_html = makeHtmlContent(
-                                content.end_html,
-                                false
-                            );
-                            if (end_html) {
-                                content.end_html = end_html;
-                            }
-                        }
-                    }
                     if (content.discuss) {
+                        let index = 0;
+                        let contentImgs = [];
                         let discuss = content.discuss.map(x => {
                             if (x.text) {
                                 let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
@@ -81,8 +65,14 @@ export default {
                                     x.weblink = false;
                                 }
                             }
+                            if (x.image) {
+                                x.image['index'] = index;
+                                contentImgs.push(x.image.link)
+                                index++;
+                            }
                             return x;
                         });
+                        rootState.contentImgs = contentImgs;
                         commit("setDiscuss", discuss);
                     }
                     commit("setContent", content);

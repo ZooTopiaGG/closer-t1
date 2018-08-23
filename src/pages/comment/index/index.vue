@@ -23,7 +23,7 @@
             </div>
             <div v-else-if="item.type===1">
               <!-- 图片 -->
-              <img class="image"  v-lazy="fileUrlParse(item.image.link)"  @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+              <img class="image" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
             <div v-else-if="item.type===2">
               <!-- 视频 -->
@@ -47,7 +47,7 @@
         </div>
         <div class="line"></div>
       </div>
-
+  
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -108,8 +108,10 @@
           appPlayVideo(event.target.dataset.uid, event.target.dataset.vid)
         }
       },
-      tabImg(){
-          tabImg(event.target.dataset.index);
+      tabImg(e) {
+        if (this.$store.state.IS_APP) {
+          tabImg(e.target.dataset.index);
+        }
       },
       tofeed(fid) {
         location.href = `closer://feed/${fid}`;

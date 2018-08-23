@@ -121,7 +121,7 @@ export function makeHtmlContent(html, status) {
         const regexSrc = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
         const regexWidth = /width=[\'\"]?([^\'\"]*)[\'\"]?/i;
         const regexHeight = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
-        let size, flag;
+        let size, flag, contentImgs = [];
         pImg.forEach((x, i) => {
             let
                 srcArray = x.match(regexSrc),
@@ -133,7 +133,8 @@ export function makeHtmlContent(html, status) {
                 nH,
                 minH;
             if (srcArray) {
-                // _src = srcArray[1].replace(/\+/g, "%2b");
+                contentImgs.push(srcArray[1])
+                    // _src = srcArray[1].replace(/\+/g, "%2b");
                 if (widthArray && heightArray) {
                     if (widthArray[1] < 200) {
                         nW = widthArray[1] + 'px';
@@ -143,12 +144,12 @@ export function makeHtmlContent(html, status) {
                         nH = heightArray[1] * 100 / widthArray[1] + "%";
                     }
                     minH = nH;
-                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;" data-index="${i}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;"  data-index="${i}" data-src=`);
                 } else {
                     nW = '100%';
                     nH = "auto";
                     minH = '28.27vw';
-                    newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2"  data-index="${i}" data-src=`);
                 }
             } else {
                 newM = '';
@@ -158,6 +159,7 @@ export function makeHtmlContent(html, status) {
             // 替换不同文本
             html = html.replace(x, newM);
         });
+        Store.state.contentImgs = contentImgs;
     }
     const regexVideo = /<video.*?(?:>|\/>|<\/video>)/gi;
     let pVideo = html.match(regexVideo);
@@ -361,18 +363,14 @@ export function isApp(ua) {
 }
 
 
-export function tabImg() {
-    let imgArray = [
-        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
-        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
-        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
-        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
-    ]
-    let index = 2;
+export function tabImg(i) {
+    let imgArray = Store.state.contentImgs;
+    let index = parseInt(i);
     let imgJson = {
         "imgs": imgArray,
-        "index": 2
+        "index": index
     }
+    console.log(imgJson)
     let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
     if (isIos) {
         if (window.WebViewJavascriptBridge) {

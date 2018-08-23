@@ -8,8 +8,8 @@
         <section class="article-title"> {{ res.title }} </section>
         <!-- 暂时隐藏 -->
         <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                    <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                  </section> -->
+                      <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                    </section> -->
         <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </section>
       </section>
@@ -30,7 +30,8 @@
     mapMutations
   } = createNamespacedHelpers('article');
   import {
-    appPlayVideo
+    appPlayVideo,
+    tabImg
   } from "../../../utils";
   import Notfound from '../../../components/error/notfound'
   
@@ -63,6 +64,10 @@
       ...mapMutations(['GET_USER_AGENT']),
       async fetch() {
         await this.fetch_content(this.$route.params)
+      },
+      tabImg(e) {
+        console.log(e.target.dataset.index)
+        tabImg(e.target.dataset.index);
       },
       // 在app端 长图文贴子 打开原生视频
       openClick(event) {
@@ -108,13 +113,14 @@
   
         // }
         if (this.$store.state.IS_APP) {
-          if (!(target.dataset.vid || target.dataset.uid)) {
-            return;
+          if (target.dataset.vid && target.dataset.uid) {
+            appPlayVideo(
+              target.dataset.uid,
+              target.dataset.vid
+            );
+          } else if (target.dataset.index) {
+            tabImg(target.dataset.index);
           }
-          appPlayVideo(
-            target.dataset.uid,
-            target.dataset.vid
-          );
         }
       }
     },
