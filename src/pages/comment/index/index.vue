@@ -27,8 +27,8 @@
             </div>
             <div v-else-if="item.type===2">
               <!-- 视频 -->
-              <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
-                <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
+              <div class="video" >
+                <div class="video-play" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                   <div class="play-icon"></div>
                 </div>
               </div>

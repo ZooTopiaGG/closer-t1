@@ -40,7 +40,7 @@ export default {
                                 data.result.int_category != 6) ||
                             data.result.bool_delete)
                     ) {
-                        store.commit("GET_EXIST_STATUS", false);
+                        commit("setSubjectState", false);
                         return;
                     }
                 }
