@@ -369,22 +369,20 @@ export function tabImg() {
         "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
     ]
     let index = 2;
+    let imgJson = {
+        "imgs": imgArray,
+        "index": 2
+    }
     let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
     if (isIos) {
         if (window.WebViewJavascriptBridge) {
             setupWebViewJavascriptBridge(function(bridge) {
-                bridge.callHandler("tapImage", {
-                    imgs: imgArray,
-                    index: index
-                });
+                bridge.callHandler("tapImage", imgJson);
             });
         }
     } else {
         if (typeof window.bridge != "undefined") {
-            window.bridge.tapImage({
-                imgs: imgArray,
-                index: index
-            });
+            window.bridge.tapImage(JSON.stringify(imgJson));
         }
     }
 }
