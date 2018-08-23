@@ -376,7 +376,7 @@ export function tabImg() {
             setupWebViewJavascriptBridge(function(bridge) {
                 bridge.callHandler("tapImage", {
                     imgs: imgs,
-                    index: 0
+                    index: 2
                 });
             });
         }
