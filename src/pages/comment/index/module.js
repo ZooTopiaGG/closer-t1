@@ -34,11 +34,11 @@ export default {
             if (typeof(data.code) != "undefined" && data.code == 0) {
                 if (!rootState.IS_APP) {
                     if (
-                        res.result.int_verify === 0 ||
-                        ((res.result.int_verify === -1 &&
-                                res.result.int_category != 4 &&
-                                res.result.int_category != 6) ||
-                            res.result.bool_delete)
+                        data.result.int_verify === 0 ||
+                        ((data.result.int_verify === -1 &&
+                                data.result.int_category != 4 &&
+                                data.result.int_category != 6) ||
+                            data.result.bool_delete)
                     ) {
                         store.commit("GET_EXIST_STATUS", false);
                         return;

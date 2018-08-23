@@ -7,7 +7,7 @@
       <div class="summary">{{content.summary}}</div>
       <div class="discuss" v-for="(item,key) in discuss" :key="key">
         <div class="discuss-content">
-          <img class="avatar" v-lazy="fileUrlParse(item.avatar)">
+          <i class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></i>
           <div class="info">
             <div class="info-up">
               <span class="nickname">{{item.nickname}}</span>
