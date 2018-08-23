@@ -120,7 +120,7 @@
         .todown-top-left {
           width: 396pr;
           height: 114pr;
-          margin:0 20pr 0 20pr;
+          margin:0 10pr 0 10pr;
         }
         .todown-top-right {
           width: 248pr;
