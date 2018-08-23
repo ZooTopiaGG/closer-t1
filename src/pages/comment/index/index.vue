@@ -29,7 +29,7 @@
               <!-- 视频 -->
               <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
                 <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
-                  <div class="play-icon" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
+                  <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
               </div>
             </div>
@@ -101,6 +101,7 @@
         return getCommonTime(time, type);
       },
       showVideo(event) {
+        console.log("click")
         if (this.$store.state.IS_APP) {
           if (!(event.target.dataset.vid || event.target.dataset.uid)) {
             return;
