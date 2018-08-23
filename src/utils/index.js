@@ -143,12 +143,12 @@ export function makeHtmlContent(html, status) {
                         nH = heightArray[1] * 100 / widthArray[1] + "%";
                     }
                     minH = nH;
-                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;" data-index="${i+1}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;" data-index="${i}" data-src=`);
                 } else {
                     nW = '100%';
                     nH = "auto";
                     minH = '28.27vw';
-                    newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i}" data-src=`);
                 }
             } else {
                 newM = '';
@@ -362,22 +362,19 @@ export function isApp(ua) {
 
 
 export function tabImg() {
-    let imgs = [
-        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
-        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
-        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
-        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
-        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
-        "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
+    let imgArray = [
+        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
+        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
+        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
+        "https://file-sandbox.tiejin.cn/public/9L1yssgdeW/magazine-unlock-01-2.3.1058-_416F891057C496C3528921694B737273.jpg",
     ]
     let index = 2;
-    console.log("xxxxx")
     let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
     if (isIos) {
         if (window.WebViewJavascriptBridge) {
             setupWebViewJavascriptBridge(function(bridge) {
                 bridge.callHandler("tapImage", {
-                    imgs: imgs,
+                    imgs: imgArray,
                     index: index
                 });
             });
@@ -385,13 +382,12 @@ export function tabImg() {
     } else {
         if (typeof window.bridge != "undefined") {
             window.bridge.tapImage({
-                imgs: imgs,
+                imgs: imgArray,
                 index: index
             });
         }
     }
 }
-
 
 /**
  * 

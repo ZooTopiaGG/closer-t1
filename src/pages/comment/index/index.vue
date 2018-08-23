@@ -23,7 +23,7 @@
             </div>
             <div v-else-if="item.type===1">
               <!-- 图片 -->
-              <img class="image"  v-lazy="fileUrlParse(item.image.link)"  @click="tabImg" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+              <img class="image"  v-lazy="fileUrlParse(item.image.link)"  @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
             <div v-else-if="item.type===2">
               <!-- 视频 -->
@@ -109,7 +109,7 @@
         }
       },
       tabImg(){
-          tabImg();
+          tabImg(event.target.dataset.index);
       },
       tofeed(fid) {
         location.href = `closer://feed/${fid}`;
