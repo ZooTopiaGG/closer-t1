@@ -370,19 +370,21 @@ export function tabImg() {
         "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
         "http://file-sandbox.tiejin.cn/public/9V5zIpBoCC/1534907030000.jpg",
     ]
-    let index = 0;
+    let index = 2;
+    console.log("xxxxx")
+    let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
     if (isIos) {
         if (window.WebViewJavascriptBridge) {
             setupWebViewJavascriptBridge(function(bridge) {
                 bridge.callHandler("tapImage", {
                     imgs: imgs,
-                    index: 2
+                    index: index
                 });
             });
         }
     } else {
         if (typeof window.bridge != "undefined") {
-            window.bridge.tapImage(vid, uid);
+            window.bridge.tapImage(imgs, index);
         }
     }
 }
