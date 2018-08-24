@@ -47,6 +47,7 @@ export default {
                 if (data.result.content) {
                     let content = JSON.parse(data.result.content);
                     if (data.result.int_type === 2) {
+                        rootState.CONTENT_IMGS == [];
                         let _html = makeHtmlContent(
                             content.html
                         );
@@ -63,7 +64,6 @@ export default {
                         }
                         if (content.discuss) {
                             let index = 0;
-                            let contentImgs = [];
                             let discuss = content.discuss.map(x => {
                                 if (x.text) {
                                     let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
@@ -82,12 +82,11 @@ export default {
                                 }
                                 if (x.image) {
                                     x.image['index'] = index;
-                                    contentImgs.push(x.image.link)
+                                    rootState.CONTENT_IMGS.push(x.image.link)
                                     index++;
                                 }
                                 return x;
                             });
-                            rootState.contentImgs = contentImgs;
                             commit("setDiscuss", discuss);
                         }
                         commit("setContent", content);

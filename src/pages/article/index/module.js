@@ -38,6 +38,7 @@ const actions = {
                 // 验证content
                 if (res.result.content) {
                     var content = JSON.parse(res.result.content);
+                    rootState.CONTENT_IMGS == [];
                     // 解析长图文html
                     if (res.result.int_type === 2) {
                         let _html = makeHtmlContent(

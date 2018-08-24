@@ -11,7 +11,9 @@ export default new Vuex.Store({
         UA: "",
         IS_APP: false,
         IS_NEW_USER: false,
-        IS_DEV: false
+        IS_DEV: false,
+        CONTENT_IMGS: []
+
     },
     modules: {
         article,

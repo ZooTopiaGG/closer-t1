@@ -49,7 +49,6 @@
         <div class="line"></div>
       </div>
       <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
-  
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
