@@ -131,10 +131,9 @@
   .comment {
     padding: 0 40pr 0 40pr;
     .title {
-      margin: 60pr 0 40pr 40pr;
+      margin: 60pr 0 40pr 0pr;
       font-size: 44pr;
-      color: #4B4945;
-      font-weight: 700;
+      font-weight: bold;
     }
     .content {
       margin-top: 30pr;
