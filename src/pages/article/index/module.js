@@ -47,26 +47,6 @@ const actions = {
                             state.GET_MESSAGE_STATE
                         );
                     }
-                    if (content.discuss) {
-                        var discuss = content.discuss.map(x => {
-                            if (x.text) {
-                                let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-                                let res = x.text.match(reg);
-                                if (res) {
-                                    x.weblink = true;
-                                    res.map(y => {
-                                        // 正则替换文本
-                                        let tag = `<a href="${y}" target="_blank">${y}</a>`;
-                                        let newtag = x.text.replace(reg, tag);
-                                        x.newText = newtag;
-                                    });
-                                } else {
-                                    x.weblink = false;
-                                }
-                            }
-                            return x;
-                        });
-                    }
                     // 返回在渲染页面之前得结果
                     commit("SET_CONTENT", content);
                 }

@@ -55,16 +55,7 @@ export default {
                         if (_html) {
                             content.html = _html;
                         }
-                        if (data.result.int_category === 3 && content.end_html) {
-                            let end_html = makeHtmlContent(
-                                content.end_html
-                            );
-                            if (end_html) {
-                                content.end_html = end_html;
-                            }
-                        }
                         if (content.discuss) {
-
                             let discuss = content.discuss.map(x => {
                                 if (x.text) {
                                     let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
@@ -89,6 +80,14 @@ export default {
                                 return x;
                             });
                             commit("setDiscuss", discuss);
+                        }
+                        if (data.result.int_category === 3 && content.end_html) {
+                            let end_html = makeHtmlContent(
+                                content.end_html
+                            );
+                            if (end_html) {
+                                content.end_html = end_html;
+                            }
                         }
                         commit("setContent", content);
                         delete data.result.content;
