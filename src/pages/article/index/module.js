@@ -39,24 +39,13 @@ const actions = {
                 if (res.result.content) {
                     var content = JSON.parse(res.result.content);
                     rootState.CONTENT_IMGS == [];
+                    Store.state.IMG_INDEX = 0;
                     // 解析长图文html
                     if (res.result.int_type === 2) {
                         let _html = makeHtmlContent(
                             content.html,
                             state.GET_MESSAGE_STATE
                         );
-                        if (_html) {
-                            content.html = _html;
-                        }
-                        if (res.result.int_category === 3 && content.end_html) {
-                            let end_html = makeHtmlContent(
-                                content.end_html,
-                                state.GET_MESSAGE_STATE
-                            );
-                            if (end_html) {
-                                content.end_html = end_html;
-                            }
-                        }
                     }
                     if (content.discuss) {
                         var discuss = content.discuss.map(x => {

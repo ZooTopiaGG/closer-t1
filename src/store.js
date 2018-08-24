@@ -12,6 +12,7 @@ export default new Vuex.Store({
         IS_APP: false,
         IS_NEW_USER: false,
         IS_DEV: false,
+        IMG_INDEX: 0,
         CONTENT_IMGS: []
 
     },

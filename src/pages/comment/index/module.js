@@ -48,6 +48,7 @@ export default {
                     let content = JSON.parse(data.result.content);
                     if (data.result.int_type === 2) {
                         rootState.CONTENT_IMGS == [];
+                        Store.state.IMG_INDEX = 0;
                         let _html = makeHtmlContent(
                             content.html
                         );
@@ -63,7 +64,7 @@ export default {
                             }
                         }
                         if (content.discuss) {
-                            let index = 0;
+
                             let discuss = content.discuss.map(x => {
                                 if (x.text) {
                                     let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
@@ -83,7 +84,7 @@ export default {
                                 if (x.image) {
                                     x.image['index'] = index;
                                     rootState.CONTENT_IMGS.push(x.image.link)
-                                    index++;
+                                    Store.state.IMG_INDEX++;
                                 }
                                 return x;
                             });
