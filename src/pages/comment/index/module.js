@@ -82,9 +82,9 @@ export default {
                                     }
                                 }
                                 if (x.image) {
-                                    x.image['index'] = index;
+                                    x.image['index'] = rootState.IMG_INDEX;
                                     rootState.CONTENT_IMGS.push(x.image.link)
-                                    Store.state.IMG_INDEX++;
+                                    rootState.IMG_INDEX++;
                                 }
                                 return x;
                             });
