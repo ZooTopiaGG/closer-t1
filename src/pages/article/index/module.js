@@ -46,6 +46,9 @@ const actions = {
                             content.html,
                             state.GET_MESSAGE_STATE
                         );
+                        if (_html) {
+                            content.html = _html;
+                        }
                     }
                     // 返回在渲染页面之前得结果
                     commit("SET_CONTENT", content);
