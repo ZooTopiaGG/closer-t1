@@ -39,7 +39,7 @@ const actions = {
                 if (res.result.content) {
                     var content = JSON.parse(res.result.content);
                     rootState.CONTENT_IMGS == [];
-                    Store.state.IMG_INDEX = 0;
+                    rootState.IMG_INDEX = 0;
                     // 解析长图文html
                     if (res.result.int_type === 2) {
                         let _html = makeHtmlContent(

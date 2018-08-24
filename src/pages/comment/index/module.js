@@ -48,7 +48,7 @@ export default {
                     let content = JSON.parse(data.result.content);
                     if (data.result.int_type === 2) {
                         rootState.CONTENT_IMGS == [];
-                        Store.state.IMG_INDEX = 0;
+                        rootState.IMG_INDEX = 0;
                         let _html = makeHtmlContent(
                             content.html
                         );
