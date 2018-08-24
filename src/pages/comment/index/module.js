@@ -46,6 +46,22 @@ export default {
                 }
                 if (data.result.content) {
                     let content = JSON.parse(data.result.content);
+                    if (data.result.int_type === 2) {
+                        let _html = makeHtmlContent(
+                            content.html
+                        );
+                        if (_html) {
+                            content.html = _html;
+                        }
+                        if (data.result.int_category === 3 && content.end_html) {
+                            let end_html = makeHtmlContent(
+                                content.end_html
+                            );
+                            if (end_html) {
+                                content.end_html = end_html;
+                            }
+                        }
+                    }
                     if (content.discuss) {
                         let index = 0;
                         let contentImgs = [];

@@ -4,10 +4,11 @@
       <div class="title">
         {{subject.title}}
       </div>
-      <div class="summary">{{content.summary}}</div>
+      <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+      </div>
       <div class="discuss" v-for="(item,key) in discuss" :key="key">
         <div class="discuss-content">
-          <i class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></i>
+          <div class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></div>
           <div class="info">
             <div class="info-up">
               <span class="nickname">{{item.nickname}}</span>
@@ -27,8 +28,8 @@
             </div>
             <div v-else-if="item.type===2">
               <!-- 视频 -->
-              <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
-                <div class="video-play"  :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
+              <div class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
+                <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                   <div class="play-icon"></div>
                 </div>
               </div>
@@ -47,6 +48,7 @@
         </div>
         <div class="line"></div>
       </div>
+      <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
   
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
@@ -100,10 +102,17 @@
       formatTime(time, type) {
         return getCommonTime(time, type);
       },
-      showVideo(event) {
+      openClick(event) {
+        const target = event.target,
+          classList = target.classList;
         if (this.$store.state.IS_APP) {
-          if (event.target.dataset.vid && event.target.dataset.uid) {
-            appPlayVideo(event.target.dataset.uid, event.target.dataset.vid)
+          if (target.dataset.vid && target.dataset.uid) {
+            appPlayVideo(
+              target.dataset.uid,
+              target.dataset.vid
+            );
+          } else if (target.dataset.index) {
+            tabImg(target.dataset.index);
           }
         }
       },
@@ -121,16 +130,15 @@
 
 <style lang="less" scoped>
   .comment {
+    padding: 0 40pr 0 40pr;
     .title {
-      margin: 60pr 0 0 40pr;
+      margin: 60pr 0 40pr 40pr;
       font-size: 44pr;
       color: #4B4945;
       font-weight: 700;
     }
-    .summary {
-      margin: 60pr 40pr 0 40pr;
-      font-size: 36pr;
-      color: #4B4945;
+    .content {
+      margin-top: 30pr;
     }
     .discuss {
       margin-top: 60pr;
@@ -138,13 +146,13 @@
         display: flex;
         flex-direction: row;
         .avatar {
-          margin: 6pr 0 0 40pr;
+          margin: 6pr 20pr 0 0;
           width: 68pr;
           height: 68pr;
           border-radius: 68pr;
+          background-size: cover;
         }
         .info {
-          margin: 0 40pr 0 22pr;
           display: flex;
           flex-direction: column;
           .info-up {
@@ -230,6 +238,9 @@
         background: #F3F3F3;
         margin: 32pr 40pr 24pr 40pr;
       }
+    }
+    .discuss-end-tag {
+      margin-top: 20pr;
     }
   }
 </style>
