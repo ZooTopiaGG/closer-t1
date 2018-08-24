@@ -121,7 +121,7 @@ export function makeHtmlContent(html, status) {
         const regexSrc = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
         const regexWidth = /width=[\'\"]?([^\'\"]*)[\'\"]?/i;
         const regexHeight = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
-        let size, flag, contentImgs = [];
+        let size, flag;
         pImg.forEach((x, i) => {
             let
                 srcArray = x.match(regexSrc),
@@ -133,7 +133,7 @@ export function makeHtmlContent(html, status) {
                 nH,
                 minH;
             if (srcArray) {
-                contentImgs.push(srcArray[1])
+                Store.state.CONTENT_IMGS.push(srcArray[1])
                     // _src = srcArray[1].replace(/\+/g, "%2b");
                 if (widthArray && heightArray) {
                     if (widthArray[1] < 200) {
@@ -159,7 +159,6 @@ export function makeHtmlContent(html, status) {
             // 替换不同文本
             html = html.replace(x, newM);
         });
-        Store.state.contentImgs = contentImgs;
     }
     const regexVideo = /<video.*?(?:>|\/>|<\/video>)/gi;
     let pVideo = html.match(regexVideo);
@@ -364,7 +363,7 @@ export function isApp(ua) {
 
 
 export function tabImg(i) {
-    let imgArray = Store.state.contentImgs;
+    let imgArray = Store.state.CONTENT_IMGS;
     let index = parseInt(i);
     let imgJson = {
         "imgs": imgArray,
