@@ -21,7 +21,7 @@ if (/dev.tiejin/.test(window.location.href) || /sandbox.tiejin/.test(window.loca
     const vconsole = new Vconsole()
     store.state.IS_DEV = true
 }
-store.state.UA = window.Axios = axio;
+window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;
 
