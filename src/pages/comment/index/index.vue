@@ -12,7 +12,7 @@
           <div class="info">
             <div class="info-up">
               <span class="nickname">{{item.nickname}}</span>
-              <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span>
+              <!-- <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span> -->
             </div>
             <div v-if="item.type===0">
               <!-- 文字链接 -->
@@ -132,8 +132,8 @@
     padding: 0 40pr 0 40pr;
     .title {
       margin: 60pr 0 40pr 0pr;
-      font-size: 44pr;
-      font-weight: bold;
+      font-size: 40pr;
+      font-weight: 700;
     }
     .content {
       margin-top: 30pr;
