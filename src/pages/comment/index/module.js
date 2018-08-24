@@ -61,39 +61,40 @@ export default {
                                 content.end_html = end_html;
                             }
                         }
-                    }
-                    if (content.discuss) {
-                        let index = 0;
-                        let contentImgs = [];
-                        let discuss = content.discuss.map(x => {
-                            if (x.text) {
-                                let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-                                let res = x.text.match(reg);
-                                if (res) {
-                                    x.weblink = true;
-                                    res.map(y => {
-                                        // 正则替换文本
-                                        let tag = `<a href="${y}" target="_blank">${y}</a>`;
-                                        let newtag = x.text.replace(reg, tag);
-                                        x.newText = newtag;
-                                    });
-                                } else {
-                                    x.weblink = false;
+                        if (content.discuss) {
+                            let index = 0;
+                            let contentImgs = [];
+                            let discuss = content.discuss.map(x => {
+                                if (x.text) {
+                                    let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+                                    let res = x.text.match(reg);
+                                    if (res) {
+                                        x.weblink = true;
+                                        res.map(y => {
+                                            // 正则替换文本
+                                            let tag = `<a href="${y}" target="_blank">${y}</a>`;
+                                            let newtag = x.text.replace(reg, tag);
+                                            x.newText = newtag;
+                                        });
+                                    } else {
+                                        x.weblink = false;
+                                    }
                                 }
-                            }
-                            if (x.image) {
-                                x.image['index'] = index;
-                                contentImgs.push(x.image.link)
-                                index++;
-                            }
-                            return x;
-                        });
-                        rootState.contentImgs = contentImgs;
-                        commit("setDiscuss", discuss);
+                                if (x.image) {
+                                    x.image['index'] = index;
+                                    contentImgs.push(x.image.link)
+                                    index++;
+                                }
+                                return x;
+                            });
+                            rootState.contentImgs = contentImgs;
+                            commit("setDiscuss", discuss);
+                        }
+                        commit("setContent", content);
+                        delete data.result.content;
+                        commit("setSubject", data.result);
                     }
-                    commit("setContent", content);
-                    delete data.result.content;
-                    commit("setSubject", data.result);
+
                 }
             } else {
                 commit("setSubjectState", false);
