@@ -26,9 +26,9 @@
               <!-- 图片 -->
               <img class="image" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
-            <div v-else-if="item.type===2">
+            <div v-else-if="item.type===2" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
               <!-- 视频 -->
-              <div class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
+              <div class="video" >
                 <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                   <div class="play-icon"></div>
                 </div>

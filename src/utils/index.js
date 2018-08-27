@@ -195,6 +195,7 @@ export function makeHtmlContent(html, status) {
             if (r > 1) {
                 boxClass = 'video-box-vertical'
             }
+            status = false;
             // let temp = pVideo[i].split('<p>');
             if (status) {
                 flg = `<section 
