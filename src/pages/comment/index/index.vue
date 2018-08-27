@@ -128,9 +128,10 @@
   .comment {
     padding: 0 40pr 0 40pr;
     .title {
-      margin: 60pr 0 40pr 0pr;
-      font-size: 40pr;
-      font-weight: 700;
+      margin: 50pr 0 40pr 0pr;
+      font-size: 44pr;
+      line-height: 60pr;
+      color:#4b4945;
     }
     .content {
       margin-top: 30pr;
@@ -202,6 +203,7 @@
                 height: 30pr;
                 color: #94928E;
                 font-size: 24pr;
+                margin-bottom:10pr;
                 overflow: hidden;
               }
             }
