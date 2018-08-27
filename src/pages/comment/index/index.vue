@@ -26,13 +26,9 @@
               <!-- 图片 -->
               <img class="image" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
-            <div v-else-if="item.type===2" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
+            <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
               <!-- 视频 -->
-              <div class="video" >
-                <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
-                  <div class="play-icon"></div>
-                </div>
-              </div>
+                  <div class="play-icon" ></div>
             </div>
             <div v-else-if="item.type===3">
               <!-- 帖子 -->
@@ -102,6 +98,7 @@
         return getCommonTime(time, type);
       },
       openClick(event) {
+        console.log("click")
         const target = event.target,
           classList = target.classList;
         if (this.$store.state.IS_APP) {
@@ -213,12 +210,8 @@
             width: 580pr;
             height: 326pr;
             border-radius: 3px;
-            .video-play {
-              width: 580pr;
-              height: 326pr;
               background-color: rgba(0, 0, 0, .8);
               overflow: hidden;
-              position: relative;
               .play-icon {
                 background: url("../assets/images/video-play.png");
                 background-size: cover;
@@ -226,7 +219,6 @@
                 height: 120pr;
                 margin: 103pr 230pr 103pr 230pr;
               }
-            }
           }
         }
       }
