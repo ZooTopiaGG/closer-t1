@@ -194,13 +194,14 @@
               .feed-title {
                 width: 412pr;
                 height: 44pr;
+                line-height: 44pr;
                 color: #4B4945;
                 font-size: 32pr;
                 overflow: hidden;
               }
               .feed-summary {
                 width: 412pr;
-                height: 24pr;
+                height: 30pr;
                 color: #94928E;
                 line-height: 30pr;
                 font-size: 24pr;
