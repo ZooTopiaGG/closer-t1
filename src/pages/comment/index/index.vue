@@ -28,7 +28,7 @@
             </div>
             <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
               <!-- 视频 -->
-                  <div class="play-icon"  :data-uid="item.video.src" :data-vid="item.video.vid" ></div>
+              <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
             </div>
             <div v-else-if="item.type===3">
               <!-- 帖子 -->
@@ -131,7 +131,7 @@
       margin: 50pr 0 40pr 0pr;
       font-size: 44pr;
       line-height: 60pr;
-      color:#4b4945;
+      color: #4b4945;
     }
     .content {
       margin-top: 30pr;
@@ -200,10 +200,10 @@
               }
               .feed-summary {
                 width: 412pr;
-                height: 30pr;
+                height: 24pr;
                 color: #94928E;
+                line-height: 30pr;
                 font-size: 24pr;
-                margin-bottom:10pr;
                 overflow: hidden;
               }
             }
@@ -212,15 +212,15 @@
             width: 580pr;
             height: 326pr;
             border-radius: 3px;
-              background-color: rgba(0, 0, 0, .8);
-              overflow: hidden;
-              .play-icon {
-                background: url("../assets/images/video-play.png");
-                background-size: cover;
-                width: 120pr;
-                height: 120pr;
-                margin: 103pr 230pr 103pr 230pr;
-              }
+            background-color: rgba(0, 0, 0, .8);
+            overflow: hidden;
+            .play-icon {
+              background: url("../assets/images/video-play.png");
+              background-size: cover;
+              width: 120pr;
+              height: 120pr;
+              margin: 103pr 230pr 103pr 230pr;
+            }
           }
         }
       }
