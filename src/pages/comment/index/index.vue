@@ -28,7 +28,7 @@
             </div>
             <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
               <!-- 视频 -->
-                  <div class="play-icon" ></div>
+                  <div class="play-icon"  :data-uid="item.video.src" :data-vid="item.video.vid" ></div>
             </div>
             <div v-else-if="item.type===3">
               <!-- 帖子 -->
@@ -99,9 +99,9 @@
       },
       openClick(event) {
         console.log("click")
-        const target = event.target
+        const target = event.target;
+        console.log(event.target)
         if (this.$store.state.IS_APP) {
-          console.log(target.dataset.vid,"xxxxx",target.dataset.uid)
           if (target.dataset.vid && target.dataset.uid) {
             appPlayVideo(
               target.dataset.uid,
