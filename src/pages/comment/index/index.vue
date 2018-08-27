@@ -101,7 +101,7 @@
         console.log("click")
         const target = event.target
         if (this.$store.state.IS_APP) {
-          console.log("xxxxx")
+          console.log(target.dataset.vid,"xxxxx",target.dataset.uid)
           if (target.dataset.vid && target.dataset.uid) {
             appPlayVideo(
               target.dataset.uid,
