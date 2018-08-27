@@ -99,9 +99,9 @@
       },
       openClick(event) {
         console.log("click")
-        const target = event.target,
-          classList = target.classList;
+        const target = event.target
         if (this.$store.state.IS_APP) {
+          console.log("xxxxx")
           if (target.dataset.vid && target.dataset.uid) {
             appPlayVideo(
               target.dataset.uid,
