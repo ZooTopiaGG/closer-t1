@@ -94,13 +94,11 @@
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
-      formatTime(time, type) {
-        return getCommonTime(time, type);
-      },
+      // formatTime(time, type) {
+      //   return getCommonTime(time, type);
+      // },
       openClick(event) {
-        console.log("click")
         const target = event.target;
-        console.log(event.target)
         if (this.$store.state.IS_APP) {
           if (target.dataset.vid && target.dataset.uid) {
             appPlayVideo(

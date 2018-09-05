@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <div class="delete" v-if="isDelete">
+    <div class="delete" v-if="!this.$store.state.IS_APP">
       <div class="delete-icon"></div>
       <div class="subject-notfound">此贴子已被删除</div>
       <div>
@@ -41,7 +41,7 @@
         } else {
           document.querySelector(".down-btn").style.opacity = 1;
           setTimeout(() => {
-            // this.download();
+            this.download();
           }, 1500);
         }
       },

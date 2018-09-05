@@ -327,7 +327,6 @@ export function getCommonTime(milliseconds, type) {
 export function appPlayVideo(u, v) {
     let vid = v ? v : null,
         uid = u ? u : null;
-    console.log(v, "---", u)
     let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
     if (Store.state.V_1_2) {
         if (isIos) {
