@@ -214,7 +214,7 @@
             background-color: rgba(0, 0, 0, .8);
             overflow: hidden;
             .play-icon {
-              background: url("../assets/images/video-play.png");
+              background: url("../../../assets/images/play.png");
               background-size: cover;
               width: 120pr;
               height: 120pr;
