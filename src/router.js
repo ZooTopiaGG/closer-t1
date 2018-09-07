@@ -17,6 +17,7 @@ const Article = () =>
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
   routes: [{
     path: '/article/:id',
     name: 'article',
