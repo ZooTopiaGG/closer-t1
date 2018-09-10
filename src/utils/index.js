@@ -133,7 +133,8 @@ export function makeHtmlContent(html, status) {
                 nH,
                 minH;
             if (srcArray) {
-                // _src = srcArray[1].replace(/\+/g, "%2b");
+                Store.state.CONTENT_IMGS.push(srcArray[1])
+                    // _src = srcArray[1].replace(/\+/g, "%2b");
                 if (widthArray && heightArray) {
                     if (widthArray[1] < 200) {
                         nW = widthArray[1] + 'px';
@@ -143,13 +144,14 @@ export function makeHtmlContent(html, status) {
                         nH = heightArray[1] * 100 / widthArray[1] + "%";
                     }
                     minH = nH;
-                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;" data-index="${i+1}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;"  data-index="${ Store.state.IMG_INDEX}" data-src=`);
                 } else {
                     nW = '100%';
                     nH = "auto";
                     minH = '28.27vw';
-                    newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
+                    newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2"  data-index="${ Store.state.IMG_INDEX}" data-src=`);
                 }
+                Store.state.IMG_INDEX++;
             } else {
                 newM = '';
             }
@@ -179,9 +181,9 @@ export function makeHtmlContent(html, status) {
                 posterArray = x.match(regexPoster),
                 widthArray = x.match(regexWidth),
                 heightArray = x.match(regexHeight),
-                v, u, c, r, 
+                v, u, c, r,
                 boxClass = '';
-                // // 替换插入需要的值flg
+            // // 替换插入需要的值flg
             v = vidArray ? vidArray[1] : '';
             u = urlArray ? urlArray[1] : '';
             r = parseInt(heightArray[1]) / parseInt(widthArray[1]);
@@ -193,6 +195,7 @@ export function makeHtmlContent(html, status) {
             if (r > 1) {
                 boxClass = 'video-box-vertical'
             }
+            status = false;
             // let temp = pVideo[i].split('<p>');
             if (status) {
                 flg = `<section 
@@ -233,7 +236,7 @@ export function makeHtmlContent(html, status) {
                       <img data-src='${c}'
                         class='video-play-poster'/>
                       <span
-                        class='video-play-icon'></span>
+                        class='video-play-icon' data-vid='${v}' data-uid='${u}'></span>
                     </section>
                   </section>`;
             }
@@ -321,18 +324,17 @@ export function getCommonTime(milliseconds, type) {
 }
 
 
-export function appPlayVideo(v, u) {
+export function appPlayVideo(u, v) {
     let vid = v ? v : null,
         uid = u ? u : null;
-    console.log(v, "---", u)
     let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
     if (Store.state.V_1_2) {
         if (isIos) {
             if (window.WebViewJavascriptBridge) {
-                this.setupWebViewJavascriptBridge(function(bridge) {
+                setupWebViewJavascriptBridge(function(bridge) {
                     bridge.callHandler("playVideo", {
+                        url: uid,
                         vid: vid,
-                        url: uid
                     });
                 });
             }
@@ -360,146 +362,60 @@ export function isApp(ua) {
     return ua.indexOf("closer-ios") > -1 || ua.indexOf("closer-android") > -1
 }
 
-export function isJumpOut() {
-  if (typeof window != 'undefined') {
-    let ua = navigator.userAgent.toLowerCase();
-    var iswx = false,
-      isqq = false,
-      iswb = false;
-    // 微信内置浏览器
-    iswx = /micromessenger/i.test(ua);
 
-    // QQ内置浏览器
-    isqq = /qq/i.test(ua);
-    if (/mqqbrowser/i.test(ua)) {
-      isqq = false;
+export function tabImg(i) {
+    let imgArray = Store.state.CONTENT_IMGS;
+    let index = parseInt(i);
+    let imgJson = {
+        "imgs": imgArray,
+        "index": index
     }
-    // 微博内置浏览器
-    iswb = /weibo/i.test(ua);
-    return (iswx || isqq || iswb);
-  }
-}
-
-export function getParam(paramName, str) {
-  var paramValue = "";
-  var isFound = false;
-  if (
-      str.indexOf("?") > -1 &&
-      str.indexOf("=") > -1
-  ) {
-      var arrSource = unescape(str).substring(str.indexOf("?") + 1, str.length).split('&')
-      var i = 0;
-      while (i < arrSource.length && !isFound) {
-      if (arrSource[i].indexOf("=") > -1) {
-          if (
-          arrSource[i].split("=")[0].toLowerCase() ==
-          paramName.toLowerCase()
-          ) {
-          paramValue = arrSource[i].split("=")[1];
-          isFound = true;
-          }
-      }
-      i++;
-      }
-  }
-  return paramValue;
-}
-
-export function downApp(url) {
-  if (url) {
-    if (!isJumpOut()) {
-      if (url.indexOf('?from=group') > -1) {
-        let id = getParam('groupid', url);
-        location.href = `closer://group/${id}`;
-      } else if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = url;
-      }
-      setTimeout(() => {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      }, 1500)
-      return;
+    console.log(imgJson)
+    let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
+    if (isIos) {
+        if (window.WebViewJavascriptBridge) {
+            setupWebViewJavascriptBridge(function(bridge) {
+                bridge.callHandler("tapImage", imgJson);
+            });
+        }
     } else {
-      if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) {
-        location.href = url
-      } else if (url.indexOf('?downurl=closer://') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
-      }
+        if (typeof window.bridge != "undefined") {
+            window.bridge.tapImage(JSON.stringify(imgJson));
+        }
     }
-  } else {
-    location.href = `${location.protocol}//${location.host}`;
-  }
 }
 
-export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
-  let result = await store.dispatch("common/down_adcookies");
-  if (result) {
-    let _page, url, did = route.params.id || route.params.messageid,
-      progress, _str;
-    if (route.path.indexOf("/community") > -1) {
-      _page = "community";
-      url = `closer://community/${did}`;
-    } else if (route.path.indexOf("/feed") > -1) {
-      _page = "article";
-      url = `closer://feed/${did}`;
-      if (store.state.res.int_type === 0) {
-        _page = "article";
-        progress = 1;
-      } else if (store.state.res.int_type === 1) {
-        _page = "video";
-        progress =
-          store.state.current_time / store.state.duration_time;
-        progress = progress.toFixed(2);
-      } else {
-        progress = 0.5;
-        _page = "article";
-      }
-    } else if (route.path.indexOf("/group") > -1) {
-      _page = "group";
-      url = `closer://group/${did}`;
-    } else {
-      _page = "inviter";
+/**
+ * 
+ * @param {*} type 
+ * @param {*} catogry_type 
+ * @return  path  
+ */
+export function checkType(t, ct) {
+    let path = "error"
+    switch (t) {
+        case 0:
+            path = "photo"
+            break;
+        case 1:
+            path = "video"
+            break;
+        case 2:
+            path = checkCatogryType(ct);
+            break;
     }
-    _str = typeof (str) === 'string' && str ? str : defaultStr;
-    let p1 = {
-      objectType: _page || "article", //		'统计对象类型（文章 视频 栏目 群组 H5分享的群组，栏目，帖子）,参数取值:article video community group'
-      objectId: route.params.id || "", //		'统计对象唯一标识'
-      position: _str, //		'点击位置，若action为download时必填,参数取值：top bottom'
-      progress: progress || 0, //		'浏览进度，文章为阅读的进度，图集为当前阅读的图片/总的图片数，视频为当前播放时间/总时间 小数点两位：0.95'
-      recommendId: "" //		'本次推荐的唯一标识 推荐内容ID'
-    };
-    let res = await store.dispatch("common/down_statistics", {
-      p1
-    });
-    console.log('res:', res)
-    if (res) {
-      if (redirectUrl) {
-        downApp(redirectUrl);
-        return
-      } else {
-        downApp(url);
-      }
-    }
-  }
+    return path;
 }
 
-// 合并json
-export function mergeJsonObject(jsonbject1, jsonbject2) {
-  var resultJsonObject = {};
-  for (var attr in jsonbject1) {
-    resultJsonObject[attr] = jsonbject1[attr];
-  }
-  for (var attr in jsonbject2) {
-    resultJsonObject[attr] = jsonbject2[attr];
-  }
-  return resultJsonObject;
-}
+export function checkCatogryType(ct) {
+    let path = "error"
+    if (ct >= 0 && ct <= 3) {
+        path = "article"
+    } else if (ct == 4) {
+        path = "draft"
+    } else if (ct == 5) {
+        path = "comment"
 
-// 数字缩写，如：129833 => 12.9W
-export function getSingleCount(count) {
-  count = parseInt(count) || 0;
-  return count > 1e4 ? (count / 1e4).toFixed(1) + 'W' : count;
+    }
+    return path
 }

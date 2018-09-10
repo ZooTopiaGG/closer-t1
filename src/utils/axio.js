@@ -11,9 +11,9 @@ axio.interceptors.request.use(
     config => {
         console.log("xxxx")
         let reqUrl = settings.serverDevUrl + config.url
-        if (/a-sandbox.tiejin/.test(window.location.href)) {
+        if (/t1-sandbox.tiejin/.test(window.location.href)) {
             reqUrl = settings.serverDevUrl + config.url;
-        } else if (/a.tiejin/.test(window.location.href)) {
+        } else if (/t1.tiejin/.test(window.location.href)) {
             reqUrl = settings.serverUrl + config.url;
         }
     
