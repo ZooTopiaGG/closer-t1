@@ -13,7 +13,7 @@ export default {
     mutations: {
         setContent(state, payload) {
             state.content = payload;
-            console.timeEnd();
+            // console.timeEnd();
         },
         setDiscuss(state, payload) {
             state.discuss = payload;
