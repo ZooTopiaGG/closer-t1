@@ -1,5 +1,5 @@
 import axios from 'axios'
-import baseConfig from '../config';
+const baseConfig = require('../config/index');
 const axio = axios.create({ 
   baseURL: process.env.BASE_API, // node环境的不同，对应不同的baseURL
    timeout: 15000, // 请求的超时时间

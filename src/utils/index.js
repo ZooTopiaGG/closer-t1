@@ -1,4 +1,4 @@
-import config from '../config';
+const config = require('../config/index');
 import Store from '../store'
 
 export function redirectAddChance(isApp) {
