@@ -9,7 +9,7 @@ function initENV() {
   // 根据href值设置当前开发环境（build,sandbox,dev）
   for (let key in config.href) {
     let index = HREF.indexOf(key);
-    index > -1 && index <= 8 && (ENV.env = key)
+    index > -1 && index <= 11 && (ENV.env = key)
     console.log(index)
   }
 
