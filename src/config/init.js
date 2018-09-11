@@ -10,6 +10,7 @@ function initENV() {
   for (let key in config.href) {
     let index = HREF.indexOf(key);
     index > -1 && index <= 8 && (ENV.env = key)
+    console.log(index)
   }
 
   ENV.app = /closer-(android|ios)/.test(UA), // 贴近客户端
