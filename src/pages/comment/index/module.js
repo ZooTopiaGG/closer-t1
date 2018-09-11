@@ -15,25 +15,8 @@ export default {
       state.content = payload;
       console.timeEnd();
     },
-<<<<<<< HEAD
     setDiscuss(state, payload) {
       state.discuss = payload;
-=======
-    mutations: {
-        setContent(state, payload) {
-            state.content = payload;
-            // console.timeEnd();
-        },
-        setDiscuss(state, payload) {
-            state.discuss = payload;
-        },
-        setSubject(state, payload) {
-            state.subject = payload;
-        },
-        setSubjectState(state, param) {
-            state.subjectExist = param;
-        }
->>>>>>> e2e7329d923c936f3e440f30a4cf92d76dc9b3fc
     },
     setSubject(state, payload) {
       state.subject = payload;
