@@ -1,12 +1,27 @@
 export default {
-    fileUrl: 'https://file.tiejin.cn',
-    fileDevUrl: 'https://file-sandbox.tiejin.cn',
-    serverUrl: 'https://api.tiejin.cn/command/',
-    devserverUrl: 'http://10.3.0.11:8080/command/',
-    subdevserverUrl: 'http://oms-sandbox.tiejin.cn/command',
-    serverDevUrl: 'https://api-sandbox.tiejin.cn/command/',
-    downUrl: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer',
-    wxLoginDevUrl: "https://h5-sandbox.tiejin.cn/redirect?redirectUrl=https://a-sandbox.tiejin.cn/teabar/water-9d3foyvita",
-    wxLoginUrl: "https://h5.tiejin.cn/redirect?redirectUrl=https://a.tiejin.cn/teabar/water-9ziqRidiYX",
-    file: '/file/upload/public',
+  href: {
+    build: 'https://a.tiejin.cn',
+    dev: 'https://a-sandbox.tiejin.cn',
+    local: 'http://local.tiejin.cn:8889'
+  },
+  file: {
+    build: 'https://file.tiejin.cn',
+    dev: 'https://file-sandbox.tiejin.cn',
+    local: 'https://file-sandbox.tiejin.cn'
+  },
+  server: {
+    build: 'https://api.tiejin.cn/command/',
+    dev: 'https://api-sandbox.tiejin.cn/command/',
+    local: 'https://api-sandbox.tiejin.cn/command/'
+  },
+  download: {
+    build: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer',
+    dev: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer',
+    local: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer'
+  },
+  wxAuthorization: {
+    build: 'https://h5.tiejin.cn/redirect?redirectUrl=',
+    dev: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl=',
+    local: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl='
+  }
 }

@@ -1,4 +1,4 @@
-import settings from '../config';
+import config from '../config';
 import Store from '../store'
 
 export function redirectAddChance(isApp) {
@@ -269,10 +269,7 @@ export function makeHtmlContent(html, status) {
  */
 
 export function makeFileUrl(url, type, size) {
-  let filePath = settings.fileUrl;
-  if (Store.state.IS_DEV) {
-    filePath = settings.fileDevUrl;
-  }
+  let filePath = config.file[ENV.env];
   if (url) {
     let sizes = size ? size : 500
     if (type === 'src') {
@@ -284,7 +281,6 @@ export function makeFileUrl(url, type, size) {
     return
   }
 }
-
 
 export function getCommonTime(milliseconds, type) {
   let time = new Date(milliseconds),
@@ -323,12 +319,11 @@ export function getCommonTime(milliseconds, type) {
   }
 }
 
-
 export function appPlayVideo(u, v) {
   let vid = v ? v : null,
     uid = u ? u : null;
-  let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
-  if (Store.state.V_1_2) {
+  let isIos = window.ENV.app && window.ENV.ios ? true : false;
+  if (window.ENV.v120) {
     if (isIos) {
       if (window.WebViewJavascriptBridge) {
         setupWebViewJavascriptBridge(function(bridge) {
@@ -349,20 +344,6 @@ export function appPlayVideo(u, v) {
   }
 }
 
-export function compareVersion(nvg) {
-  try {
-    let b = nvg.split('closerapp/version/')[1].split('.');
-    return b[0] > 1 || (b[0] == 1 && b[1] && b[1] > 1) || (b[0] == 1 && b[1] == 1 && b[2] && b[2] > 100)
-  } catch (e) {
-    return false
-  }
-}
-
-export function isApp(ua) {
-  return ua.indexOf("closer-ios") > -1 || ua.indexOf("closer-android") > -1
-}
-
-
 export function tabImg(i) {
   let imgArray = Store.state.CONTENT_IMGS;
   let index = parseInt(i);
@@ -371,7 +352,7 @@ export function tabImg(i) {
     "index": index
   }
   console.log(imgJson)
-  let isIos = Store.state.UA.indexOf("closer-ios") > -1 ? true : false;
+  let isIos = window.ENV.app && window.ENV.ios > -1 ? true : false;
   if (isIos) {
     if (window.WebViewJavascriptBridge) {
       setupWebViewJavascriptBridge(function(bridge) {
