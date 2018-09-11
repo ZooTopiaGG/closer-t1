@@ -1,4 +1,4 @@
-import { host, server } from './config';
+import config from './config';
 import api from './api';
 
 let UA = navigator.userAgent.toLowerCase(),
@@ -20,11 +20,11 @@ function initENV() {
   // ENV.ie = /msie\s([\d.]+)/.test(UA) || /trident\/[\d](?=[^\?]+).*rv:([0-9.].)/.test(UA) // ie浏览器
 
   // 根据href值设置当前开发环境（build,sandbox,dev）
-  for (let key in host) {
+  for (let key in config.host) {
     let index = HREF.indexOf(key);
     (index == 7 || index == 8) && (ENV.env = key)
   }
-  SERVER = server[ENV.env];
+  SERVER = config.server[ENV.env];
 };
 // 设置api值
 function initApi(obj) {

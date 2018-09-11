@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   href: {
     build: 'https://a.tiejin.cn',
     sandbox: 'https://a-sandbox.tiejin.cn',

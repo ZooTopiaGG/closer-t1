@@ -1,5 +1,5 @@
 
-module.exports = {
+export default {
   admin: {
     // 微信授权获取code
     get_auth_path: 'closer_auth.get_auth_path',
