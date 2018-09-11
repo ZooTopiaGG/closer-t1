@@ -101,6 +101,9 @@
         const target = event.target;
         if (this.$store.state.IS_APP) {
           if (target.dataset.vid && target.dataset.uid) {
+            TJ.updateTimelineShareData({
+              img: target.dataset.uid
+            })
             appPlayVideo(
               target.dataset.uid,
               target.dataset.vid

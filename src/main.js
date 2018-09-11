@@ -18,7 +18,6 @@ import {
   isApp
 } from './utils'
 
-tj.config({ "aaa": 1111 })
 
 if (/dev.tiejin/.test(window.location.href) || /sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /local.tiejin.cn/.test(window.location.href)) {
   const vconsole = new Vconsole()
@@ -27,6 +26,7 @@ if (/dev.tiejin/.test(window.location.href) || /sandbox.tiejin/.test(window.loca
 window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;
+window.TJ = tj;
 
 window.setupWebViewJavascriptBridge = function(callback) { //jsBridge
   if (window.WebViewJavascriptBridge) {
