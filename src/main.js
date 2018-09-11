@@ -17,6 +17,11 @@ import {
     isApp
 } from './utils'
 
+import initConfig from './config/init'
+
+initConfig();
+
+
 if (/dev.tiejin/.test(window.location.href) || /sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /local.tiejin.cn/.test(window.location.href)) {
     const vconsole = new Vconsole()
     store.state.IS_DEV = true
