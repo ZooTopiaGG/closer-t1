@@ -125,12 +125,11 @@
       }
     },
     mounted() {
-      let self = this;
-      self.GET_USER_AGENT({
+      this.GET_USER_AGENT({
         nvg: navigator.userAgent,
         ref: location.pathname
       });
-      self.fetch();
+      this.fetch();
     }
   };
 </script>

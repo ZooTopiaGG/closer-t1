@@ -9,12 +9,14 @@ const axio = axios.create({ 
     // http request 拦截器 
 axio.interceptors.request.use(
     config => {
+        console.log("xxxx")
         let reqUrl = settings.serverDevUrl + config.url
         if (/t1-sandbox.tiejin/.test(window.location.href)) {
             reqUrl = settings.serverDevUrl + config.url;
         } else if (/t1.tiejin/.test(window.location.href)) {
             reqUrl = settings.serverUrl + config.url;
         }
+    
         config.url = reqUrl;
         if (!Store.state.IS_APP) {
             config.headers['Closer-Agent'] = 'Closer-H5';

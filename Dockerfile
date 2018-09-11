@@ -1,5 +1,5 @@
 FROM harbor.tiejin.cn/closer/umscloud-nginx-nodejs
-MAINTAINER lichong <lichong@umscloud.com>
+LABEL MAINTAINER lichong <lichong@umscloud.com>
 
 COPY ./*.conf /etc/nginx/conf.d/
 

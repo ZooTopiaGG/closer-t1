@@ -18,7 +18,14 @@ import {
   isApp
 } from './utils'
 
+<<<<<<< HEAD
 tj.config({ "aaa": 1111 })
+=======
+import initConfig from './config/init'
+
+initConfig();
+
+>>>>>>> e2e7329d923c936f3e440f30a4cf92d76dc9b3fc
 
 if (/dev.tiejin/.test(window.location.href) || /sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /local.tiejin.cn/.test(window.location.href)) {
   const vconsole = new Vconsole()

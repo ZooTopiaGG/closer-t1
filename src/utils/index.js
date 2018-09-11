@@ -134,7 +134,11 @@ export function makeHtmlContent(html, status) {
         minH;
       if (srcArray) {
         Store.state.CONTENT_IMGS.push(srcArray[1])
+<<<<<<< HEAD
           // _src = srcArray[1].replace(/\+/g, "%2b");
+=======
+        // _src = srcArray[1].replace(/\+/g, "%2b");
+>>>>>>> e2e7329d923c936f3e440f30a4cf92d76dc9b3fc
         if (widthArray && heightArray) {
           if (widthArray[1] < 200) {
             nW = widthArray[1] + 'px';
@@ -155,6 +159,11 @@ export function makeHtmlContent(html, status) {
       } else {
         newM = '';
       }
+<<<<<<< HEAD
+=======
+
+      // 正则替换富文本内的img标签
+>>>>>>> e2e7329d923c936f3e440f30a4cf92d76dc9b3fc
       // 替换不同文本
       html = html.replace(x, newM);
     });
@@ -416,4 +425,18 @@ export function checkCatogryType(ct) {
 
   }
   return path
+<<<<<<< HEAD
+=======
+}
+
+export function mergeJsonObject(jsonbject1, jsonbject2) {
+  var resultJsonObject = {};
+  for (var attr in jsonbject1) {
+    resultJsonObject[attr] = jsonbject1[attr];
+  }
+  for (var attr in jsonbject2) {
+    resultJsonObject[attr] = jsonbject2[attr];
+  }
+  return resultJsonObject;
+>>>>>>> e2e7329d923c936f3e440f30a4cf92d76dc9b3fc
 }
