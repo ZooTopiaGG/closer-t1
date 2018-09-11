@@ -13,16 +13,17 @@ import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
 import tj from 'js-sdk'
 // import VueLazyLoad from 'vue-lazyload';
-import {
-  compareVersion,
-  isApp
-} from './utils'
 
+import VueLazyLoad from 'vue-lazyload';
 
-if (/dev.tiejin/.test(window.location.href) || /sandbox.tiejin/.test(window.location.href) || /127.0.0.1/.test(window.location.href) || /local.tiejin.cn/.test(window.location.href)) {
+import initConfig from './config/init'
+// 初始化ENV和api的值
+initConfig();
+
+if (window.ENV.env != 'build') {
   const vconsole = new Vconsole()
-  store.state.IS_DEV = true
 }
+window.wx = Wx;
 window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;
@@ -55,7 +56,6 @@ window.setupWebViewJavascriptBridge = function(callback) { //jsBridge
 
 // 运行时动态设置
 pageResize()
-init();
 window.onresize = pageResize;
 
 function pageResize() { //px2rem
@@ -63,13 +63,6 @@ function pageResize() { //px2rem
   document.documentElement.style.fontSize = (fontSize >= 32 ? 32 : fontSize) + 'px'
 }
 
-function init() {
-  let ua = navigator.userAgent || window.navigator.userAgent;
-  ua = ua.toLowerCase();
-  store.state.UA = ua;
-  store.state.V_1_2 = compareVersion(ua);
-  store.state.IS_APP = isApp(ua);
-}
 
 new Vue({
   store,

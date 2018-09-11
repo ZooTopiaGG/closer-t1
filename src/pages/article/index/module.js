@@ -1,6 +1,6 @@
 import { fetchContent } from './service';
 
-import { makeHtmlContent, compareVersion } from "../../../utils";
+import { makeHtmlContent } from "../../../utils";
 const state = {
     GET_MESSAGE_STATE: false,
     GET_IS_APP: false,
@@ -23,7 +23,7 @@ const actions = {
                 // 贴子被删除状态
                 commit("GET_EXIST_STATUS", false);
             } else {
-                if (!rootState.IS_APP) {
+                if (!window.ENV.app) {
                     if (
                         res.result.int_verify === 0 ||
                         ((res.result.int_verify === -1 &&
@@ -70,7 +70,6 @@ const mutations = {
             refer = para.ref,
             r = nvg.indexOf('closer-ios') > -1 || nvg.indexOf('closer-android') > -1,
             _result = r || refer.indexOf('/invite') > -1;
-        state.version_1_2 = compareVersion(nvg);
         state.GET_MESSAGE_STATE = !_result;
         state.GET_IS_APP = r
         state.agent = nvg;

@@ -99,7 +99,7 @@
       // },
       openClick(event) {
         const target = event.target;
-        if (this.$store.state.IS_APP) {
+        if (window.ENV.app) {
           if (target.dataset.vid && target.dataset.uid) {
             TJ.updateTimelineShareData({
               img: target.dataset.uid
@@ -114,7 +114,7 @@
         }
       },
       tabImg(e) {
-        if (this.$store.state.IS_APP) {
+        if (window.ENV.app) {
           tabImg(e.target.dataset.index);
         }
       },

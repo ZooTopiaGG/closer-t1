@@ -1,4 +1,3 @@
-
 export default {
   admin: {
     // 微信授权获取code
@@ -78,5 +77,10 @@ export default {
     // 数据统计接口
     view_count: 'closer_promotion_activity.view_count',
     get_adcookie: 'closer_statistics.get_adcookie'
+  },
+  share: {
+    wechat_config: 'closer_share.wechat_config',
+    get_adcookie: 'closer_statistics.get_adcookie',
+    common: 'closer_statistics.user_action_v2',
   }
 }

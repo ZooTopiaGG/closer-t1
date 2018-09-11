@@ -1,9 +1,9 @@
 <template>
   <section class="focus">
-    <section v-if="$store.state.is_follow" class="focus-btn-disabled"></section>
+    <section v-if="is_follow" class="focus-btn-disabled"></section>
     <section @click="tjFocus">
       <section class="focus-community" v-if="$route.path.indexOf('community') > -1">
-        <section class="yet-focus" v-if="$store.state.is_follow">
+        <section class="yet-focus" v-if="is_follow">
           <span>已关注</span>
         </section>
         <section class="no-focus" v-else>
@@ -11,7 +11,7 @@
         </section>
       </section>
       <section class="other" v-else>
-        <section class="yet-focus" v-if="$store.state.is_follow">
+        <section class="yet-focus" v-if="is_follow">
           <span>已关注</span>
         </section>
         <section class="no-focus" v-else>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
   export default {
     props: {
       tjFocus: {
@@ -36,7 +37,9 @@
     data() {
       return {};
     },
-    methods: {}
+    computed: {
+      ...mapState(['is_follow'])
+    }
   };
 </script>
 

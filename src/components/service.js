@@ -1,4 +1,4 @@
-import api from '../utils/api';
+import api from '../config/api';
 
 export default {
   get_adcookie(payload) {

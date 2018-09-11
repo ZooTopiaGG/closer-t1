@@ -74,7 +74,7 @@
         const target = event.target,
           classList = target.classList;
         // if (classList.contains('video-play-icon')) {
-        //   if (this.$store.state.IS_APP) {
+        //   if (window.ENV.app) {
         //     if (!(target.dataset.vid || target.dataset.uid)) {
         //       return;
         //     }
@@ -112,7 +112,7 @@
         //   }
   
         // }
-        if (this.$store.state.IS_APP) {
+        if (window.ENV.app) {
           if (target.dataset.vid && target.dataset.uid) {
             appPlayVideo(
               target.dataset.uid,

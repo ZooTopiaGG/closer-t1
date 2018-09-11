@@ -24,7 +24,16 @@ export default new Vuex.Store({
     IS_NEW_USER: false,
     IS_DEV: false,
     IMG_INDEX: 0,
-    CONTENT_IMGS: []
+    CONTENT_IMGS: [],
+
+    content: '',
+    exist: false,
+    res: {},
+    extension_text: '',
+    alert_stat: false,
+    is_follow: false,
+    get_login_type: false,
+    visibleLogin: ''
   },
   modules: {
     article,

@@ -37,9 +37,6 @@
     Popup,
     Toast
   } from "mint-ui";
-  import {
-    isApp
-  } from '../../utils';
   // import func from './vue-temp/vue-editor-bridge';
   Vue.component(Popup.name, Popup);
   
@@ -61,7 +58,7 @@
     },
     data() {
       return {
-        isApp: this.$store.state.IS_APP,
+        isApp: window.ENV.app,
         visible: false,
         phoneNum: '12000000021',
         code: '',

@@ -1,4 +1,4 @@
-import api from '../../utils/api'
+import api from '../../config/api'
 
 export async function getCode(payload) {
   return await Axios.post(api.admin.get_code_by_phone, payload);
