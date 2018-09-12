@@ -11,7 +11,7 @@ module.exports = {
   href: {
     build: 'https://a.tiejin.cn',
     dev: 'https://a-sandbox.tiejin.cn',
-    sandbox: 'https://a-sandbox.tiejin.cn',
+    sandbox: 'https://t1-sandbox.tiejin.cn',
     local: 'http://local.tiejin.cn:9999'
   },
   file: {
