@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <div class="delete" v-if="!this.$store.state.IS_APP">
+    <div class="delete" v-if="!window.ENV.app">
       <div class="delete-icon"></div>
       <div class="subject-notfound">此贴子已被删除</div>
       <div>
