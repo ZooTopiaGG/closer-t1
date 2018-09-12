@@ -31,7 +31,7 @@
 </template>
 <script>
   import { down_statistics } from '../utils/index'
-  import config from '../config'
+  const config = require('../config/index')
   export default {
     name: 'downloadBar',
     methods: {

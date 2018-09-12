@@ -20,7 +20,7 @@ import initConfig from './config/init'
 // 初始化ENV和api的值
 initConfig();
 
-if (window.ENV.env != 'build') {
+if (window.ENV.dev) {
   const vconsole = new Vconsole()
 }
 window.wx = Wx;
