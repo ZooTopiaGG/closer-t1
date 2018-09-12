@@ -1,4 +1,4 @@
-const {href} = require('./index');
+const { href } = require('./index');
 
 let UA = navigator.userAgent.toLowerCase() || navigator.userAgent.toLowerCase(),
   HREF = location.href,
@@ -8,8 +8,7 @@ function initENV() {
   // 根据href值设置当前开发环境（build,dev,local）
   for (let key in href) {
     let index = HREF.indexOf(href[key]);
-    index > -1 && index <= 8 && (ENV.env = key)
-    console.log(index)
+    index > -1 && index <= 11 && (ENV.env = key)
   }
   if (!ENV.env) {
     console.error('ENV.env不可为空，请确保当前测试页面的location.origin是~/src/config/index.js配置的href值之一!');
@@ -31,7 +30,7 @@ function initENV() {
   // 是否大于1.2版本
   ENV.v120 = checkVersion('1.2.0');
 
-  console.log('当前环境变量window.ENV:',ENV)
+  console.log('当前环境变量window.ENV:', ENV)
 };
 
 // 版本号比较

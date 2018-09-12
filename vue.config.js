@@ -20,12 +20,6 @@ module.exports = {
     // A, remove the plugin
     config.plugins.delete('prefetch');
     config.plugins.delete('preload');
-    config.externals({
-      'vue': 'Vue',
-      'vue-router': 'VueRouter',
-      'vuex': 'Vuex',
-      'axios': 'axios'
-    })
   }
 
 }
