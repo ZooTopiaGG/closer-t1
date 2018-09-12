@@ -1,11 +1,11 @@
 import axios from 'axios'
-const baseConfig = require('../config/index');
+import baseConfig from '../config/index';
 const axio = axios.create({ 
-  baseURL: process.env.BASE_API, // node环境的不同，对应不同的baseURL
-   timeout: 15000, // 请求的超时时间
-    withCredentials: true // 允许携带cookie
-})
-// http request 拦截器 
+    baseURL: process.env.BASE_API, // node环境的不同，对应不同的baseURL
+     timeout: 15000, // 请求的超时时间
+      withCredentials: true // 允许携带cookie
+  })
+  // http request 拦截器 
 axio.interceptors.request.use(
   config => {
     let reqUrl = baseConfig.server[ENV.env] + config.url

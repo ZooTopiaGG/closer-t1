@@ -1,8 +1,9 @@
-const { href } = require('./index');
+import config from './index';
 
 let UA = navigator.userAgent.toLowerCase() || navigator.userAgent.toLowerCase(),
   HREF = location.href,
-  ENV = window.ENV = {};
+  ENV = window.ENV = {},
+  href = config.href;
 
 function initENV() {
   // 根据href值设置当前开发环境（build,dev,local）

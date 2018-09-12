@@ -7,7 +7,7 @@
 // 为方便vue.config.js中引入，这里使用nodejs识别的CommonJS规范
 // 在项目中引用该模块时，请使用require()，而非es6的import from
 
-module.exports = {
+export default {
   href: {
     build: 'https://a.tiejin.cn',
     dev: 'https://a-sandbox.tiejin.cn',
