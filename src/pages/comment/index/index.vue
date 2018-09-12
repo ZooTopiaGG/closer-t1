@@ -99,18 +99,17 @@
       // },
       openClick(event) {
         const target = event.target;
-        if (window.ENV.app) {
-          if (target.dataset.vid && target.dataset.uid) {
-            TJ.updateTimelineShareData({
-              img: target.dataset.uid
-            })
-            appPlayVideo(
-              target.dataset.uid,
-              target.dataset.vid
-            );
-          } else if (target.dataset.index) {
-            tabImg(target.dataset.index);
-          }
+        if (target.dataset.vid && target.dataset.uid) {
+          TJ.updateTimelineShareData({
+            "type": "inviteNewGuyActionWxTimeLine",
+            "img": target.dataset.uid
+          })
+          // appPlayVideo(
+          //   target.dataset.uid,
+          //   target.dataset.vid
+          // );
+        } else if (target.dataset.index) {
+          tabImg(target.dataset.index);
         }
       },
       tabImg(e) {

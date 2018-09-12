@@ -14,6 +14,7 @@
     "mint-ui": "^2.2.13",
     "mobile-detect": "^1.4.2",
     "promise-polyfill": "^8.1.0",
+    "tj-jssdk": "^1.0.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",

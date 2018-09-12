@@ -11,7 +11,7 @@ import Cookies from 'js-cookie';
 import Vconsole from 'vconsole';
 import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
-import tj from 'js-sdk'
+import tj from 'tj-jssdk'
 // import VueLazyLoad from 'vue-lazyload';
 
 import VueLazyLoad from 'vue-lazyload';
