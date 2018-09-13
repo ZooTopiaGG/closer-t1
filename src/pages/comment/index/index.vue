@@ -100,7 +100,7 @@
       openClick(event) {
         const target = event.target;
         if (target.dataset.vid && target.dataset.uid) {
-          TJ.updateTimelineShareData({img:target.dataset.uid})
+          TJ.playVideo({url:target.dataset.uid})
           // appPlayVideo(
           //   target.dataset.uid,
           //   target.dataset.vid
