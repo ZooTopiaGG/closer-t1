@@ -352,7 +352,7 @@ export function tabImg(i) {
     "index": index
   }
   console.log(imgJson)
-  let isIos = window.ENV.app && window.ENV.ios > -1 ? true : false;
+  let isIos = window.ENV.app && window.ENV.ios ? true : false;
   if (isIos) {
     if (window.WebViewJavascriptBridge) {
       setupWebViewJavascriptBridge(function(bridge) {
