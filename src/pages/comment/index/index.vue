@@ -100,10 +100,7 @@
       openClick(event) {
         const target = event.target;
         if (target.dataset.vid && target.dataset.uid) {
-          TJ.updateTimelineShareData({
-            "type": "inviteNewGuyActionWxTimeLine",
-            "img": target.dataset.uid
-          })
+          TJ.jumpLogin()
           // appPlayVideo(
           //   target.dataset.uid,
           //   target.dataset.vid

@@ -351,7 +351,6 @@ export function tabImg(i) {
     "imgs": imgArray,
     "index": index
   }
-  console.log("ENV", window.ENV)
   let isIos = window.ENV.app && window.ENV.ios ? true : false;
   if (isIos) {
     if (window.WebViewJavascriptBridge) {
