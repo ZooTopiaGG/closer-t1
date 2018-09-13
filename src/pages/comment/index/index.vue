@@ -99,12 +99,13 @@
       // },
       openClick(event) {
         const target = event.target;
+        console.log("openClick", target.dataset);
         if (target.dataset.vid && target.dataset.uid) {
-          TJ.playVideo({url:target.dataset.uid})
-          // appPlayVideo(
-          //   target.dataset.uid,
-          //   target.dataset.vid
-          // );
+          // TJ.playVideo({url:target.dataset.uid})
+          appPlayVideo(
+            target.dataset.uid,
+            target.dataset.vid
+          );
         } else if (target.dataset.index) {
           tabImg(target.dataset.index);
         }
