@@ -56,6 +56,7 @@ const actions = {
                 commit("SET_RES", res.result);
             }
         } catch (err) {
+            console.log('content.catch')
             commit("GET_EXIST_STATUS", false);
             throw err;
         }

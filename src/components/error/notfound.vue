@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <div class="delete" v-if="!window.ENV.app">
+    <div class="delete" v-if="isApp">
       <div class="delete-icon"></div>
       <div class="subject-notfound">此贴子已被删除</div>
       <div>
@@ -31,14 +31,20 @@
     props: {
       isDelete: Boolean
     },
+    computed: {
+      isApp() {
+        return ENV.app;
+      }
+    },
     mounted() {
       this.initLoad();
     },
     methods: {
       initLoad() {
-        if (this.isWeiXin()) {
-          document.querySelector(".todown-top-right").style.display = "block";
-        } else {
+        if (ENV.wx) {
+          let toDown = document.querySelector(".todown-top-right");
+          toDown && (toDown.style.display = "block");
+        } else if (!ENV.wx && !ENV.app) {
           document.querySelector(".down-btn").style.opacity = 1;
           setTimeout(() => {
             this.download();
@@ -105,10 +111,10 @@
       background-size: cover;
       width: 100pr;
       height: 100pr;
-      margin: 500pr 100pr 0 310pr;
+      margin: 500pr auto 0;
     }
     .subject-notfound {
-      margin: 100pr 100pr 0 250pr;
+      margin: 100pr 0 0;
       font-size: 32pr;
       color: #555555;
     }

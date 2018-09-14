@@ -81,6 +81,7 @@
       })
     },
     mounted() {
+      console.log('params.sid:', this.$route.params.sid)
       if (this.$route.params.sid) {
         this.getSubject({
           "subjectid": this.$route.params.sid
