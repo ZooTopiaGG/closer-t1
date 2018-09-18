@@ -118,7 +118,6 @@
   export default {
     methods: {
       checkJsApi() {
-        const UA = window.navigator.userAgent || navigator.userAgent
         console.log("ua",UA);
         tj.checkJsApi();
       },
