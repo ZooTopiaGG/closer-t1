@@ -118,7 +118,14 @@
   export default {
     methods: {
       checkJsApi() {
-        tj.checkJsApi();
+        tj.checkJsApi({
+          success: function() {
+            alert("true");
+          },
+          fail:function(){
+            alert("false");
+          }
+        });
       },
       onMenuShareAppMessage() {
         tj.onMenuShareAppMessage({
