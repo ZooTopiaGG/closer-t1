@@ -11,7 +11,6 @@ import Cookies from 'js-cookie';
 import Vconsole from 'vconsole';
 import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
-import tj from 'tj-jssdk'
 import VueLazyLoad from 'vue-lazyload';
 
 import initConfig from './config/init'
@@ -25,7 +24,6 @@ window.wx = Wx;
 window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;
-window.TJ = tj;
 
 window.setupWebViewJavascriptBridge = function(callback) { //jsBridge
   if (window.WebViewJavascriptBridge) {

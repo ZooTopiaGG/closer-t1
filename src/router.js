@@ -13,6 +13,11 @@ const Comment = () =>
 const Article = () =>
   import ('@/pages/article/index/index')
 
+// jssdk DEMO
+const Jssdk = () =>
+  import ('@/pages/jssdk/index')
+
+
 Vue.use(Router)
 
 const router = new Router({
@@ -25,6 +30,10 @@ const router = new Router({
     path: '/comment/:sid',
     name: 'comment',
     component: Comment,
+  }, {
+    path: "/jssdk",
+    name: 'jssdk',
+    component: Jssdk,
   }]
 })
 router.beforeEach(({
