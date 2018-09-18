@@ -118,7 +118,6 @@
   export default {
     methods: {
       checkJsApi() {
-        console.log("ua",UA);
         tj.checkJsApi();
       },
       onMenuShareAppMessage() {
