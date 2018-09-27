@@ -11,9 +11,16 @@ export default {
   namespaced: true,
 
   state: {
+    visible: false,
     smsCode: ''
   },
   mutations: {
+    show(state) {
+      state.visible = true
+    },
+    hide(state) {
+      state.visible = false
+    },
     getSmsCode(state, payload) {
       state.smsCode = payload
     }
@@ -45,7 +52,8 @@ export default {
     // 登录
     async login({
       rootState,
-      state
+      state,
+      commit
     }, payload) {
       console.log('login, payload ', payload)
       let phoneReg = /^(0|86|17951)?(1[23456789][0-9])[0-9]{8}$/
@@ -88,8 +96,10 @@ export default {
               return data.result.user;
             }
           }
-          // location.href = window.location.href;
         }
+        commit({
+          type: 'hide'
+        })
       } else {
         Toast('网络开小差啦，请稍后再试')
         Indicator.close()
