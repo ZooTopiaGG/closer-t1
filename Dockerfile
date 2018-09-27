@@ -1,10 +1,11 @@
 FROM harbor.tiejin.cn/closer/umscloud-nginx-nodejs
-MAINTAINER lichong <lichong@umscloud.com>
+LABEL MAINTAINER lichong <lichong@umscloud.com>
 
 COPY ./*.conf /etc/nginx/conf.d/
 
-RUN mkdir /apps/closer-h5-new
-COPY ./dist/ /apps/closer-h5-new
-WORKDIR /apps/closer-h5-new
+RUN mkdir /apps/closer-t1
+COPY ./dist/ /apps/closer-t1
+WORKDIR /apps/closer-t1
 
 EXPOSE 3604
+

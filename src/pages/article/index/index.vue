@@ -1,5 +1,5 @@
 <template>
-  <section class="article">
+  <section class="article" v-if="exist">
     <!-- 帖子内容 -->
     <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
     <section class="article-wrap">
@@ -8,29 +8,39 @@
         <section class="article-title"> {{ res.title }} </section>
         <!-- 暂时隐藏 -->
         <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                  <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                </section> -->
+                      <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                    </section> -->
         <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </section>
       </section>
     </section>
   </section>
+  <Notfound v-else :isDelete="res.bool_delete"></Notfound>
 </template>
 
 <script>
   import Cookie from "js-cookie";
-  import { createNamespacedHelpers } from 'vuex'
+  import {
+    createNamespacedHelpers
+  } from 'vuex'
+  
   const {
     mapState,
     mapActions,
     mapMutations
   } = createNamespacedHelpers('article');
   import {
-    appPlayVideo
+    appPlayVideo,
+    tabImg
   } from "../../../utils";
+  import Notfound from '../../../components/error/notfound'
+  
   
   export default {
     name: "Feed",
+    components: {
+      Notfound
+    },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
@@ -45,7 +55,8 @@
         'content',
         'GET_MESSAGE_STATE',
         'version_1_2',
-        'agent'
+        'agent',
+        'exist'
       ])
     },
     methods: {
@@ -54,12 +65,16 @@
       async fetch() {
         await this.fetch_content(this.$route.params)
       },
+      tabImg(e) {
+        console.log(e.target.dataset.index)
+        tabImg(e.target.dataset.index);
+      },
       // 在app端 长图文贴子 打开原生视频
       openClick(event) {
         const target = event.target,
           classList = target.classList;
         // if (classList.contains('video-play-icon')) {
-        //   if (this.$store.state.IS_APP) {
+        //   if (window.ENV.app) {
         //     if (!(target.dataset.vid || target.dataset.uid)) {
         //       return;
         //     }
@@ -95,26 +110,26 @@
         //       playIcon.style.display = 'none';
         //     }, 2e3)
         //   }
-          
+  
         // }
-        if (this.$store.state.IS_APP) {
-          if (!(target.dataset.vid || target.dataset.uid)) {
-            return;
+        if (window.ENV.app) {
+          if (target.dataset.vid && target.dataset.uid) {
+            appPlayVideo(
+              target.dataset.uid,
+              target.dataset.vid
+            );
+          } else if (target.dataset.index) {
+            tabImg(target.dataset.index);
           }
-          appPlayVideo(
-            target.dataset.uid,
-            target.dataset.vid
-          );
         }
       }
     },
     mounted() {
-      let self = this;
-      self.GET_USER_AGENT({
+      this.GET_USER_AGENT({
         nvg: navigator.userAgent,
         ref: location.pathname
       });
-      self.fetch();
+      this.fetch();
     }
   };
 </script>
