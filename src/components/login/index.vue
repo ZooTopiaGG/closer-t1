@@ -1,10 +1,10 @@
 <template>
-  <div class="pop-bg box box-center-center" v-if="showLogin">
-    <div class="appuse-pop">
-      <!-- <mt-popup v-model="visible" class="appuse-pop" :closeOnClickModal="closeOnClickModal"> -->
+<mt-popup v-model="visible2" class="appuse-pop" :closeOnClickModal="closeOnClickModal">
+    <div class="box box-tb box-center-center">
       <div class="close-icon" @click="close"></div>
       <div class="pop-header">
-        <div class="text">客官，根据国家法律，发表文字评论必须填写手机号，所以拜托啦~</div>
+        <div class="text" v-if="isFrom == 'messagelist'">登录后继续操作</div>
+        <div class="text" v-else>客官，根据国家法律，发表文字评论必须填写手机号，所以拜托啦~</div>
       </div>
       <div class="pop-content">
         <div class="phone-num">
@@ -20,24 +20,24 @@
       <!-- 验证码容器元素 -->
   
       <div class="pop-footer">
-        <div class="confirm-btn" @click="login({phone: phoneNum, token: code})">登录/注册</div>
+        <div class="confirm-btn" @click="userLogin({phone: phoneNum, token: code})">登录/注册</div>
       </div>
     </div>
-  </div>
-  <!-- </mt-popup> -->
+  </mt-popup>
+  
 </template>
 
 <script>
   import Vue from "vue";
   import {
     mapState,
-    mapActions
+    mapActions,
+    mapMutations
   } from 'vuex';
   import {
     Popup,
     Toast
   } from "mint-ui";
-  // import func from './vue-temp/vue-editor-bridge';
   Vue.component(Popup.name, Popup);
   
   export default {
@@ -51,18 +51,18 @@
         type: Boolean,
         default: false
       },
-      showLogin: {
-        type: Boolean,
-        default: false
+      isFrom: {
+        type: String,
+        default: ''
       }
     },
     data() {
       return {
         isApp: window.ENV.app,
-        visible: false,
-        phoneNum: '12000000021',
+        phoneNum: '12000000012',
         code: '',
-        captchaIns: ''
+        captchaIns: '',
+        visible2: false
       };
     },
     beforeMount() {
@@ -76,29 +76,58 @@
       }
     },
     mounted() {
-
+      
     },
     computed: {
       ...mapState("login", {
+        visible: state => state.visible,
         smsCode: state => state.smsCode
       })
     },
+    watch: {
+      visible(val) {
+        this.visible2 = val
+      }
+    },
     methods: {
+      ...mapMutations('login', [
+        'show',
+        'hide'
+      ]),
       ...mapActions("login", [
         "getCode",
         "login"
       ]),
       open() {
-        this.showLogin = true;
+        this.show()
       },
       close() {
-        this.showLogin = false;
+        this.hide()
       },
       userLogin() {
+        let phoneReg = /^(0|86|17951)?(1[23456789][0-9])[0-9]{8}$/
+        let codeReg = /^\d{6}$/
+        if(!this.phoneNum || !phoneReg.test(this.phoneNum)) {
+          Toast({
+            message: '请输入正确的手机号',
+            className: 'toast'
+          })
+          return
+        }
+        console.log(this.code)
+        console.log(codeReg.test(this.code))
+        if(!this.code || !codeReg.test(this.code)) {
+          Toast({
+            message: '请输入正确的验证码',
+            className: 'toast'
+          })
+          return
+        }
         let params = {
           phone: this.phoneNum,
           token: this.code
         }
+        this.login(params)
       },
       getSmsCode(phone) {
         console.log('getcode', phone)
@@ -145,96 +174,88 @@
 </script>
 
 <style lang="less" scoped>
-  .pop-bg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background: rgba(0, 0, 0, .3);
-    .appuse-pop {
-      position: relative;
-      margin: auto;
-      width: 588pr;
-      border-radius: 10pr;
-      background: #fff;
-      text-align: center;
-      padding: 40pr;
-      color: #4b4945;
-      .close-icon {
+  .appuse-pop {
+    width: 654pr;
+    border-radius: 10pr;
+    background: #fff;
+    text-align: center;
+    padding: 40pr;
+    color: #4b4945;
+    .close-icon {
+      position: absolute;
+      right: 20pr;
+      top: 20pr;
+      width: 28pr;
+      height: 28pr;
+      &::before,
+      &::after {
+        content: "";
         position: absolute;
-        right: 20pr;
-        top: 20pr;
-        width: 28pr;
+        top: 50%;
+        left: 50%;
+        width: 2px;
         height: 28pr;
-        &::before,
-        &::after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 2px;
-          height: 28pr;
-          background-color: #9b9b9b;
-        }
-        &::before {
-          transform: translate(-50%, -50%) rotate(-45deg);
-        }
-        &::after {
-          transform: translate(-50%, -50%) rotate(45deg);
-        }
+        background-color: #9b9b9b;
       }
-      .pop-header {
-        margin-top: 20pr;
-        font-size: 30pr;
-        line-height: 40pr;
+      &::before {
+        transform: translate(-50%, -50%) rotate(-45deg);
       }
-      .pop-content {
-        margin-top: 40pr;
-        >div {
-          border-bottom: 1px solid #F3F3F3;
-          height: 80pr;
-          line-height: 90pr;
-          >input {
-            outline: none;
-            font-size: 32pr;
-          }
-          .phone {
-            width: 100%;
-          }
-        }
-        .sms-code {
-          position: relative;
-          margin-top: 20pr;
-          >span {
-            position: absolute;
-            right: 0;
-            display: inline-block;
-            font-size: 24pr;
-            height: 52pr;
-            line-height: 52pr;
-            padding: 0 16pr;
-            margin-top: 15pr;
-            border: 1px solid #D8D8D8;
-            border-radius: 10pr;
-          }
-        }
-        .code {
-          width: 60%;
-          margin-left: -204pr;
-        }
+      &::after {
+        transform: translate(-50%, -50%) rotate(45deg);
       }
-      .pop-footer {
-        margin-top: 60pr;
-        font-size: 28pr;
-        line-height: 40pr;
-        color: #4b4945;
-        .confirm-btn {
+    }
+    .pop-header {
+      margin-top: 20pr;
+      font-size: 36pr;
+      line-height: 40pr;
+    }
+    .pop-content {
+      margin-top: 40pr;
+      width: 100%;
+      >div {
+        border-bottom: 1px solid #F3F3F3;
+        height: 80pr;
+        line-height: 90pr;
+        >input {
+          outline: none;
+          font-size: 32pr;
+        }
+        .phone {
           width: 100%;
-          background: #fddb00;
-          border-radius: 10pr;
-          padding: 18pr 0;
         }
+      }
+      .sms-code {
+        position: relative;
+        margin-top: 20pr;
+        >span {
+          position: absolute;
+          right: 0;
+          display: inline-block;
+          font-size: 24pr;
+          height: 52pr;
+          line-height: 52pr;
+          padding: 0 16pr;
+          margin-top: 15pr;
+          border: 1px solid #D8D8D8;
+          border-radius: 10pr;
+        }
+      }
+      .code {
+        width: 60%;
+        margin-left: -204pr;
+      }
+    }
+    .pop-footer {
+      margin-top: 60pr;
+      font-size: 28pr;
+      line-height: 40pr;
+      color: #4b4945;
+      width: 100%;
+      .confirm-btn {
+        width: 100%;
+        background: #fddb00;
+        border-radius: 10pr;
+        padding: 18pr 0;
       }
     }
   }

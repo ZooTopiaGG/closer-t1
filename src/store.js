@@ -10,6 +10,7 @@ import comment from './pages/comment/index/module'
 import draft from './pages/draft/index/module'
 import message from './pages/message/index/module'
 import login from './components/login/module'
+import messageboard from './components/messageboard/module'
 
 import {
   fetchContent
@@ -79,6 +80,7 @@ export default new Vuex.Store({
     comment,
     draft,
     message,
-    login
+    login,
+    messageboard
   }
 })
