@@ -8,8 +8,8 @@
       </div>
   
       <div class="pop-footer box box-lr">
-        <div class="wait">再等等</div>
-        <div class="confirm-btn">好的</div>
+        <div class="wait-btn" @click="goBack">再等等</div>
+        <div class="confirm-btn" @click="downApp">好的</div>
       </div>
     </div>
   </mt-popup>
@@ -27,6 +27,9 @@
     Popup,
     Toast
   } from "mint-ui";
+  import {
+    downloadApp
+  } from '../utils'
   Vue.component(Popup.name, Popup);
   
   export default {
@@ -51,7 +54,7 @@
 
     },
     mounted() {
-      
+      console.log('params---', this.$route.params)
     },
     watch: {
       visible(val) {
@@ -63,29 +66,28 @@
         visible: state => state.visible
       }),
       
-      ...mapState("login", {
-        visible: state => state.visible,
-        smsCode: state => state.smsCode
+      ...mapState("message", {
+        visible: state => state.visible
       })
-    },
-    watch: {
-      visible(val) {
-        this.visible2 = val
-      }
     },
     methods: {
       ...mapMutations("message", [
         'show', 'hide'
-      ]),
-      ...mapActions("login", [
-        "getCode",
-        "login"
       ]),
       open() {
         this.show()
       },
       close() {
         this.hide()
+      },
+      downApp() {
+        downloadApp()
+      },
+      goBack() {
+        let subjectid = this.$route.params.sid
+        this.$router.push({
+          path: `/draft/${subjectid}`
+        })
       }
     }
   };
@@ -125,19 +127,24 @@
     .pop-header {
       margin-top: 20pr;
       font-size: 36pr;
-      line-height: 40pr;
+      line-height: 50pr;
     }
     .pop-footer {
       margin-top: 60pr;
-      font-size: 28pr;
+      font-size: 32pr;
       line-height: 40pr;
       color: #4b4945;
       width: 100%;
+      >div {
+        width:  50%;
+        padding: 18pr 0;
+      }
+      .wait-btn {
+        color: #94928E;
+      }
       .confirm-btn {
-        width: 100%;
         background: #fddb00;
         border-radius: 10pr;
-        padding: 18pr 0;
       }
     }
   }
