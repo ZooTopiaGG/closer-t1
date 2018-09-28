@@ -50,7 +50,9 @@
         addReply: state => state.replyData
       })
     },
-    mounted() {},
+    mounted() {
+      console.log(this.$route.params)
+    },
     methods: {
       ...mapActions("message", [
         "addReplyData",

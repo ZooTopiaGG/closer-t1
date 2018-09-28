@@ -9,6 +9,12 @@ export default {
     replyData: {},
   },
   mutations: {
+    show(state) {
+      state.visible = true
+    },
+    hide(state) {
+      state.hide = false
+    },
     updateData(state, payload) {
       console.log(1,payload)
       state.replyData = payload
@@ -31,6 +37,9 @@ export default {
         commit({
           type: 'updateData',
           data
+        })
+        commit({
+          type: 'show'
         })
       } else {
         data.result && Toast(data.result)

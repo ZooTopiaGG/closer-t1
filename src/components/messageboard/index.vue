@@ -34,7 +34,7 @@
             <span class="replay-content">{{ commentItem.content }}</span>
           </div>
           <!-- 更多回复补丁 -->
-          <div class="replay-total" v-if="item.replyNumber > 3">
+          <div class="replay-total" v-if="item.replyNumber > 3" @click="getMoreComment">
             <span>共{{ item.replyNumber }}条回复</span>
             <span class="right-icon"></span>
           </div>
@@ -78,7 +78,6 @@
     beforeMount() {
       let code = this.$route.query.code
   
-      console.log('code--', code)
       if (this.$route.params.sid) {
         this.getCommentsList({
           "subjectid": this.$route.params.sid,
@@ -131,7 +130,7 @@
           if (isWeiXin()) {
   
             console.log(this.$route.query.code)
-            let path = '/draft/' + this.$route.params.sid
+            let path = '/draft/' + this.$route.params.subjectid
             let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
@@ -148,7 +147,7 @@
             //       }/message/${id}`;
             // } else {
             //   url = `${location.protocol}//${location.hostname}/message/${
-            //         this.$route.params.sid
+            //         this.$route.params.subjectid
             //       }/${id}`;
             // }
           } else {
