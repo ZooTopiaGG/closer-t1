@@ -51,6 +51,7 @@
 </template>
 
 <script>
+  import baseUrl from '../../config/index'
   import LoginPop from '../login/index.vue'
   import {
     mapState,
@@ -75,6 +76,9 @@
       }
     },
     beforeMount() {
+      let code = this.$route.query.code
+  
+      console.log('code--', code)
       if (this.$route.params.sid) {
         this.getCommentsList({
           "subjectid": this.$route.params.sid,
@@ -84,17 +88,31 @@
       }
     },
     mounted() {
-
+      console.log(1, window.EVN)
+      console.log('code---', this.$route.query.code)
+      if (this.$route.query.code) {
+        let params = {
+          plateform: 2,
+          code: this.$route.query.code,
+          protocol: "WEB_SOCKET",
+          adid: Cookies.get('h5Adid') || 'closer-share'
+        }
+        console.log('params---', params)
+        this.getUserInfoWithWx(params)
+      }
     },
     computed: {
       ...mapState("messageboard", {
-        messagelist: state => state.messagelist
+        messagelist: state => state.messagelist,
+        wxurl: state => state.wxurl
       })
     },
     methods: {
       ...mapActions("messageboard", [
         "getCommentsList",
-        "checkIsLike"
+        "checkIsLike",
+        "getWxAuth",
+        "getUserInfoWithWx"
       ]),
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
@@ -104,21 +122,35 @@
       },
       writeMessage(type, id) {
         // 渲染页面前 先判断cookies user是否存在
+        console.log('Cookies--', Cookies.get("GroukAuth"))
         if (Cookies.get("user")) {
           this.gotoMessage(type, id);
         } else {
-          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
+          // this.$refs.login.open()
+          // 前期 仅微信后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (isWeiXin()) {
-            let url;
-            if (type === "comment") {
-              url = `${location.protocol}//${
-                    location.hostname
-                  }/message/${id}`;
-            } else {
-              url = `${location.protocol}//${location.hostname}/message/${
-                    this.$route.params.sid
-                  }/${id}`;
+  
+            console.log(this.$route.query.code)
+            let path = '/draft/' + this.$route.params.sid
+            let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
+            let para = {
+              path: _path
             }
+            console.log('para---', para)
+  
+            if (!this.$route.query.code) {
+              this.getWxAuth(para)
+            }
+            // let url;
+            // if (type === "comment") {
+            //   url = `${location.protocol}//${
+            //         location.hostname
+            //       }/message/${id}`;
+            // } else {
+            //   url = `${location.protocol}//${location.hostname}/message/${
+            //         this.$route.params.sid
+            //       }/${id}`;
+            // }
           } else {
             this.gotoMessage(type, id)
           }
@@ -145,7 +177,7 @@
         downloadApp()
       },
       support(e, subjectid, commentid, isLike) {
-        if(this.isSupport) return
+        if (this.isSupport) return
         let params = {
           subjectid: subjectid,
           commentid: commentid,

@@ -5,6 +5,7 @@ export default {
   namespaced: true,
 
   state: {
+    visible: false,
     replyData: {},
   },
   mutations: {
@@ -37,7 +38,7 @@ export default {
     },
 
     async getAdCookie({ rootState }, payload) {
-      let { data } = await getAdcookie(payload).catch(err => {
+      let { data } =    await getAdcookie(payload).catch(err => {
         Toast('网络开小差啦~')
       })
       if(typeof(data.code) != undefined && data.code == 0) {
