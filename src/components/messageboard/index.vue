@@ -130,7 +130,7 @@
           if (isWeiXin()) {
   
             console.log(this.$route.query.code)
-            let path = '/draft/' + this.$route.params.subjectid
+            let path = '/draft/' + this.$route.params.sid
             let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
