@@ -12,5 +12,8 @@ export default {
   },
   incr_view(payload) {
     return Axios.post(api.command.incr_view, payload).then(res => res.data);
+  },
+  get_hot_subjects(payload) {
+    return Axios.post(api.command.hot_subjects, payload).then(res => res.data);
   }
 }

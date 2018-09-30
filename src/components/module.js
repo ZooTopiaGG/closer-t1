@@ -5,7 +5,8 @@ import Cookie from 'js-cookie';
 const namespaced = true;
 const state = {
   h5Cookies: '',
-  incr_view: 0
+  incr_view: 0,
+  hotSubjects: []
 }
 
 const actions = {
@@ -136,6 +137,22 @@ const actions = {
       console.log(e);
     }
   },
+  async getHotSubjects({ commit }, params) {
+    try {
+      let data = await service.get_hot_subjects(params)
+      if (data.code === 0) {
+        data.result.data.map(x => {
+          if (x.content) {
+            x.content = JSON.parse(x.content);
+          }
+          return x;
+        })
+        commit("SET_HOT_SUBJECTS", data.result);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
 
 const mutations = {
@@ -147,7 +164,11 @@ const mutations = {
   SET_INCR_VIEW(state, para) {
     state.incr_view = para
   },
+  SET_HOT_SUBJECTS(state, para) {
+    state.hotSubjects = para
+  }
 }
+
 
 export default {
   namespaced,
