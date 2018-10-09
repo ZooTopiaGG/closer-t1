@@ -23,8 +23,9 @@ export function downloadApp() {
 
 
 export async function downApp(url) {
+  return;
   if (url) {
-    if (!this.isJumpOut()) {
+    if (!isJumpOut()) {
       if (url.indexOf('?from=group') > -1) {
         let id = await this.getParam('groupid', url);
         location.href = `closer://jump/to/group`;
@@ -123,7 +124,7 @@ export function px2px(v) {
  * yyyy-dd-mm
  * 
  */
-export function dateFormat(time, flag) {
+export function dateFormat(time) {
   let d = new Date(time);
   let year = d.getFullYear();
   let month = d.getMonth() + 1;
@@ -137,21 +138,7 @@ export function dateFormat(time, flag) {
   if (day < 10) {
     day = "0" + day;
   }
-  if(hours < 10) {
-    hours = "0" + hours
-  }
-  if(minutes < 10) {
-    minutes = "0" + minutes
-  }
-  if(second < 10) {
-    second = "0" + second
-  }
-  if(flag == 'date') {
-    return year + "-" + month + "-" + day;
-  }
-  if(flag == 'time') {
-    return year + "-" + month + "-" + day + " " + hours + ":" + minutes
-  }
+  return year + "-" + month + "-" + day;
 }
 
 
@@ -454,13 +441,101 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
   }
   return resultJsonObject;
 }
-
-/*判断是否是微信 微博 QQ*/
-export function isWeiXin() {
-  if (typeof window != 'undefined') {
-    var wx = navigator.userAgent.toLowerCase();
-    return wx.indexOf('micromessenger') != -1
-  } else {
-    return false
+// 统计方法
+export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
+  let result = await store.dispatch("down_adcookies");
+  if (result) {
+    let _page, url, did = route.params.sid || route.params.messageid,
+      progress, _str, s = JSON.parse;
+    if (route.path.indexOf("/community") > -1) {
+      _page = "community";
+      url = `closer://community/${did}`;
+    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1) {
+      _page = "article";
+      url = `closer://feed/${did}`;
+      if (store.state.SUBJECT.int_type === 1) {
+        _page = "video";
+      } else {
+        _page = "article";
+      }
+    } else if (route.path.indexOf("/group") > -1) {
+      _page = "group";
+      url = `closer://group/${did}`;
+    } else {
+      _page = "inviter";
+      url = `closer://jump/to/mine`;
+      did = s(Cookies.get("inviter")).id
+    }
+    _str = typeof(str) === 'string' && str ? str : defaultStr;
+    let p1 = {
+      action: "click", //		'行为类型(曝光 浏览结束点击返回 负反馈 点击下载)，参数取值:exposure back feedback download'        
+      objectType: _page || "article", //		'统计对象类型（文章 视频 栏目 群组 H5分享的群组，栏目，帖子）,参数取值:article video community group'
+      objectId: did || null, //		'统计对象唯一标识'
+      position: _str, //		'点击位置，若action为download时必填,参数取值：top bottom'
+      progress: 1, //		'浏览进度，文章为阅读的进度，图集为当前阅读的图片/总的图片数，视频为当前播放时间/总时间 小数点两位：0.95'
+      recommendId: null //		'本次推荐的唯一标识 推荐内容ID'
+    };
+    let res = await store.dispatch("down_statistics", {
+      p1
+    });
+    if (res) {
+      if (redirectUrl) {
+        if (redirectUrl === 'wx') {
+          return true
+        } else {
+          this.downApp(redirectUrl);
+          return
+        }
+      } else {
+        this.downApp(url);
+      }
+    }
   }
+}
+
+
+function isJumpOut() {
+  if (typeof window != 'undefined') {
+    let ua = navigator.userAgent.toLowerCase();
+    var iswx = false,
+      isqq = false,
+      iswb = false;
+    // 微信内置浏览器
+    iswx = /micromessenger/i.test(ua);
+    // QQ内置浏览器
+    isqq = /qq/i.test(ua);
+    if (/mqqbrowser/i.test(ua)) {
+      isqq = false;
+    }
+
+    // 微博内置浏览器
+    iswb = /weibo/i.test(ua);
+
+    return iswx || isqq || iswb;
+  }
+}
+
+function getParam(paramName, str) {
+  var paramValue = "";
+  var isFound = false;
+  if (
+    str.indexOf("?") > -1 &&
+    str.indexOf("=") > -1
+  ) {
+    var arrSource = unescape(str).substring(str.indexOf("?") + 1, str.length).split('&')
+    var i = 0;
+    while (i < arrSource.length && !isFound) {
+      if (arrSource[i].indexOf("=") > -1) {
+        if (
+          arrSource[i].split("=")[0].toLowerCase() ==
+          paramName.toLowerCase()
+        ) {
+          paramValue = arrSource[i].split("=")[1];
+          isFound = true;
+        }
+      }
+      i++;
+    }
+  }
+  return paramValue;
 }

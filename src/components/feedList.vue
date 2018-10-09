@@ -1,7 +1,7 @@
 <template>
   <div class="feed" v-if="hotSubject.length>0">
     <div class="head">热门文章</div>
-    <div class="feed-content" v-for="(item,key) in hotSubject" :key="key">
+    <div class="feed-content" v-for="(item,key) in hotSubject" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">
         <img class="icon" :src="item.blogo" />
         <span class="column">{{item.communityName}}</span>
@@ -45,7 +45,8 @@
 <script>
   import {
     getCommonTime,
-    makeFileUrl
+    makeFileUrl,
+    down_statistics
   } from '../utils'
   import {
     mapActions,
@@ -75,6 +76,16 @@
       },
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
+      },
+      async downloadApp(e, str, id) {
+      let  redirectUrl = `closer://feed/${id}`;
+        down_statistics(
+          this.$store,
+          this.$route,
+          str,
+          "hot_feed",
+          redirectUrl
+        );
       }
     }
   }
