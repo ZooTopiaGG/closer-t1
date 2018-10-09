@@ -21,36 +21,6 @@ export function downloadApp() {
   // }
 }
 
-
-export async function downApp(url) {
-  return;
-  if (url) {
-    if (!isJumpOut()) {
-      if (url.indexOf('?from=group') > -1) {
-        let id = await this.getParam('groupid', url);
-        location.href = `closer://jump/to/group`;
-      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = url;
-      }
-      setTimeout(() => {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      }, 1500)
-      return;
-    } else {
-      if (url.indexOf('?from=group') > -1) {
-        location.href = url
-      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
-      }
-    }
-  } else {
-    location.href = `${location.protocol}//${location.host}`;
-  }
-}
 export function toYuan(money) {
   let yuan = money / 100.0;
   return yuan.toFixed(2);
@@ -441,6 +411,39 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
   }
   return resultJsonObject;
 }
+
+
+
+export async function downApp(url) {
+  return;
+  if (url) {
+    if (!isJumpOut()) {
+      if (url.indexOf('?from=group') > -1) {
+        let id = await this.getParam('groupid', url);
+        location.href = `closer://jump/to/group`;
+      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      } else {
+        location.href = url;
+      }
+      setTimeout(() => {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      }, 1500)
+      return;
+    } else {
+      if (url.indexOf('?from=group') > -1) {
+        location.href = url
+      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      } else {
+        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
+      }
+    }
+  } else {
+    location.href = `${location.protocol}//${location.host}`;
+  }
+}
+
 // 统计方法
 export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
   let result = await store.dispatch("down_adcookies");
@@ -483,11 +486,11 @@ export async function down_statistics(store, route, str, defaultStr, redirectUrl
         if (redirectUrl === 'wx') {
           return true
         } else {
-          this.downApp(redirectUrl);
+          downApp(redirectUrl);
           return
         }
       } else {
-        this.downApp(url);
+        downApp(url);
       }
     }
   }
