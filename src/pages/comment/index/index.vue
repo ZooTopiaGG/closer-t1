@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <div v-if="subjectExist" class="comment">
       <div class="title">
         {{subject.title}}
@@ -45,7 +45,7 @@
         <div class="line"></div>
       </div>
       <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
-          <Feedlist  :hotSubject="hotSubjects.data"></Feedlist>
+      <Feedlist :hotSubject="hotSubjects.data"></Feedlist>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -85,6 +85,17 @@
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       })
+    },
+    beforeMount() {
+      this.$store.commit("GET_VERSION");
+      this.$store.commit("SET_ENTER_TIME", Date.now());
+       // 存会话 h5Adid
+        if (this.$store.state.h5Adid) {
+          Cookies.set("h5Adid", this.$store.state.h5Adid);
+        } else {
+          Cookies.set("h5Adid", "");
+        }
+       
     },
     mounted() {
       console.log('params.sid:', this.$route.params.sid)

@@ -59,6 +59,12 @@ function pageResize() { //px2rem
   document.documentElement.style.fontSize = (fontSize >= 32 ? 32 : fontSize) + 'px'
 }
 
+init();
+
+function init() {
+  let result = store.dispatch("get_adcookie", { webUdid: true }).then((() => {}));
+}
+
 
 new Vue({
   store,
