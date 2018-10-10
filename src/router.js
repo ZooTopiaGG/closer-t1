@@ -1,9 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Store from './store';
-import {
-  Toast
-} from 'mint-ui'
+
 
 //神议论
 const Comment = () =>
@@ -13,7 +10,7 @@ const Comment = () =>
 const Article = () =>
   import ('@/pages/article/index/index')
 
-  // 长图文
+// 长图文
 const Draft = () =>
   import ('@/pages/draft/index/index')
 
@@ -25,32 +22,40 @@ const Message = () =>
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
 
+const Group = () =>
+  import ('@/pages/group/index')
 
 Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
   routes: [{
-    path: '/article/:id',
-    name: 'article',
-    component: Article,
-  }, {
-    path: '/comment/:sid',
-    name: 'comment',
-    component: Comment,
-  }, {
-    path: "/jssdk",
-    name: 'jssdk',
-    component: Jssdk,
-  }, {
-    path: "/draft/:sid",
-    name: 'draft',
-    component: Draft,
-  }, {
-    path: "/message/:sid?/:id?",
-    name: 'message',
-    component: Message,
-  }]
+      path: '/article/:id',
+      name: 'article',
+      component: Article,
+    }, {
+      path: '/comment/:id',
+      name: 'comment',
+      component: Comment,
+    }, {
+      path: "/jssdk",
+      name: 'jssdk',
+      component: Jssdk,
+    }, {
+      path: "/draft/:sid",
+      name: 'draft',
+      component: Draft,
+    }, {
+      path: "/message/:sid?/:id?",
+      name: 'message',
+      component: Message,
+    },
+    {
+      path: "/group/:id",
+      name: "group",
+      component: Group
+    }
+  ]
 })
 router.beforeEach(({
   meta,

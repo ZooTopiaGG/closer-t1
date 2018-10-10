@@ -104,7 +104,8 @@ export default new Vuex.Store({
     // 设置h5cookies到浏览器
     SET_H5COOKIES(state, para) {
       console.log("h5", para)
-      state.h5Cookies = para
+      state.h5Cookies = para;
+      Cookies.set("h5Cookies", para);
     },
     // enter page time 
     SET_ENTER_TIME(state, para) {
@@ -123,7 +124,8 @@ export default new Vuex.Store({
   actions: {
     // h5设置cookies埋点
     async get_adcookie({
-      commit
+      commit,
+      state
     }, {
       webUdid
     }) {
@@ -173,7 +175,9 @@ export default new Vuex.Store({
       } else {
         userId = null
       }
-      if (state.h5Cookies) {
+      if (Cookies.get("h5Cookies")) {
+        h5cookie = Cookies.get("h5Cookies")
+      } else if (state.h5Cookies) {
         h5cookie = state.h5Cookies
       } else {
         h5cookie = null
