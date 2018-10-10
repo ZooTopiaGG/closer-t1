@@ -21,6 +21,10 @@ const Draft = () =>
 const Message = () =>
   import ('@/pages/message/index/index')
 
+// 栏目
+const Community = () =>
+  import ('@/pages/community/index/index')
+
 // jssdk DEMO
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
@@ -50,6 +54,10 @@ const router = new Router({
     path: "/message/:sid?/:id?",
     name: 'message',
     component: Message,
+  }, {
+    path: "/community",
+    name: 'community',
+    component: Community,
   }]
 })
 router.beforeEach(({
