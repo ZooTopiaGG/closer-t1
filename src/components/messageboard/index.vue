@@ -1,5 +1,5 @@
 <template>
-  <div class="draft-wrapper">
+  <div class="wrapper" v-if="messagelist">
     <div class="message-board" v-if="messagelist.length > 0">
       <div class="board-top">
         <span class="title" id="title">精彩留言</span>
@@ -12,7 +12,7 @@
           </div>
           <div class="info-ceil box box-tb">
             <span class="name">{{ item.user.attributes.roster.name || item.user.fullname }}</span>
-            <span class="time">{{formate(new Date(item.long_create_time))}}</span>
+            <span class="time">{{formate(new Date(item.long_create_time), 'time')}}</span>
           </div>
           <!-- 回复补丁 -->
           <div class="response box box-lr box-center-center" @click="writeMessage('reply', item.commentid)">
@@ -34,23 +34,24 @@
             <span class="replay-content">{{ commentItem.content }}</span>
           </div>
           <!-- 更多回复补丁 -->
-          <div class="replay-total" v-if="item.replyNumber > 3">
+          <div class="replay-total" v-if="item.replyNumber > 3" @click="getMoreComment">
             <span>共{{ item.replyNumber }}条回复</span>
             <span class="right-icon"></span>
           </div>
         </div>
       </div>
-      <div class="more-comment" @click="firstLogin">点击查看更多评论<span></span></div>
+      <div class="more-comment" @click="getMoreComment">点击查看更多评论<span></span></div>
     </div>
     <div class="no-draft" v-else>
       <span class="text">暂无留言，赶紧留言吧~</span>
       <span class="write" @click="writeMessage('comment', $route.params.sid)">写留言</span>
     </div>
-    <login-pop ref="login"></login-pop>
+    <login-pop ref="login" :isFrom="'messagelist'"></login-pop>
   </div>
 </template>
 
 <script>
+  import baseUrl from '../../config/index'
   import LoginPop from '../login/index.vue'
   import {
     mapState,
@@ -58,11 +59,12 @@
   } from 'vuex';
   import {
     makeFileUrl,
-    formatDate,
-    isWeiXin
+    dateFormat,
+    isWeiXin,
+    downloadApp
   } from '../../utils'
   export default {
-    name: 'draft',
+    name: 'wrapper',
     components: {
       LoginPop
     },
@@ -74,6 +76,8 @@
       }
     },
     beforeMount() {
+      let code = this.$route.query.code
+  
       if (this.$route.params.sid) {
         this.getCommentsList({
           "subjectid": this.$route.params.sid,
@@ -83,41 +87,69 @@
       }
     },
     mounted() {
-      
+      console.log(1, window.EVN)
+      console.log('code---', this.$route.query.code)
+      if (this.$route.query.code) {
+        let params = {
+          plateform: 2,
+          code: this.$route.query.code,
+          protocol: "WEB_SOCKET",
+          adid: Cookies.get('h5Adid') || 'closer-share'
+        }
+        console.log('params---', params)
+        this.getUserInfoWithWx(params)
+      }
     },
     computed: {
       ...mapState("messageboard", {
-        messagelist: state => state.messagelist
+        messagelist: state => state.messagelist,
+        wxurl: state => state.wxurl
       })
     },
     methods: {
       ...mapActions("messageboard", [
         "getCommentsList",
-        "checkIsLike"
+        "checkIsLike",
+        "getWxAuth",
+        "getUserInfoWithWx"
       ]),
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
-      formate(date) {
-        return formatDate(date)
+      formate(date, time) {
+        return dateFormat(date, time)
       },
       writeMessage(type, id) {
         // 渲染页面前 先判断cookies user是否存在
+        console.log('Cookies--', Cookies.get("GroukAuth"))
         if (Cookies.get("user")) {
           this.gotoMessage(type, id);
         } else {
-          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
+          // this.$refs.login.open()
+          // 前期 仅微信后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (isWeiXin()) {
-            let url;
-            if (type === "comment") {
-              url = `${location.protocol}//${
-                    location.hostname
-                  }/message/${id}`;
-            } else {
-              url = `${location.protocol}//${location.hostname}/message/${
-                    this.$route.params.sid
-                  }/${id}`;
+  
+            console.log(this.$route.query.code)
+            let path = '/draft/' + this.$route.params.sid
+            let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
+            let para = {
+              path: _path
             }
+            console.log('para---', para)
+  
+            if (!this.$route.query.code) {
+              this.getWxAuth(para)
+            }
+            // let url;
+            // if (type === "comment") {
+            //   url = `${location.protocol}//${
+            //         location.hostname
+            //       }/message/${id}`;
+            // } else {
+            //   url = `${location.protocol}//${location.hostname}/message/${
+            //         this.$route.params.subjectid
+            //       }/${id}`;
+            // }
           } else {
             this.gotoMessage(type, id)
           }
@@ -137,25 +169,14 @@
       },
   
       // 先登录，在下载流程
-      firstLogin() {
-        if (Cookies.get('token')) {
-          this.downApp()
-        } else {
-          // 判断是否是微信环境
-          if (isWeiXin()) {
-            // 通过微信授权，获取code
-  
-          } else {
-  
-          }
-        }
-        this.$refs.login.open()
+      getMoreComment() {
+        this.downApp()
       },
       downApp() {
         downloadApp()
       },
       support(e, subjectid, commentid, isLike) {
-        if(this.isSupport) return
+        if (this.isSupport) return
         let params = {
           subjectid: subjectid,
           commentid: commentid,
@@ -170,7 +191,7 @@
 </script>
  
 <style lang="less" scoped>
-  .draft-wrapper {
+  .wrapper {
     width: 100%;
     height: 100%;
     background: #F8F8F8;
@@ -223,7 +244,7 @@
             right: 64pr;
             color: #94928E;
             .res-icon {
-              background: url('./assets/images/message.png') no-repeat center;
+              background: url('../../pages/draft/assets/images/message.png') no-repeat center;
               background-size: cover;
             }
             .res-count {
@@ -233,16 +254,6 @@
           .support {
             position: absolute;
             right: 0;
-            // .support-icon {
-            //   background: url('./assets/images/home_btn_like_n@2x.png') no-repeat center;
-            //   background-size: cover;
-            // }
-            // .support-checked {
-            //   position: absolute;
-            //   right: 0;
-            //   background: url('./assets/images/home_btn_like_pre@2x.png') no-repeat center;
-            //   background-size: cover;
-            // }
           }
         }
         .message-content {
@@ -265,7 +276,7 @@
               margin-left: 10pr;
               width: 10pr;
               height: 17pr;
-              background: url('./assets/images/back@2x.png') no-repeat center;
+              background: url('../../pages/draft/assets/images/back@2x.png') no-repeat center;
               background-size: cover;
             }
           }
@@ -281,7 +292,7 @@
           margin-left: 20pr;
           width: 18pr;
           height: 18pr;
-          background: url('./assets/images/Shape2@2x.png') no-repeat center;
+          background: url('../../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
           background-size: cover;
         }
       }

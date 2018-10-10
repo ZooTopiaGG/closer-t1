@@ -94,7 +94,7 @@ export function px2px(v) {
  * yyyy-dd-mm
  * 
  */
-export function dateFormat(time) {
+export function dateFormat(time, flag) {
   let d = new Date(time);
   let year = d.getFullYear();
   let month = d.getMonth() + 1;
@@ -108,7 +108,21 @@ export function dateFormat(time) {
   if (day < 10) {
     day = "0" + day;
   }
-  return year + "-" + month + "-" + day;
+  if(hours < 10) {
+    hours = "0" + hours
+  }
+  if(minutes < 10) {
+    minutes = "0" + minutes
+  }
+  if(second < 10) {
+    second = "0" + second
+  }
+  if(flag == 'date') {
+    return year + "-" + month + "-" + day;
+  }
+  if(flag == 'time') {
+    return year + "-" + month + "-" + day + " " + hours + ":" + minutes
+  }
 }
 
 
@@ -541,4 +555,13 @@ function getParam(paramName, str) {
     }
   }
   return paramValue;
+}
+/*判断是否是微信 微博 QQ*/
+export function isWeiXin() {
+  if (typeof window != 'undefined') {
+    var wx = navigator.userAgent.toLowerCase();
+    return wx.indexOf('micromessenger') != -1
+  } else {
+    return false
+  }
 }

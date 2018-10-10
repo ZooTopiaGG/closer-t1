@@ -13,6 +13,14 @@ const Comment = () =>
 const Article = () =>
   import ('@/pages/article/index/index')
 
+  // 长图文
+const Draft = () =>
+  import ('@/pages/draft/index/index')
+
+// 留言板
+const Message = () =>
+  import ('@/pages/message/index/index')
+
 // jssdk DEMO
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
@@ -34,6 +42,14 @@ const router = new Router({
     path: "/jssdk",
     name: 'jssdk',
     component: Jssdk,
+  }, {
+    path: "/draft/:sid",
+    name: 'draft',
+    component: Draft,
+  }, {
+    path: "/message/:sid?/:id?",
+    name: 'message',
+    component: Message,
   }]
 })
 router.beforeEach(({

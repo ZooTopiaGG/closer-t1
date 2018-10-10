@@ -11,6 +11,7 @@ import comment from './pages/comment/index/module'
 import draft from './pages/draft/index/module'
 import message from './pages/message/index/module'
 import login from './components/login/module'
+import messageboard from './components/messageboard/module'
 
 import service from './components/service';
 
@@ -116,7 +117,8 @@ export default new Vuex.Store({
     comment,
     draft,
     message,
-    login
+    login,
+    messageboard
   },
   actions: {
     // h5设置cookies埋点
@@ -195,7 +197,7 @@ export default new Vuex.Store({
       if (data.code === 0) {
         return true
       }
-    },
+    }
   }
 
 })

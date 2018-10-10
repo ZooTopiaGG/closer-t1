@@ -7,32 +7,42 @@
     <div class="btn-box">
       <div type="primary" @click="toMessage">留 言</div>
     </div>
-    <login-pop ref="login" :showLogin="showLogin"></login-pop>
+    <login-pop ref="login"></login-pop>
+    <message-success ref="messageSuccess"></message-success>
   </div>
 </template>
 
 <script>
-import { Toast } from "mint-ui"
-import LoginPop from '../../../components/login/index.vue'
-import Vue from "vue"
-import { mapState, mapActions } from 'vuex'
+  import {
+    Toast
+  } from "mint-ui"
+  import LoginPop from '../../../components/login/index.vue'
+  import MessageSuccess from '../../../components/messageSuccess.vue'
+  import Vue from "vue"
+  import {
+    mapState,
+    mapActions,
+    mapMutations
+  } from 'vuex'
   export default {
     components: {
       Toast,
-      LoginPop
+      LoginPop,
+      MessageSuccess
     },
     data() {
       return {
-        textarea: "方法",
-        showLogin: false
+        textarea: "",
       }
     },
     created() {
       document.title = '贴近 - TieJin.cn'
-      if(Cookies.get("udid")) {
-        
+      if (Cookies.get("udid")) {
+  
       } else {
-        this.getAdCookie({webUdid: true})
+        this.getAdCookie({
+          webUdid: true
+        })
       }
     },
     computed: {
@@ -40,7 +50,8 @@ import { mapState, mapActions } from 'vuex'
         addReply: state => state.replyData
       })
     },
-    mounted(){
+    mounted() {
+      console.log(this.$route.params)
     },
     methods: {
       ...mapActions("message", [
@@ -48,29 +59,35 @@ import { mapState, mapActions } from 'vuex'
         "getAdCookie"
       ]),
       toMessage() {
-        if(!this.textarea) {
+        if (!this.textarea) {
           Toast('内容不能为空！')
           return
         }
         // 渲染页面前 先判断cookies user是否存在
-        if(Cookies.get('user')) {
-          let params
-          let lastid = this.$route.params.id 
-          if(lastid) {
-            params = {
-              subjectid: this.$route.params.sid,
-              content: this.textarea,
-              lastid: lastid
+        console.log('user: ', JSON.parse(Cookies.get('user')))
+        if (Cookies.get('user')) {
+          let userInfo = JSON.parse(Cookies.get('user'))
+          if (userInfo.phones) {
+            let params
+            let lastid = this.$route.params.id
+            if (lastid) {
+              params = {
+                subjectid: this.$route.params.sid,
+                content: this.textarea,
+                lastid: lastid
+              }
+            } else {
+              params = {
+                subjectid: this.$route.params.sid,
+                content: this.textarea
+              }
             }
+            this.addReplyData(params)
           } else {
-            params = {
-              subjectid: this.$route.params.sid,
-              content: this.textarea
-            }
+            this.$refs.login.open()
           }
-          this.addReplyData(params)
         } else {
-          this.showLogin = true
+          this.$refs.login.open()
         }
       }
     }
