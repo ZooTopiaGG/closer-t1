@@ -1,28 +1,27 @@
 /**
  * build: 线上使用
- * dev: sandbox环境
+ * dev: qa环境
+ * sandbox: sandbox环境
  * local: 本地调试
  */
 
-// 为方便vue.config.js中引入，这里使用nodejs识别的CommonJS规范
-// 在项目中引用该模块时，请使用require()，而非es6的import from
 
 export default {
   href: {
     build: 'https://a.tiejin.cn',
-    dev: 'https://a-sandbox.tiejin.cn',
+    dev: 'https://a-qa.tiejin.cn',
     sandbox: 'https://t1-sandbox.tiejin.cn',
     local: 'http://local.tiejin.cn:9999'
   },
   file: {
     build: 'https://file.tiejin.cn',
-    dev: 'https://file-sandbox.tiejin.cn',
+    dev: 'https://file-qa.tiejin.cn',
     sandbox: 'https://file-sandbox.tiejin.cn',
     local: 'https://file-sandbox.tiejin.cn'
   },
   server: {
     build: 'https://api.tiejin.cn/command/',
-    dev: 'https://api-sandbox.tiejin.cn/command/',
+    dev: 'https://api-qa.tiejin.cn/command/',
     sandbox: 'https://api-sandbox.tiejin.cn/command/',
     local: 'https://api-sandbox.tiejin.cn/command/'
   },

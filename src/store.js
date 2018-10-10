@@ -35,10 +35,6 @@ export default new Vuex.Store({
     get_login_type: false,
     visibleLogin: ''
   },
-  modules: {
-    article,
-    comment
-  },
   mutations: {
     // 设置贴子详情内容
     SET_CONTENT(state, para) {

@@ -1,4 +1,4 @@
-import config from '../config/index';
+import baseUrl from '../config/index';
 import Store from '../store'
 
 export function redirectAddChance(isApp) {
@@ -128,13 +128,10 @@ export function makeHtmlContent(html, status) {
         widthArray = x.match(regexWidth),
         heightArray = x.match(regexHeight),
         nW,
-        // _src,
         newM,
         nH,
         minH;
       if (srcArray) {
-        Store.state.CONTENT_IMGS.push(srcArray[1])
-          // _src = srcArray[1].replace(/\+/g, "%2b");
         if (widthArray && heightArray) {
           if (widthArray[1] < 200) {
             nW = widthArray[1] + 'px';
@@ -144,12 +141,12 @@ export function makeHtmlContent(html, status) {
             nH = heightArray[1] * 100 / widthArray[1] + "%";
           }
           minH = nH;
-          newM = x.replace(/src=/g, `style="width: ${nW};height: ${nH}; background: #e7e7e7; max-width: 100%;"  data-index="${ Store.state.IMG_INDEX}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW};height: 0; padding-bottom: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
         } else {
           nW = '100%';
           nH = "auto";
           minH = '28.27vw';
-          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2"  data-index="${ Store.state.IMG_INDEX}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
         }
         Store.state.IMG_INDEX++;
       } else {
@@ -199,46 +196,46 @@ export function makeHtmlContent(html, status) {
       // let temp = pVideo[i].split('<p>');
       if (status) {
         flg = `<section 
-                    class='video-box video-box-h5 ${boxClass}'
-                    data-vid='${v}'
-                    data-uid='${u}'
-                    >
-                    <section 
-                      class='video-wrap'
-                      data-vid='${v}'
-                      data-uid='${u}'
-                      >
-                        <video src='${urlArray[1]}'
-                        class='video-tag'
-                        preload='none'
-                        controls
-                        controlsList='nodownload'
-                        poster='${c}'
-                        data-bg='${c}'
-                        playsinline="true"
-                        webkit-playsinline="true"
-                        x5-playsinline="true"
-                        >
-                        </video>
-                    </section>
-                  </section>`;
+          class='video-box video-box-h5 ${boxClass}'
+          data-vid='${v}'
+          data-uid='${u}'
+          >
+          <section 
+            class='video-wrap'
+            data-vid='${v}'
+            data-uid='${u}'
+            >
+              <video src='${urlArray[1]}'
+              class='video-tag'
+              preload='none'
+              controls
+              controlsList='nodownload'
+              poster='${c}'
+              data-bg='${c}'
+              playsinline="true"
+              webkit-playsinline="true"
+              x5-playsinline="true"
+              >
+              </video>
+          </section>
+        </section>`;
       } else {
         flg = `<section 
-                    class='video-box video-box-native'
-                    data-vid='${v}'
-                    data-uid='${u}'
-                    data-bg='${c}'>
-                    <section 
-                      class='video-wrap'
-                      data-vid='${v}'
-                      data-uid='${u}'
-                      >
-                      <img data-src='${c}'
-                        class='video-play-poster'/>
-                      <span
-                        class='video-play-icon' data-vid='${v}' data-uid='${u}'></span>
-                    </section>
-                  </section>`;
+          class='video-box video-box-native'
+          data-vid='${v}'
+          data-uid='${u}'
+          data-bg='${c}'>
+          <section 
+            class='video-wrap'
+            data-vid='${v}'
+            data-uid='${u}'
+            >
+            <img data-src='${c}'
+              class='video-play-poster'/>
+            <span
+              class='video-play-icon' data-vid='${v}' data-uid='${u}'></span>
+          </section>
+        </section>`;
       }
       html = html.replace(x, flg);
     });
@@ -265,11 +262,11 @@ export function makeHtmlContent(html, status) {
 }
 
 /**
- *       图片地址处理
+ * 图片地址处理
  */
 
 export function makeFileUrl(url, type, size) {
-  let filePath = config.file[ENV.env];
+  let filePath = baseUrl.file;
   if (url) {
     let sizes = size ? size : 500
     if (type === 'src') {

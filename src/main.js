@@ -13,14 +13,14 @@ import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
 import VueLazyLoad from 'vue-lazyload';
 
-import initConfig from './config/init'
-// 初始化ENV和api的值
-initConfig();
+import ENV from './config/init'
 
-if (window.ENV.dev) {
+if (ENV.dev) {
   const vconsole = new Vconsole()
 }
+Vue.prototype.ENV = ENV;
 window.wx = Wx;
+window.ENV = ENV;
 window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;

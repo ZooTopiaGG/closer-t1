@@ -33,7 +33,7 @@
     },
     computed: {
       isApp() {
-        return ENV.app;
+        return this.ENV.app;
       }
     },
     mounted() {
@@ -41,10 +41,10 @@
     },
     methods: {
       initLoad() {
-        if (ENV.wx) {
+        if (this.ENV.wx) {
           let toDown = document.querySelector(".todown-top-right");
           toDown && (toDown.style.display = "block");
-        } else if (!ENV.wx && !ENV.app) {
+        } else if (!this.ENV.wx && !this.ENV.app) {
           document.querySelector(".down-btn").style.opacity = 1;
           setTimeout(() => {
             this.download();

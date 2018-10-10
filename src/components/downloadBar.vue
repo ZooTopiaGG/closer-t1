@@ -31,13 +31,13 @@
 </template>
 <script>
   import { down_statistics } from '../utils/index'
-  import config from '../config/index'
+  import baseUrl from '../config'
   export default {
     name: 'downloadBar',
     methods: {
       handleClick(e, str) {
         let self = this,
-          redirectUrl = config.download[ENV.env];
+          redirectUrl = baseUrl.download;
         down_statistics(
           self.$store,
           self.$route,

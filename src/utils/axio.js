@@ -1,5 +1,5 @@
 import axios from 'axios'
-import baseConfig from '../config/index';
+import baseUrl from '../config';
 const axio = axios.create({ 
     baseURL: process.env.BASE_API, // node环境的不同，对应不同的baseURL
      timeout: 15000, // 请求的超时时间
@@ -8,7 +8,7 @@ const axio = axios.create({ 
   // http request 拦截器 
 axio.interceptors.request.use(
   config => {
-    let reqUrl = baseConfig.server[ENV.env] + config.url
+    let reqUrl = baseUrl.server + config.url
     config.url = reqUrl;
     if (!ENV.app) {
       config.headers['Closer-Agent'] = 'Closer-H5';
