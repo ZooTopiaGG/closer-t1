@@ -5,7 +5,11 @@
     <section class="article-wrap">
       <section class="article-container">
         <!-- 标题 -->
-        <section class="article-title"> {{ res.title }} </section>
+        <div v-if="!ENV.app" class="article-title"> {{ res.title }} </div>
+        
+        <div class="article-cover-box">
+          <img :src="makeFileUrl(res.bigcover || res.cover)" alt="" class="article-cover-img">
+        </div>
         <!-- 暂时隐藏 -->
         <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
                       <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
@@ -31,7 +35,8 @@
   } = createNamespacedHelpers('article');
   import {
     appPlayVideo,
-    tabImg
+    tabImg,
+    makeFileUrl
   } from "../../../utils";
   import Notfound from '../../../components/error/notfound'
   
@@ -122,13 +127,17 @@
             tabImg(target.dataset.index);
           }
         }
+      },
+      makeFileUrl(url = '') {
+        console.log('url', decodeURI(url))
+        return makeFileUrl(url)
       }
     },
     mounted() {
-      this.GET_USER_AGENT({
-        nvg: navigator.userAgent,
-        ref: location.pathname
-      });
+      // this.GET_USER_AGENT({
+      //   nvg: navigator.userAgent,
+      //   ref: location.pathname
+      // });
       this.fetch();
     }
   };

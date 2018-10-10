@@ -1,3 +1,9 @@
+/**
+ * 登录逻辑
+ * app端内、微信授权、手机号绑定
+ * 返回promise对象，结果为取到的用户数据
+ */
+
 import baseUrl from '../config';
 import api from '../config/api';
 

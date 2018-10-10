@@ -2,12 +2,12 @@ import { fetchContent } from './service';
 
 import { makeHtmlContent } from "../../../utils";
 const state = {
-    GET_MESSAGE_STATE: false,
-    GET_IS_APP: false,
+    // GET_MESSAGE_STATE: false,
+    // GET_IS_APP: false,
     GET_APP_TOKEN: '',
     version_1_2: false,
-    agent: '',
-    isPre: false,
+    // agent: '',
+    // isPre: false,
     res: {},
     content: {},
     exist: true,
@@ -43,8 +43,7 @@ const actions = {
                     // 解析长图文html
                     if (res.result.int_type === 2) {
                         let _html = makeHtmlContent(
-                            content.html,
-                            state.GET_MESSAGE_STATE
+                            content.html
                         );
                         if (_html) {
                             content.html = _html;

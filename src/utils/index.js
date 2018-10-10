@@ -20,6 +20,7 @@ export function downloadApp() {
   location.href = "http://tiejin.cn/down?downurl=closer://jump";
   // }
 }
+
 export function toYuan(money) {
   let yuan = money / 100.0;
   return yuan.toFixed(2);
@@ -113,7 +114,7 @@ export function dateFormat(time) {
 
 
 // 富文本处理
-export function makeHtmlContent(html, status) {
+export function makeHtmlContent(html) {
   let _html;
   const regexImg = /<img.*?(?:>|\/>)/gi;
   let pImg = html.match(regexImg);
@@ -141,7 +142,7 @@ export function makeHtmlContent(html, status) {
             nH = heightArray[1] * 100 / widthArray[1] + "%";
           }
           minH = nH;
-          newM = x.replace(/src=/g, `style="width: ${nW};height: 0; padding-bottom: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
         } else {
           nW = '100%';
           nH = "auto";
@@ -155,7 +156,7 @@ export function makeHtmlContent(html, status) {
 
       // 正则替换富文本内的img标签
       // 替换不同文本
-      html = html.replace(x, newM);
+      html = html.replace(x, `<div class="img-box">${newM}</div>`);
     });
   }
   const regexVideo = /<video.*?(?:>|\/>|<\/video>)/gi;
@@ -192,9 +193,8 @@ export function makeHtmlContent(html, status) {
       if (r > 1) {
         boxClass = 'video-box-vertical'
       }
-      status = false;
       // let temp = pVideo[i].split('<p>');
-      if (status) {
+      if (!window.ENV.app) {
         flg = `<section 
           class='video-box video-box-h5 ${boxClass}'
           data-vid='${v}'
@@ -406,4 +406,135 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
     resultJsonObject[attr] = jsonbject2[attr];
   }
   return resultJsonObject;
+}
+
+
+
+export async function downApp(url) {
+  return;
+  if (url) {
+    if (!isJumpOut()) {
+      if (url.indexOf('?from=group') > -1) {
+        let id = await this.getParam('groupid', url);
+        location.href = `closer://jump/to/group`;
+      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      } else {
+        location.href = url;
+      }
+      setTimeout(() => {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      }, 1500)
+      return;
+    } else {
+      if (url.indexOf('?from=group') > -1) {
+        location.href = url
+      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+      } else {
+        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
+      }
+    }
+  } else {
+    location.href = `${location.protocol}//${location.host}`;
+  }
+}
+
+// 统计方法
+export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
+  let result = await store.dispatch("down_adcookies");
+  if (result) {
+    let _page, url, did = route.params.sid || route.params.messageid,
+      progress, _str, s = JSON.parse;
+    if (route.path.indexOf("/community") > -1) {
+      _page = "community";
+      url = `closer://community/${did}`;
+    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1) {
+      _page = "article";
+      url = `closer://feed/${did}`;
+      if (store.state.SUBJECT.int_type === 1) {
+        _page = "video";
+      } else {
+        _page = "article";
+      }
+    } else if (route.path.indexOf("/group") > -1) {
+      _page = "group";
+      url = `closer://group/${did}`;
+    } else {
+      _page = "inviter";
+      url = `closer://jump/to/mine`;
+      did = s(Cookies.get("inviter")).id
+    }
+    _str = typeof(str) === 'string' && str ? str : defaultStr;
+    let p1 = {
+      action: "click", //		'行为类型(曝光 浏览结束点击返回 负反馈 点击下载)，参数取值:exposure back feedback download'        
+      objectType: _page || "article", //		'统计对象类型（文章 视频 栏目 群组 H5分享的群组，栏目，帖子）,参数取值:article video community group'
+      objectId: did || null, //		'统计对象唯一标识'
+      position: _str, //		'点击位置，若action为download时必填,参数取值：top bottom'
+      progress: 1, //		'浏览进度，文章为阅读的进度，图集为当前阅读的图片/总的图片数，视频为当前播放时间/总时间 小数点两位：0.95'
+      recommendId: null //		'本次推荐的唯一标识 推荐内容ID'
+    };
+    let res = await store.dispatch("down_statistics", {
+      p1
+    });
+    if (res) {
+      if (redirectUrl) {
+        if (redirectUrl === 'wx') {
+          return true
+        } else {
+          downApp(redirectUrl);
+          return
+        }
+      } else {
+        downApp(url);
+      }
+    }
+  }
+}
+
+
+function isJumpOut() {
+  if (typeof window != 'undefined') {
+    let ua = navigator.userAgent.toLowerCase();
+    var iswx = false,
+      isqq = false,
+      iswb = false;
+    // 微信内置浏览器
+    iswx = /micromessenger/i.test(ua);
+    // QQ内置浏览器
+    isqq = /qq/i.test(ua);
+    if (/mqqbrowser/i.test(ua)) {
+      isqq = false;
+    }
+
+    // 微博内置浏览器
+    iswb = /weibo/i.test(ua);
+
+    return iswx || isqq || iswb;
+  }
+}
+
+function getParam(paramName, str) {
+  var paramValue = "";
+  var isFound = false;
+  if (
+    str.indexOf("?") > -1 &&
+    str.indexOf("=") > -1
+  ) {
+    var arrSource = unescape(str).substring(str.indexOf("?") + 1, str.length).split('&')
+    var i = 0;
+    while (i < arrSource.length && !isFound) {
+      if (arrSource[i].indexOf("=") > -1) {
+        if (
+          arrSource[i].split("=")[0].toLowerCase() ==
+          paramName.toLowerCase()
+        ) {
+          paramValue = arrSource[i].split("=")[1];
+          isFound = true;
+        }
+      }
+      i++;
+    }
+  }
+  return paramValue;
 }

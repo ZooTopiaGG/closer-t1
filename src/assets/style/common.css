@@ -115,3 +115,7 @@
 .fs36 {
 	font-size: 36px;
 }
+
+.toast {
+	z-index: 2003 !important;
+}

@@ -1,6 +1,6 @@
 <template>
-  <div class="comment">
-    <div v-if="subjectExist">
+  <div>
+    <div v-if="subjectExist" class="comment">
       <div class="title">
         {{subject.title}}
       </div>
@@ -45,6 +45,7 @@
         <div class="line"></div>
       </div>
       <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
+      <Feedlist :hotSubject="hotSubjects.data"></Feedlist>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -62,10 +63,12 @@
     mapActions
   } from "vuex";
   import Notfound from '../../../components/error/notfound'
+  import Feedlist from '../../../components/feedList'
   export default {
     name: "commentIndex",
     components: {
-      Notfound
+      Notfound,
+      Feedlist
     },
     data() {
       return {
@@ -78,7 +81,21 @@
         content: state => state.content,
         discuss: state => state.discuss,
         subjectExist: state => state.subjectExist
+      }),
+      ...mapState("common", {
+        hotSubjects: state => state.hotSubjects,
       })
+    },
+    beforeMount() {
+      this.$store.commit("GET_VERSION");
+      this.$store.commit("SET_ENTER_TIME", Date.now());
+       // 存会话 h5Adid
+        if (this.$store.state.h5Adid) {
+          Cookies.set("h5Adid", this.$store.state.h5Adid);
+        } else {
+          Cookies.set("h5Adid", "");
+        }
+       
     },
     mounted() {
       console.log('params.sid:', this.$route.params.sid)
@@ -86,12 +103,17 @@
         this.getSubject({
           "subjectid": this.$route.params.sid
         });
+        this.getHotSubjects()
       }
     },
     methods: {
       ...mapActions("comment", [
         "getSubject"
       ]),
+      ...mapActions("common", [
+        "getHotSubjects"
+      ]),
+  
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
