@@ -18,6 +18,10 @@ const Draft = () =>
 const Message = () =>
   import ('@/pages/message/index/index')
 
+// 栏目
+const Community = () =>
+  import ('@/pages/community/index/index')
+
 // jssdk DEMO
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
@@ -54,6 +58,11 @@ const router = new Router({
       path: "/group/:id",
       name: "group",
       component: Group
+    },
+    {
+      path: "/community",
+      name: 'community',
+      component: Community,
     }
   ]
 })
