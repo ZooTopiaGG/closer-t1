@@ -1,17 +1,18 @@
 <template>
-  <div class="comment">
-    <div v-if="subjectExist">
+  <div>
+    <div v-if="subjectExist" class="comment">
       <div class="title">
         {{subject.title}}
       </div>
-      <div class="summary">{{content.summary}}</div>
+      <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+      </div>
       <div class="discuss" v-for="(item,key) in discuss" :key="key">
         <div class="discuss-content">
-          <img class="avatar" v-lazy="fileUrlParse(item.avatar)">
+          <div class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></div>
           <div class="info">
             <div class="info-up">
               <span class="nickname">{{item.nickname}}</span>
-              <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span>
+              <!-- <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span> -->
             </div>
             <div v-if="item.type===0">
               <!-- 文字链接 -->
@@ -23,15 +24,11 @@
             </div>
             <div v-else-if="item.type===1">
               <!-- 图片 -->
-              <img class="image" v-lazy="fileUrlParse(item.image.link)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+              <img class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
             </div>
-            <div v-else-if="item.type===2">
+            <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
               <!-- 视频 -->
-              <div class="video" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid">
-                <div class="video-play" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
-                  <div class="play-icon" @click="showVideo($event)" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
-                </div>
-              </div>
+              <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
             </div>
             <div v-else-if="item.type===3">
               <!-- 帖子 -->
@@ -47,8 +44,10 @@
         </div>
         <div class="line"></div>
       </div>
+      <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
+      <Feedlist :hotSubject="hotSubjects.data"></Feedlist>
     </div>
-    <Notfound v-else></Notfound>
+    <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -56,17 +55,20 @@
   import {
     makeFileUrl,
     getCommonTime,
-    appPlayVideo
+    appPlayVideo,
+    tabImg
   } from '../../../utils'
   import {
     mapState,
     mapActions
   } from "vuex";
   import Notfound from '../../../components/error/notfound'
+  import Feedlist from '../../../components/feedList'
   export default {
     name: "commentIndex",
     components: {
-      Notfound
+      Notfound,
+      Feedlist
     },
     data() {
       return {
@@ -79,31 +81,61 @@
         content: state => state.content,
         discuss: state => state.discuss,
         subjectExist: state => state.subjectExist
+      }),
+      ...mapState("common", {
+        hotSubjects: state => state.hotSubjects,
       })
     },
+    beforeMount() {
+      this.$store.commit("GET_VERSION");
+      this.$store.commit("SET_ENTER_TIME", Date.now());
+       // 存会话 h5Adid
+        if (this.$store.state.h5Adid) {
+          Cookies.set("h5Adid", this.$store.state.h5Adid);
+        } else {
+          Cookies.set("h5Adid", "");
+        }
+       
+    },
     mounted() {
+      console.log('params.sid:', this.$route.params.sid)
       if (this.$route.params.sid) {
         this.getSubject({
           "subjectid": this.$route.params.sid
         });
+        this.getHotSubjects()
       }
     },
     methods: {
       ...mapActions("comment", [
         "getSubject"
       ]),
+      ...mapActions("common", [
+        "getHotSubjects"
+      ]),
+  
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
-      formatTime(time, type) {
-        return getCommonTime(time, type);
+      // formatTime(time, type) {
+      //   return getCommonTime(time, type);
+      // },
+      openClick(event) {
+        const target = event.target;
+        console.log("openClick", target.dataset);
+        if (target.dataset.vid && target.dataset.uid) {
+          // TJ.playVideo({url:target.dataset.uid})
+          appPlayVideo(
+            target.dataset.uid,
+            target.dataset.vid
+          );
+        } else if (target.dataset.index) {
+          tabImg(target.dataset.index);
+        }
       },
-      showVideo(event) {
-        if (this.$store.state.IS_APP) {
-          if (!(event.target.dataset.vid || event.target.dataset.uid)) {
-            return;
-          }
-          appPlayVideo(event.target.dataset.vid, event.target.dataset.uid)
+      tabImg(e) {
+        if (window.ENV.app) {
+          tabImg(e.target.dataset.index);
         }
       },
       tofeed(fid) {
@@ -115,16 +147,15 @@
 
 <style lang="less" scoped>
   .comment {
+    padding: 0 40pr 0 40pr;
     .title {
-      margin: 60pr 0 0 40pr;
+      margin: 50pr 0 40pr 0pr;
       font-size: 44pr;
-      color: #4B4945;
-      font-weight: 700;
+      line-height: 60pr;
+      color: #4b4945;
     }
-    .summary {
-      margin: 60pr 40pr 0 40pr;
-      font-size: 36pr;
-      color: #4B4945;
+    .content {
+      margin-top: 30pr;
     }
     .discuss {
       margin-top: 60pr;
@@ -132,13 +163,13 @@
         display: flex;
         flex-direction: row;
         .avatar {
-          margin: 6pr 0 0 40pr;
+          margin: 6pr 20pr 0 0;
           width: 68pr;
           height: 68pr;
           border-radius: 68pr;
+          background-size: cover;
         }
         .info {
-          margin: 0 40pr 0 22pr;
           display: flex;
           flex-direction: column;
           .info-up {
@@ -184,6 +215,7 @@
               .feed-title {
                 width: 412pr;
                 height: 44pr;
+                line-height: 44pr;
                 color: #4B4945;
                 font-size: 32pr;
                 overflow: hidden;
@@ -192,6 +224,7 @@
                 width: 412pr;
                 height: 30pr;
                 color: #94928E;
+                line-height: 30pr;
                 font-size: 24pr;
                 overflow: hidden;
               }
@@ -201,19 +234,14 @@
             width: 580pr;
             height: 326pr;
             border-radius: 3px;
-            .video-play {
-              width: 580pr;
-              height: 326pr;
-              background-color: rgba(0, 0, 0, .8);
-              overflow: hidden;
-              position: relative;
-              .play-icon {
-                background: url("../assets/images/video-play.png");
-                background-size: cover;
-                width: 120pr;
-                height: 120pr;
-                margin: 103pr 230pr 103pr 230pr;
-              }
+            background-color: rgba(0, 0, 0, .8);
+            overflow: hidden;
+            .play-icon {
+              background: url("../../../assets/images/play.png");
+              background-size: cover;
+              width: 120pr;
+              height: 120pr;
+              margin: 103pr 230pr 103pr 230pr;
             }
           }
         }
@@ -224,6 +252,9 @@
         background: #F3F3F3;
         margin: 32pr 40pr 24pr 40pr;
       }
+    }
+    .discuss-end-tag {
+      margin-top: 20pr;
     }
   }
 </style>

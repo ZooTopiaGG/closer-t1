@@ -37,7 +37,8 @@ export default {
         // 富评论下的子评论
         replys: 'closer_reply.replys',
         // 举报列表
-        reportType: 'closer_report.get_report_types'
+        reportType: 'closer_report.get_report_types',
+        hot_subjects: 'closer_subject.hot_subjects'
     },
     community: {
         // 栏目实体
@@ -77,10 +78,5 @@ export default {
         // 数据统计接口
         view_count: 'closer_promotion_activity.view_count',
         get_adcookie: 'closer_statistics.get_adcookie'
-    },
-    share: {
-      wechat_config: 'closer_share.wechat_config',
-      get_adcookie: 'closer_statistics.get_adcookie',
-      common: 'closer_statistics.user_action_v2',
     }
 }

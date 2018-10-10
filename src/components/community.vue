@@ -1,10 +1,11 @@
 <template>
   <section class="community" :class="showStyle">
-    <img class="community-logo" :src="defaultImg" v-lazy="$store.state.res.blogo" @click="toCommunity">
-    <span class="community-name ellipsis">{{ $store.state.res.communityName || $store.state.res.name }}</span>
+    <img class="community-logo" :src="defaultImg" v-lazy="res.blogo" @click="toCommunity">
+    <span class="community-name ellipsis">{{ res.communityName || res.name }}</span>
   </section>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     showType: String
@@ -16,6 +17,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(['res']),
     showStyle() {
       return `community-${this.showType}`
     }
@@ -23,7 +25,7 @@ export default {
   methods: {
     toCommunity() {
       this.$router.push({
-        path: `/community/${this.$store.state.res.communityid}`
+        path: `/community/${this.res.communityid}`
       });
     }
   },

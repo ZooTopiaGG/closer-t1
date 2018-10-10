@@ -31,12 +31,13 @@
 </template>
 <script>
   import { down_statistics } from '../utils/index'
+  import config from '../config/index'
   export default {
     name: 'downloadBar',
     methods: {
       handleClick(e, str) {
         let self = this,
-          redirectUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer";
+          redirectUrl = config.download[ENV.env];
         down_statistics(
           self.$store,
           self.$route,
