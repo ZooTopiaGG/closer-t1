@@ -37,6 +37,7 @@ export default new Vuex.Store({
     visibleLogin: '',
     h5Cookies: '',
     h5Adid: '',
+    res: {}
   },
   mutations: {
     // 设置贴子详情内容

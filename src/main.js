@@ -21,6 +21,7 @@ if (window.ENV.dev) {
   const vconsole = new Vconsole()
 }
 window.wx = Wx;
+Vue.prototype.ENV = window.ENV
 window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;

@@ -92,6 +92,7 @@ const mutations = {
   },
   // 设置阅读量
   SET_INCR_VIEW(state, para) {
+    console.log('para:', para)
     state.incr_view = para
   },
   SET_HOT_SUBJECTS(state, para) {
