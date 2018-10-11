@@ -9,6 +9,7 @@ import common from './components/module'
 import article from './pages/article/index/module'
 import comment from './pages/comment/index/module'
 import draft from './pages/draft/index/module'
+import community from './pages/community/index/module'
 import message from './pages/message/index/module'
 import login from './components/login/module'
 import messageboard from './components/messageboard/module'
@@ -116,6 +117,7 @@ export default new Vuex.Store({
     article,
     comment,
     draft,
+    community,
     message,
     login,
     messageboard

@@ -7,6 +7,7 @@ export default {
   state: {
     user: {},
     wxurl: '',
+    authSuccess: false,
     messagelist: {
       data: []
     }
@@ -19,6 +20,9 @@ export default {
     },
     setCommentList(state, payload) {
       state.messagelist = payload.data.result.data
+    },
+    setAuthStatus(state) {
+      state.authSuccess = true
     }
   },
   actions: {
@@ -52,6 +56,8 @@ export default {
       console.log(data.data.result)
       if(typeof(data.data.code != undefined) && data.data.code == 0) {
         location.href = data.data.result
+        commit('setAuthStatus')
+        console.log('state.authSuccess---', state.authSuccess)
       } else {
         data.result && Toast(data.result)
         // next()

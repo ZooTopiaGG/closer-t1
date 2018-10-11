@@ -55,7 +55,7 @@ const router = new Router({
     name: 'message',
     component: Message,
   }, {
-    path: "/community",
+    path: "/community/:id?",
     name: 'community',
     component: Community,
   }]
