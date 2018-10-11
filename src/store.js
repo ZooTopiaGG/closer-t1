@@ -12,8 +12,9 @@ import draft from './pages/draft/index/module'
 import message from './pages/message/index/module'
 import login from './components/login/module'
 import messageboard from './components/messageboard/module'
+import service from './components/service'
+import group from './pages/group/module'
 
-import service from './components/service';
 
 Vue.use(Vuex)
 
@@ -119,7 +120,8 @@ export default new Vuex.Store({
     draft,
     message,
     login,
-    messageboard
+    messageboard,
+    group
   },
   actions: {
     // h5设置cookies埋点

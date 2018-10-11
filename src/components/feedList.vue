@@ -1,7 +1,7 @@
 <template>
   <div class="feed">
     <div class="head">热门文章</div>
-    <div class="feed-content" v-for="(item,key) in this.$store.state.common.hotSubjects" :key="key" @click="downloadApp($event, '', item.subjectid)">
+    <div class="feed-content" v-for="(item,key) in hotSubjects" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">
         <img class="icon" :src="item.blogo" />
         <span class="column">{{item.communityName}}</span>
@@ -58,18 +58,24 @@
     data() {
       return {}
     },
+    props: {
+      hotSubjects: {
+        type: Array,
+        default: () => {
+          return [];
+        }
+      },
+      title: {
+        type: String,
+        default: "热门文章"
+      }
+    },
     computed: {
-      ...mapState("comment", {
-        hotSubjects: state => state.hotSubjects,
-      })
+     
     },
-    beforeMount() {
-      this.getHotSubjects()
-    },
+   
     methods: {
-      ...mapActions("common", [
-        "getHotSubjects"
-      ]),
+    
       dateFormate(t, f) {
         return getCommonTime(t, f);
       },

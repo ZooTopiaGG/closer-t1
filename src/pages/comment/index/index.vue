@@ -45,9 +45,9 @@
         <div class="line"></div>
       </div>
       <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
-      <Feedlist></Feedlist>
+      <Feedlist :hotSubjects="hotSubjects"></Feedlist>
     </div>
-    <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
+    <!-- <Notfound v-else :isDelete="subject.bool_delete"></Notfound> -->
   </div>
 </template>
 
@@ -81,34 +81,39 @@
         content: state => state.content,
         discuss: state => state.discuss,
         subjectExist: state => state.subjectExist
+      }),
+       ...mapState("comment", {
+        hotSubjects: state => state.hotSubjects,
       })
-     
+  
     },
     beforeMount() {
       this.$store.commit("GET_VERSION");
       this.$store.commit("SET_ENTER_TIME", Date.now());
-       // 存会话 h5Adid
-        if (this.$store.state.h5Adid) {
-          Cookies.set("h5Adid", this.$store.state.h5Adid);
-        } else {
-          Cookies.set("h5Adid", "");
-        }
-       
+      // 存会话 h5Adid
+      if (this.$store.state.h5Adid) {
+        Cookies.set("h5Adid", this.$store.state.h5Adid);
+      } else {
+        Cookies.set("h5Adid", "");
+      }
+  
     },
     mounted() {
-      console.log('params.sid:', this.$route.params.sid)
-      if (this.$route.params.sid) {
+      console.log('params.id:', this.$route.params.id)
+      if (this.$route.params.id) {
         this.getSubject({
-          "subjectid": this.$route.params.sid
+          "subjectid": this.$route.params.id
         });
+        // this.getHotSubjects()
       }
     },
     methods: {
+        ...mapActions("common", [
+        "getHotSubjects"
+      ]),
       ...mapActions("comment", [
         "getSubject"
       ]),
-     
-  
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },

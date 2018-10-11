@@ -1,51 +1,34 @@
 <template>
   <div class="group">
     <downloadBar></downloadBar>
-    <div class="member">
-      <div class="title">群组成员4</div>
+    <div class="member" v-if="group.group_info&&group.group_user_count">
+      <div class="title">群组成员{{group.group_user_count}}</div>
       <ul class="member-icons">
         <li class="head">
-          <img src="https://file.tiejin.cn/avatar/u/9iy2m2wLhD?v=1534747704065" class="icon">
+          <img v-lazy="fileUrlParse(group.group_info.group.attributes.monitor.user.avatar)" class="icon">
           <p class="owner">
             <span>群主</span>
           </p>
-          <div class="name">逆惺惺相惜臣</div>
+          <div class="name">{{group.group_info.group.attributes.monitor.user.fullname}}</div>
         </li>
-        <li class="head">
-          <img src="https://file.tiejin.cn/avatar/u/9iy2m2wLhD?v=1534747704065" class="icon">
-          <p class="owner">
-            <span>群主</span>
-          </p>
-          <div class="name">逆惺惺相惜臣</div>
-        </li>
-        <li class="head">
-          <img src="https://file.tiejin.cn/avatar/u/9iy2m2wLhD?v=1534747704065" class="icon">
-          <p class="owner">
-            <span>群主</span>
-          </p>
-          <div class="name">逆惺惺相惜臣</div>
-        </li>
-        <li class="head">
-          <img src="https://file.tiejin.cn/avatar/u/9iy2m2wLhD?v=1534747704065" class="icon">
-          <p class="owner">
-            <span>群主</span>
-          </p>
-          <div class="name">逆惺惺相惜臣</div>
-        </li>
-        <li class="head">
-          <img src="https://file.tiejin.cn/avatar/u/9iy2m2wLhD?v=1534747704065" class="icon">
-          <p class="owner">
-            <span>群主</span>
-          </p>
-          <div class="name">逆惺惺相惜臣</div>
+        <li class="head" v-for="(item,index) in group.group_user_info" :key="index" v-if="index<4">
+          <img v-lazy="fileUrlParse(item.props.roster.avatar)" class="icon">
+          <div class="name">{{item.props.roster.name}}</div>
         </li>
       </ul>
-      <div class="more-member">查看更多群成员<i class="arrow"></i></div>
+      <div class="more-member" v-if="group.group_user_count>5">查看更多群成员<i class="arrow"></i></div>
       <div class="split-line"></div>
     </div>
-    <div class="current-topic">当前话题 <i class="arrow-right"></i>
+    <div class="description" v-if="group.group_info && description">
+      <div class="desc">群简介 <i class="arrow-right"></i>
+      </div>
+      <div class="desc-content">{{description}}</div>
     </div>
-    <div class="topic-content">分享成都有趣的事情、好吃的小店、好玩的地方，定期举办线下聚会。</div>
+    <div class="topic">
+      <div class="current-topic">当前话题 <i class="arrow-right"></i>
+      </div>
+      <div class="topic-content">分享成都有趣的事情、好吃的小店、好玩的地方，定期举办线下聚会。</div>
+    </div>
     <div class="split-box"></div>
     <div class="group-info">
       <span class="title">所属贴近号</span>
@@ -61,11 +44,59 @@
 <script>
   import DownloadBar from '../../components/downloadBar';
   import Feedlist from '../../components/feedList'
-  
+  import {
+    makeFileUrl
+  } from '../../utils'
+  import {
+    mapState,
+    mapActions
+  } from "vuex";
   export default {
     components: {
       DownloadBar,
       Feedlist
+    },
+    computed: {
+     
+    },
+    beforeMount() {
+      if (this.$route.params.id) {
+        this.getGroupInfo({
+          groupId: this.$route.params.id
+        });
+        let params = {
+          flag: 1,
+          classid: this.$route.params.id,
+          index: "",
+          pagesize: 5
+        };
+        this.getGroupList(params);
+      }
+    },
+    methods: {
+      ...mapActions('group', ['getGroupInfo','getGroupList']),
+      fileUrlParse(url, type, size) {
+        return makeFileUrl(url, type, size);
+      },
+      description() {
+        try {
+          return JSON.parse(
+            group.group_info.group.description
+          )[0].content;
+          console.log("xx", group.group_info.group)
+        } catch (e) {
+          return group.group_info.group.description;
+        }
+      },
+      announcement() {
+        try {
+          return JSON.parse(
+            this.$store.state.group.group.announcement
+          )[0].content;
+        } catch (e) {
+          return this.$store.state.group.group.announcement;
+        }
+      }
     }
   }
 </script>
@@ -155,17 +186,33 @@
       background: url("../../assets/images/back.png") no-repeat;
       background-size: cover;
     }
-    .current-topic {
-      margin: 20pr 40pr 20pr 40pr;
-      font-size: 32pr;
-      font-weight: 600;
-      position: relative;
+    .description {
+      .desc {
+        margin: 20pr 40pr 20pr 40pr;
+        font-size: 32pr;
+        font-weight: 600;
+        position: relative;
+      }
+      .desc-content {
+        padding: 0 40pr 0 40pr;
+        margin-bottom: 40pr;
+        font-size: 28pr;
+        color: #94928E;
+      }
     }
-    .topic-content {
-      padding: 0 40pr 0 40pr;
-      margin-bottom: 40pr;
-      font-size: 28pr;
-      color: #94928E;
+    .topic {
+      .current-topic {
+        margin: 20pr 40pr 20pr 40pr;
+        font-size: 32pr;
+        font-weight: 600;
+        position: relative;
+      }
+      .topic-content {
+        padding: 0 40pr 0 40pr;
+        margin-bottom: 40pr;
+        font-size: 28pr;
+        color: #94928E;
+      }
     }
     .split-box {
       width: 100%;
