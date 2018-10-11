@@ -1,7 +1,7 @@
 <template>
   <div class="feed">
     <div class="head">热门文章</div>
-    <div class="feed-content" v-for="(item,key) in hotSubjects" :key="key" @click="downloadApp($event, '', item.subjectid)">
+    <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">
         <img class="icon" :src="item.blogo" />
         <span class="column">{{item.communityName}}</span>
@@ -59,7 +59,7 @@
       return {}
     },
     props: {
-      hotSubjects: {
+      subjectList: {
         type: Array,
         default: () => {
           return [];

@@ -95,6 +95,7 @@ const mutations = {
     state.incr_view = para
   },
   SET_HOT_SUBJECTS(state, para) {
+    console.log("SET_HOT_SUBJECTS", para)
     state.hotSubjects = para
   }
 }

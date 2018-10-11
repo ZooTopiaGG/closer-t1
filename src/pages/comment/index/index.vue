@@ -1,53 +1,55 @@
 <template>
   <div>
-    <div v-if="subjectExist" class="comment">
-      <div class="title">
-        {{subject.title}}
-      </div>
-      <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
-      </div>
-      <div class="discuss" v-for="(item,key) in discuss" :key="key">
-        <div class="discuss-content">
-          <div class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></div>
-          <div class="info">
-            <div class="info-up">
-              <span class="nickname">{{item.nickname}}</span>
-              <!-- <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span> -->
-            </div>
-            <div v-if="item.type===0">
-              <!-- 文字链接 -->
-              <div class="link" v-if="item.weblink" v-html="item.newText">
+    <div v-if="subjectExist">
+      <div class="comment">
+        <div class="title">
+          {{subject.title}}
+        </div>
+        <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+        </div>
+        <div class="discuss" v-for="(item,key) in discuss" :key="key">
+          <div class="discuss-content">
+            <div class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></div>
+            <div class="info">
+              <div class="info-up">
+                <span class="nickname">{{item.nickname}}</span>
+                <!-- <span class="time">{{formatTime(item.createTime,'yy.mm.dd')}}</span> -->
               </div>
-              <div class="text" v-else>
-                {{ item.text }}
+              <div v-if="item.type===0">
+                <!-- 文字链接 -->
+                <div class="link" v-if="item.weblink" v-html="item.newText">
+                </div>
+                <div class="text" v-else>
+                  {{ item.text }}
+                </div>
               </div>
-            </div>
-            <div v-else-if="item.type===1">
-              <!-- 图片 -->
-              <img class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
-            </div>
-            <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
-              <!-- 视频 -->
-              <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
-            </div>
-            <div v-else-if="item.type===3">
-              <!-- 帖子 -->
-              <div class="feed" @click="tofeed(item.feed.feedId)">
-                <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
-                <div class="feed-info">
-                  <div class="feed-title">{{ item.feed.title }}</div>
-                  <div class="feed-summary">{{ item.feed.summary }}</div>
+              <div v-else-if="item.type===1">
+                <!-- 图片 -->
+                <img class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+              </div>
+              <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
+                <!-- 视频 -->
+                <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
+              </div>
+              <div v-else-if="item.type===3">
+                <!-- 帖子 -->
+                <div class="feed" @click="tofeed(item.feed.feedId)">
+                  <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
+                  <div class="feed-info">
+                    <div class="feed-title">{{ item.feed.title }}</div>
+                    <div class="feed-summary">{{ item.feed.summary }}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="line"></div>
         </div>
-        <div class="line"></div>
+        <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
       </div>
-      <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
-      <Feedlist :hotSubjects="hotSubjects"></Feedlist>
+      <Feedlist :subjectList="hotSubjects"></Feedlist>
     </div>
-    <!-- <Notfound v-else :isDelete="subject.bool_delete"></Notfound> -->
+    <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -82,7 +84,7 @@
         discuss: state => state.discuss,
         subjectExist: state => state.subjectExist
       }),
-       ...mapState("comment", {
+      ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       })
   
@@ -104,11 +106,11 @@
         this.getSubject({
           "subjectid": this.$route.params.id
         });
-        // this.getHotSubjects()
+        this.getHotSubjects()
       }
     },
     methods: {
-        ...mapActions("common", [
+      ...mapActions("common", [
         "getHotSubjects"
       ]),
       ...mapActions("comment", [
