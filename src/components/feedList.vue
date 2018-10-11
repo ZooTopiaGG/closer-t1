@@ -1,7 +1,7 @@
 <template>
-  <div class="feed" v-if="hotSubject.length>0">
+  <div class="feed">
     <div class="head">热门文章</div>
-    <div class="feed-content" v-for="(item,key) in hotSubject" :key="key" @click="downloadApp($event, '', item.subjectid)">
+    <div class="feed-content" v-for="(item,key) in this.$store.state.common.hotSubjects" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">
         <img class="icon" :src="item.blogo" />
         <span class="column">{{item.communityName}}</span>
@@ -55,22 +55,21 @@
   
   export default {
     name: "feedList",
-    props: {
-      hotSubject: {
-        Array,
-        default: () => {
-          return [];
-        }
-      }
-    },
     data() {
       return {}
     },
-    computed: {},
-    mouted() {
-  
+    computed: {
+      ...mapState("comment", {
+        hotSubjects: state => state.hotSubjects,
+      })
+    },
+    beforeMount() {
+      this.getHotSubjects()
     },
     methods: {
+      ...mapActions("common", [
+        "getHotSubjects"
+      ]),
       dateFormate(t, f) {
         return getCommonTime(t, f);
       },
@@ -78,7 +77,7 @@
         return makeFileUrl(url, type, size);
       },
       async downloadApp(e, str, id) {
-      let  redirectUrl = `closer://feed/${id}`;
+        let redirectUrl = `closer://feed/${id}`;
         down_statistics(
           this.$store,
           this.$route,

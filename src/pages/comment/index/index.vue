@@ -45,7 +45,7 @@
         <div class="line"></div>
       </div>
       <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
-      <Feedlist :hotSubject="hotSubjects.data"></Feedlist>
+      <Feedlist></Feedlist>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -81,10 +81,8 @@
         content: state => state.content,
         discuss: state => state.discuss,
         subjectExist: state => state.subjectExist
-      }),
-      ...mapState("common", {
-        hotSubjects: state => state.hotSubjects,
       })
+     
     },
     beforeMount() {
       this.$store.commit("GET_VERSION");
@@ -103,16 +101,13 @@
         this.getSubject({
           "subjectid": this.$route.params.sid
         });
-        this.getHotSubjects()
       }
     },
     methods: {
       ...mapActions("comment", [
         "getSubject"
       ]),
-      ...mapActions("common", [
-        "getHotSubjects"
-      ]),
+     
   
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
