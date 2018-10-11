@@ -8,9 +8,7 @@
       <div class="cln-name">{{communityShow.name}}</div>
       <div class="cln-text" v-if="communityShow.description">{{communityShow.description}}</div>
       <div class="cln-text" v-else>用心写出有态度，有深度，有高度的文章 <br>请关注我们吧～</div>
-      <Focus :tjFocus="tjFocus"></Focus>
-      <!-- <div class="btn-commen focus" v-if="communityShow.isFollowed">已关注</div>
-        <div class="btn-commen unfocus" @click="focus(communityShow.isFollowed)">已关注</div> -->
+      <Focus :tjFocus="tjFocus" class="cln-btn"></Focus>
     </div>
     <div class="group-wrap" v-if="groupList.data && groupList.data.length > 0">
       <div class="gr-line1 box box-lr">
@@ -31,7 +29,8 @@
       <p>本栏目暂不开放招新</p>
       <p>可通过投稿申请建群～</p>
     </div>
-    <feed-list ref="feedlist"></feed-list>
+    <feed-list ref="feedlist" class="feed-list"></feed-list>
+    <foot-bar></foot-bar>
   </div>
 </template>
 
@@ -40,6 +39,7 @@
   import DownloadBar from '../../../components/downloadBar'
   import FeedList from '../../../components/feedList'
   import Focus from '../../../components/focus'
+  import FootBar from '../../../components/footBar'
   import {
     mapState,
     mapActions,
@@ -56,7 +56,9 @@
     components: {
       DownloadBar,
       FeedList,
-      Focus
+      Focus,
+      FootBar
+  
     },
     data() {
       return {
@@ -183,7 +185,6 @@
         >img {
           width: 100%;
           overflow: hidden;
-          border: 1px solid black;
         }
       }
       .cln-name {
@@ -200,6 +201,9 @@
         font-size: 32pr;
         line-height: 60pr;
         text-align: center;
+      }
+      .cln-btn {
+        margin-top: 60pr;
       }
       .btn-commen {
         width: 240pr;
@@ -271,6 +275,9 @@
       color: #808080;
       text-align: center;
       padding: 40pr;
+    }
+    .feed-list {
+      margin-top: 20pr;
     }
   }
 </style>

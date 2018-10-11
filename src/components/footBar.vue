@@ -18,6 +18,7 @@ export default {
 <style lang="less" scoped>
   .footer {
     background: #fff;
+    border: 1px solid #fff;
     .footer-wrapper {
       margin: 14pr 40pr;
       .footer-btn {
@@ -27,6 +28,7 @@ export default {
         text-align: center;
         background: #FDDB00;
         color: #4B4945;
+        border-radius: 10pr;
       }
     }
   }

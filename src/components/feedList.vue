@@ -93,11 +93,13 @@
 <style scoped lang="less">
   .feed {
     margin-top: 20pr;
+    background: #fff;
     .head {
       color: #4B4945;
       line-height: 44pr;
       font-size: 32pr;
-      margin: 18pr 0 18pr 40pr;
+      padding: 30pr 0 30pr 40pr;
+      border-bottom: 1px solid #f1f1f1;
     }
     .feed-content {
       border-bottom: 20pr solid #f1f1f1;
