@@ -458,7 +458,7 @@ export async function downApp(url) {
 }
 
 // 统计方法
-export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
+export async function down_statistics({ store, route, str, defaultStr, redirectUrl }) {
   let result = await store.dispatch("down_adcookies");
   if (result) {
     let _page, url, did = route.params.id || route.params.messageid,

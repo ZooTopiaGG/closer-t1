@@ -16,28 +16,28 @@
           <div class="name">{{item.props.roster.name}}</div>
         </li>
       </ul>
-      <div class="more-member" v-if="group.group_user_count>5">查看更多群成员<i class="arrow"></i></div>
+      <div class="more-member" v-if="group.group_user_count>5" @click="moreMember">查看更多群成员<i class="arrow"></i></div>
       <div class="split-line"></div>
     </div>
-    <div class="description" v-if="group.group_info && description">
+    <div class="description" v-if="group.group_info && description()">
       <div class="desc">群简介 <i class="arrow-right"></i>
       </div>
-      <div class="desc-content">{{description}}</div>
+      <div class="desc-content">{{ description() }}</div>
     </div>
-    <div class="topic">
+    <div class="topic" v-if="group.group_info && announcement()">
       <div class="current-topic">当前话题 <i class="arrow-right"></i>
       </div>
-      <div class="topic-content">分享成都有趣的事情、好吃的小店、好玩的地方，定期举办线下聚会。</div>
+      <div class="topic-content">{{announcement()}}</div>
     </div>
     <div class="split-box"></div>
-    <div class="group-info">
+    <div class="group-info" v-if="groupFeedList&&groupFeedList.length>0">
       <span class="title">所属贴近号</span>
-      <img class="icon" src="http://file.tiejin.cn/public/9J77p9Dnh6/1532678707000.jpg" />
-      <span class="name">城市知识局</span>
+      <img class="icon" v-lazy="groupFeedList[0].blogo" />
+      <span class="name">{{groupFeedList[0].communityName}}</span>
       <i class="arrow-right"></i>
     </div>
     <div class="split-box"></div>
-    <feedlist></feedlist>
+    <feedlist :subjectList="groupFeedList" :title="groupFeedTitle"></feedlist>
   </div>
 </template>
 
@@ -45,7 +45,8 @@
   import DownloadBar from '../../components/downloadBar';
   import Feedlist from '../../components/feedList'
   import {
-    makeFileUrl
+    makeFileUrl,
+    down_statistics
   } from '../../utils'
   import {
     mapState,
@@ -57,11 +58,16 @@
       Feedlist
     },
     computed: {
-     
+      ...mapState("group", {
+        group: state => state.group,
+        groupFeedList: state => state.groupFeedList,
+        groupFeedTitle: state => state.groupFeedTitle
+      }),
+  
     },
-    beforeMount() {
+    async beforeMount() {
       if (this.$route.params.id) {
-        this.getGroupInfo({
+        await this.getGroupInfo({
           groupId: this.$route.params.id
         });
         let params = {
@@ -74,29 +80,53 @@
       }
     },
     methods: {
-      ...mapActions('group', ['getGroupInfo','getGroupList']),
+      ...mapActions('group', ['getGroupInfo', 'getGroupList']),
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
       description() {
         try {
           return JSON.parse(
-            group.group_info.group.description
+            this.$store.state.group.group.group_info.group.description
           )[0].content;
-          console.log("xx", group.group_info.group)
         } catch (e) {
-          return group.group_info.group.description;
+          return this.$store.state.group.group.group_info.group.description;
         }
       },
       announcement() {
         try {
           return JSON.parse(
-            this.$store.state.group.group.announcement
+            this.$store.state.group.group.group_info.announcement
           )[0].content;
         } catch (e) {
-          return this.$store.state.group.group.announcement;
+          return this.$store.group.state.group.group_info.announcement;
         }
+      },
+      async moreMember() {
+        this.$store.commit("SET_EXTENSION_TEXT", "more_group_member");
+        // 渲染页面前 先判断cookies token是否存在
+        if (Cookies.get("token")) {
+          this.downApp();
+        } else {
+          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
+          if (ENV.wx) {
+            // 通过微信授权 获取code
+           
+          } else {
+            this.$store.commit("GET_LOGIN_TYPE", "toDown");
+            this.$store.commit("SET_VISIBLE_LOGIN", true);
+          }
+        }
+      },
+      async downloadApp(e, str, id) {
+        down_statistics({
+          "store": this.$store,
+          "route": this.$route,
+          "str": str,
+          "defaultStr": "more_group_member",
+        });
       }
+  
     }
   }
 </script>

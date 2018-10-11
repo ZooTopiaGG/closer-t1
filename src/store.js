@@ -37,6 +37,9 @@ export default new Vuex.Store({
     visibleLogin: '',
     h5Cookies: '',
     h5Adid: '',
+    extension_text: '', // 来自某个按钮的点击
+    get_login_type: '', // toFocus 来自关注后弹窗 toDown 来自登录后直接跳转下载 inviter 来自奖励金,
+    visibleLogin: false,
   },
   mutations: {
     // 设置贴子详情内容

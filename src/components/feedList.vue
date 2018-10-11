@@ -1,6 +1,6 @@
 <template>
   <div class="feed">
-    <div class="head">热门文章</div>
+    <div class="head">{{title}}</div>
     <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">
         <img class="icon" :src="item.blogo" />
@@ -84,12 +84,12 @@
       },
       async downloadApp(e, str, id) {
         let redirectUrl = `closer://feed/${id}`;
-        down_statistics(
-          this.$store,
-          this.$route,
-          str,
-          "hot_feed",
-          redirectUrl
+        down_statistics({
+          "store":this.$store,
+          "route":this.$route,
+          "str":str,
+          "defaultStr":"hot_feed",
+          "redirectUrl":redirectUrl}
         );
       }
     }
