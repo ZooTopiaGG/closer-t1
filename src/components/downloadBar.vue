@@ -43,12 +43,12 @@
       handleClick(e, str) {
         let self = this,
           redirectUrl = config.download[ENV.env];
-        down_statistics(
-          self.$store,
-          self.$route,
+        down_statistics({
+         'store': self.$store,
+        'route':  self.$route,
           str,
-          "direct_top",
-          redirectUrl
+          "defaultStr":"direct_top",
+          redirectUrl}
         );
       }
     }
