@@ -108,19 +108,19 @@ export function dateFormat(time, flag) {
   if (day < 10) {
     day = "0" + day;
   }
-  if(hours < 10) {
+  if (hours < 10) {
     hours = "0" + hours
   }
-  if(minutes < 10) {
+  if (minutes < 10) {
     minutes = "0" + minutes
   }
-  if(second < 10) {
+  if (second < 10) {
     second = "0" + second
   }
-  if(flag == 'date') {
+  if (flag == 'date') {
     return year + "-" + month + "-" + day;
   }
-  if(flag == 'time') {
+  if (flag == 'time') {
     return year + "-" + month + "-" + day + " " + hours + ":" + minutes
   }
 }
@@ -429,7 +429,6 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
 
 
 export async function downApp(url) {
-  return;
   if (url) {
     if (!isJumpOut()) {
       if (url.indexOf('?from=group') > -1) {
@@ -462,7 +461,7 @@ export async function downApp(url) {
 export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
   let result = await store.dispatch("down_adcookies");
   if (result) {
-    let _page, url, did = route.params.sid || route.params.messageid,
+    let _page, url, did = route.params.id || route.params.messageid,
       progress, _str, s = JSON.parse;
     if (route.path.indexOf("/community") > -1) {
       _page = "community";

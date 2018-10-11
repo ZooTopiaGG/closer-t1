@@ -70,12 +70,16 @@ const actions = {
       let data = await service.get_hot_subjects(params)
       if (data.code === 0) {
         data.result.data.map(x => {
-          if (x.content) {
-            x.content = JSON.parse(x.content);
-          }
-          return x;
-        })
-        commit("SET_HOT_SUBJECTS", data.result);
+            if (x.content) {
+              x.content = JSON.parse(x.content);
+            }
+            return x;
+          })
+          // return data.result;
+        console.log(data.result.data)
+        if (data.result.data) {
+          commit("SET_HOT_SUBJECTS", data.result.data);
+        }
       }
     } catch (e) {
       console.log(e);
