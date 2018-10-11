@@ -60,7 +60,7 @@ const router = new Router({
       component: Group
     },
     {
-      path: "/community",
+      path: "/community/:id",
       name: 'community',
       component: Community,
     }
