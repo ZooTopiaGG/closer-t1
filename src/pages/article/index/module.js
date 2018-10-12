@@ -19,6 +19,7 @@ const actions = {
     try {
       // 获取贴子详情
       let res = await fetchContent(id)
+      console.log('res123', res)
       if (res.code != 0) {
         // 贴子被删除状态
         commit("GET_EXIST_STATUS", false);

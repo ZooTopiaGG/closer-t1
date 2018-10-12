@@ -9,3 +9,15 @@ export async function getCode(payload) {
 export async function Login(payload) {
   return await Axios.post(api.admin.closeruser_regist, payload)
 }
+
+/**
+ * @param payload
+ * 获取微信授权code
+ */
+export async function getAuthPath(payload) {
+  return await Axios.post(api.admin.get_auth_path, payload)
+}
+
+export async function loginWithWechat(payload) {
+  return await Axios.post(api.admin.login_with_wechat, payload)
+}

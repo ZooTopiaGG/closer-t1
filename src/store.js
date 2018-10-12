@@ -40,6 +40,7 @@ export default new Vuex.Store({
     extension_text: '', // 来自某个按钮的点击
     get_login_type: '', // toFocus 来自关注后弹窗 toDown 来自登录后直接跳转下载 inviter 来自奖励金,
     visibleLogin: false,
+    res: {}
   },
   mutations: {
     // 设置贴子详情内容

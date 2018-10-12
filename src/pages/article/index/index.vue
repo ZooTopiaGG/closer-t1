@@ -1,45 +1,65 @@
 <template>
-  <section class="article" v-if="exist">
-    <!-- 帖子内容 -->
-    <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
-    <section class="article-wrap">
-      <section class="article-container">
-        <!-- 标题 -->
-        <section class="article-title"> {{ res.title }} </section>
-        <!-- 暂时隐藏 -->
-        <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                      <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                    </section> -->
-        <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+  <div>
+    <!-- 下载条 -->
+    <download-bar></download-bar>
+    <section class="article" v-if="exist">
+      <!-- 帖子内容 -->
+      <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
+      <section class="article-wrap">
+        <section class="article-container">
+          <!-- 标题 -->
+          <section class="article-title"> {{ res.title }} </section>
+          <!-- 关注bar -->
+          <focus-bar class="focus-bar"></focus-bar>
+          <!-- 暂时隐藏 -->
+          <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
+                          <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                        </section> -->
+          <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          </section>
+          <!-- 阅读 喜欢 -->
+          <like-bar class="like-bar"></like-bar>
+          <!-- 留言板 -->
+          <message-board></message-board>
+          <!-- 热门文章 -->
+          <feed-list :subjectList="hotSubjects"></feed-list>
+          <!-- 底部Bar -->
+          <foot-bar></foot-bar>
         </section>
       </section>
     </section>
-  </section>
-  <Notfound v-else :isDelete="res.bool_delete"></Notfound>
+    <Notfound v-else :isDelete="res.bool_delete"></Notfound>
+  </div>
 </template>
 
 <script>
   import Cookie from "js-cookie";
   import {
-    createNamespacedHelpers
-  } from 'vuex'
-  
-  const {
     mapState,
-    mapActions,
-    mapMutations
-  } = createNamespacedHelpers('article');
+    mapActions,mapMutations
+  } from 'vuex'
+ 
   import {
     appPlayVideo,
     tabImg
   } from "../../../utils";
   import Notfound from '../../../components/error/notfound'
-  
-  
+  import DownloadBar from '../../../components/downloadBar'
+  import FootBar from '../../../components/footBar'
+  import FocusBar from '../../../components/focusBar'
+  import LikeBar from '../../../components/likeBar'
+  import MessageBoard from '../../../components/messageboard/index'
+  import FeedList from '../../../components/feedList'
   export default {
     name: "Feed",
     components: {
-      Notfound
+      DownloadBar,
+      FootBar,
+      Notfound,
+      FocusBar,
+      LikeBar,
+      MessageBoard,
+      FeedList
     },
     data() {
       return {
@@ -50,18 +70,27 @@
       };
     },
     computed: {
-      ...mapState([
+      ...mapState("article",[
         'res',
         'content',
         'GET_MESSAGE_STATE',
         'version_1_2',
         'agent',
         'exist'
-      ])
+      ]),
+      ...mapState("common", {
+        hotSubjects: state => state.hotSubjects,
+      })
     },
     methods: {
-      ...mapActions(['fetch_content']),
-      ...mapMutations(['GET_USER_AGENT']),
+      ...mapActions("article",['fetch_content']),
+      ...mapMutations("article",['GET_USER_AGENT']),
+      ...mapActions("common", [
+        "getHotSubjects"
+      ]),
+      // ...mapActions("comment", [
+      //   "getSubject"
+      // ]),
       async fetch() {
         await this.fetch_content(this.$route.params)
       },
@@ -130,6 +159,8 @@
         ref: location.pathname
       });
       this.fetch();
+      console.log('params.id:', this.$route.params.id)
+      this.getHotSubjects()
     }
   };
 </script>
