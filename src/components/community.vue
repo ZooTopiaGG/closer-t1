@@ -17,7 +17,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['res']),
+    ...mapState('article', ['res']),
     showStyle() {
       return `community-${this.showType}`
     }
@@ -30,6 +30,7 @@ export default {
     }
   },
   mounted() {
+    console.log('res--', this.res)
     this.$nextTick(() => {
       // logo图片预加载
       let tjimg = document.querySelector(".access-not");

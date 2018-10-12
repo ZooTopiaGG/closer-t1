@@ -99,6 +99,7 @@ export default {
           commit("setSubjectState", false);
         }
       } catch (e) {
+        console.error("getSubject ", e)
         commit("setSubjectState", false);
       }
     }

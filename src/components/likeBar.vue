@@ -27,7 +27,7 @@
   } from 'vuex';
   export default {
     computed: {
-      ...mapState([
+      ...mapState('article',[
         'res'
       ]),
       ...mapState('common', ['incr_view']),
@@ -37,7 +37,9 @@
       },
       readCount() {
         // 数字处理
-        return getSingleCount(this.incr_view)
+        console.log('this.incr_view', this.incr_view)
+        // return getSingleCount(this.incr_view)
+        return this.incr_view
       }
     },
     methods: {
@@ -56,6 +58,7 @@
       }
     },
     mounted() {
+      console.log('window.ENV.v120',window.ENV.v120)
       this.get_incr_view({
         subjectid: this.$route.params.id,
         timestamp: Date.now()

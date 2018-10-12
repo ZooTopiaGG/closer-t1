@@ -1,7 +1,7 @@
 <template>
-  <div class="feed" v-if="hotSubject.length>0">
-    <div class="head">热门文章</div>
-    <div class="feed-content" v-for="(item,key) in hotSubject" :key="key" @click="downloadApp($event, '', item.subjectid)">
+  <div class="feed">
+    <div class="head">{{title}}</div>
+    <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">
         <img class="icon" :src="item.blogo" />
         <span class="column">{{item.communityName}}</span>
@@ -55,22 +55,27 @@
   
   export default {
     name: "feedList",
-    props: {
-      hotSubject: {
-        Array,
-        default: () => {
-          return [];
-        }
-      }
-    },
     data() {
       return {}
     },
-    computed: {},
-    mouted() {
-  
+    props: {
+      subjectList: {
+        type: Array,
+        default: () => {
+          return [];
+        }
+      },
+      title: {
+        type: String,
+        default: "热门文章"
+      }
     },
+    computed: {
+     
+    },
+   
     methods: {
+    
       dateFormate(t, f) {
         return getCommonTime(t, f);
       },
@@ -78,13 +83,13 @@
         return makeFileUrl(url, type, size);
       },
       async downloadApp(e, str, id) {
-      let  redirectUrl = `closer://feed/${id}`;
-        down_statistics(
-          this.$store,
-          this.$route,
-          str,
-          "hot_feed",
-          redirectUrl
+        let redirectUrl = `closer://feed/${id}`;
+        down_statistics({
+          "store":this.$store,
+          "route":this.$route,
+          "str":str,
+          "defaultStr":"hot_feed",
+          "redirectUrl":redirectUrl}
         );
       }
     }
@@ -94,11 +99,13 @@
 <style scoped lang="less">
   .feed {
     margin-top: 20pr;
+    background: #fff;
     .head {
       color: #4B4945;
       line-height: 44pr;
       font-size: 32pr;
-      margin: 18pr 0 18pr 40pr;
+      padding: 30pr 0 30pr 40pr;
+      border-bottom: 1px solid #f1f1f1;
     }
     .feed-content {
       border-bottom: 20pr solid #f1f1f1;

@@ -9,10 +9,11 @@ import common from './components/module'
 import article from './pages/article/index/module'
 import comment from './pages/comment/index/module'
 import draft from './pages/draft/index/module'
+import community from './pages/community/index/module'
 import message from './pages/message/index/module'
-import login from './components/login/module'
+import service from './components/service'
+import group from './pages/group/module'
 
-import service from './components/service';
 
 Vue.use(Vuex)
 
@@ -34,6 +35,10 @@ export default new Vuex.Store({
     visibleLogin: '',
     h5Cookies: '',
     h5Adid: '',
+    extension_text: '', // 来自某个按钮的点击
+    get_login_type: '', // toFocus 来自关注后弹窗 toDown 来自登录后直接跳转下载 inviter 来自奖励金,
+    visibleLogin: false,
+    res: {}
   },
   mutations: {
     // 设置贴子详情内容
@@ -115,13 +120,15 @@ export default new Vuex.Store({
     article,
     comment,
     draft,
+    community,
     message,
-    login
+    group
   },
   actions: {
     // h5设置cookies埋点
     async get_adcookie({
-      commit
+      commit,
+      state
     }, {
       webUdid
     }) {
@@ -195,7 +202,7 @@ export default new Vuex.Store({
       if (data.code === 0) {
         return true
       }
-    },
+    }
   }
 
 })

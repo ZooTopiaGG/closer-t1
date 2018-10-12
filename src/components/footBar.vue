@@ -7,7 +7,6 @@
 </template>
 <script>
 export default {
-  name: 'footer',
   data() {
     return {
       btnText: '打开贴近app，查看更多精彩文章' //立即投稿，赚取稿费

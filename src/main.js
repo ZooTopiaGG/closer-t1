@@ -18,9 +18,8 @@ import ENV from './config/init'
 if (ENV.dev) {
   const vconsole = new Vconsole()
 }
-Vue.prototype.ENV = ENV;
+Vue.prototype.ENV = window.ENV = ENV;
 window.wx = Wx;
-window.ENV = ENV;
 window.Axios = axio;
 window.Cookies = Cookies;
 window.MobileDetect = MobileDetect;

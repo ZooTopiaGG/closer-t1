@@ -58,7 +58,6 @@
     },
     data() {
       return {
-        isApp: window.ENV.app,
         phoneNum: '12000000012',
         code: '',
         captchaIns: '',
@@ -66,7 +65,7 @@
       };
     },
     beforeMount() {
-      if (this.isApp) {
+      if (this.ENV.app) {
   
       } else {
         var script = document.createElement("script");
@@ -79,7 +78,7 @@
       
     },
     computed: {
-      ...mapState("login", {
+      ...mapState("common", {
         visible: state => state.visible,
         smsCode: state => state.smsCode
       })
@@ -90,11 +89,11 @@
       }
     },
     methods: {
-      ...mapMutations('login', [
+      ...mapMutations('common', [
         'show',
         'hide'
       ]),
-      ...mapActions("login", [
+      ...mapActions("common", [
         "getCode",
         "login"
       ]),

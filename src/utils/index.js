@@ -94,7 +94,7 @@ export function px2px(v) {
  * yyyy-dd-mm
  * 
  */
-export function dateFormat(time) {
+export function dateFormat(time, flag) {
   let d = new Date(time);
   let year = d.getFullYear();
   let month = d.getMonth() + 1;
@@ -108,7 +108,21 @@ export function dateFormat(time) {
   if (day < 10) {
     day = "0" + day;
   }
-  return year + "-" + month + "-" + day;
+  if (hours < 10) {
+    hours = "0" + hours
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes
+  }
+  if (second < 10) {
+    second = "0" + second
+  }
+  if (flag == 'date') {
+    return year + "-" + month + "-" + day;
+  }
+  if (flag == 'time') {
+    return year + "-" + month + "-" + day + " " + hours + ":" + minutes
+  }
 }
 
 
@@ -411,7 +425,6 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
 
 
 export async function downApp(url) {
-  return;
   if (url) {
     if (!isJumpOut()) {
       if (url.indexOf('?from=group') > -1) {
@@ -441,10 +454,10 @@ export async function downApp(url) {
 }
 
 // 统计方法
-export async function down_statistics(store, route, str, defaultStr, redirectUrl) {
+export async function down_statistics({ store, route, str, defaultStr, redirectUrl }) {
   let result = await store.dispatch("down_adcookies");
   if (result) {
-    let _page, url, did = route.params.sid || route.params.messageid,
+    let _page, url, did = route.params.id || route.params.messageid,
       progress, _str, s = JSON.parse;
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
@@ -537,4 +550,9 @@ function getParam(paramName, str) {
     }
   }
   return paramValue;
+}
+
+
+function loginAction() {
+
 }

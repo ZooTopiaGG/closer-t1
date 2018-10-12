@@ -30,20 +30,25 @@
   </section>
 </template>
 <script>
+  import Vue from 'vue'
   import { down_statistics } from '../utils/index'
   import baseUrl from '../config'
+  import { Swipe, SwipeItem } from 'mint-ui';
+
+  Vue.component(Swipe.name, Swipe);
+  Vue.component(SwipeItem.name, SwipeItem);
   export default {
     name: 'downloadBar',
     methods: {
       handleClick(e, str) {
         let self = this,
           redirectUrl = baseUrl.download;
-        down_statistics(
-          self.$store,
-          self.$route,
+        down_statistics({
+         'store': self.$store,
+        'route':  self.$route,
           str,
-          "direct_top",
-          redirectUrl
+          "defaultStr":"direct_top",
+          redirectUrl}
         );
       }
     }
@@ -69,7 +74,7 @@
       padding: 0 40pr;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #dcdee2;
+      box-shadow: 0 1px 5px #efefef;
       background: #fff;
       color: #4b4945;
     }
