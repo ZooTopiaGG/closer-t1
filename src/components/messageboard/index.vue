@@ -103,13 +103,14 @@
     computed: {
       ...mapState("messageboard", {
         messagelist: state => state.messagelist,
-        wxurl: state => state.wxurl
       })
     },
     methods: {
       ...mapActions("messageboard", [
         "getCommentsList",
-        "checkIsLike",
+        "checkIsLike"
+      ]),
+      ...mapActions("login", [
         "getWxAuth",
         "getUserInfoWithWx"
       ]),
