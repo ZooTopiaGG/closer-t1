@@ -30,7 +30,7 @@
       <div class="topic-content">{{announcement()}}</div>
     </div>
     <div class="split-box"></div>
-    <div class="group-info" v-if="groupFeedList&&groupFeedList.length>0">
+    <div class="group-info" v-if="groupFeedList&&groupFeedList.length>0" @click="toCommunity(group.group_info.communityid)">
       <span class="title">所属贴近号</span>
       <img class="icon" v-lazy="groupFeedList[0].blogo" />
       <span class="name">{{groupFeedList[0].communityName}}</span>
@@ -125,6 +125,9 @@
           "str": str,
           "defaultStr": "more_group_member",
         });
+      },
+      toCommunity(cid){
+         window.location.href=`/community/${cid}`;
       }
   
     }
