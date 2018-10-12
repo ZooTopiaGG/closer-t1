@@ -1,6 +1,6 @@
 <template>
   <div class="write-message">
-    <div class="title">你还在追“小升初”的时候，成都有妈妈提前下手“五升六了”</div>
+    <div class="title">{{ title }}</div>
     <div class="message-area">
       <textarea name="textarea" class="mint-field" placeholder="发表你的意见吧～" v-model="textarea"></textarea>
     </div>
@@ -33,6 +33,7 @@
     data() {
       return {
         textarea: "",
+        title: ''
       }
     },
     created() {
@@ -46,12 +47,25 @@
       }
     },
     computed: {
+      ...mapState('article', [
+        'res'
+      ]),
       ...mapState("message", {
         addReply: state => state.replyData
       })
     },
+    beforeMount() {
+      if (window.sessionStorage.getItem("title")) {
+      this.title = window.sessionStorage.getItem("title");
+    } else {
+      this.title =
+        this.res.int_type === 2
+          ? this.res.title
+          : this.content.text;
+    }
+    },
     mounted() {
-      console.log(this.$route.params)
+      console.log('params---',this.$route.params)
     },
     methods: {
       ...mapActions("message", [
@@ -59,7 +73,9 @@
         "getAdCookie"
       ]),
       toMessage() {
-        if (!this.textarea) {
+        if(this.textarea) {
+          window.sessionStorage.setItem("textarea", this.textarea)
+        } else {
           Toast('内容不能为空！')
           return
         }
@@ -73,13 +89,13 @@
             if (lastid) {
               params = {
                 subjectid: this.$route.params.sid,
-                content: this.textarea,
+                content: window.sessionStorage.getItem("textarea") ? window.sessionStorage.getItem("textarea") : this.textarea,
                 lastid: lastid
               }
             } else {
               params = {
                 subjectid: this.$route.params.sid,
-                content: this.textarea
+                content: window.sessionStorage.getItem("textarea") ? window.sessionStorage.getItem("textarea") : this.textarea,
               }
             }
             this.addReplyData(params)
