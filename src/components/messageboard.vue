@@ -3,7 +3,7 @@
     <div class="message-board" v-if="messagelist.length > 0">
       <div class="board-top">
         <span class="title" id="title">精彩留言</span>
-        <span class="write-message" @click="writeMessage('comment', $route.params.sid)">写留言</span>
+        <span class="write-message" @click="writeMessage('comment', $route.params.id)">写留言</span>
       </div>
       <div class="message-list" v-for="(item, index) in messagelist" :key="index">
         <div class="message-info box box-lr">
@@ -44,15 +44,15 @@
     </div>
     <div class="no-draft" v-else>
       <span class="text">暂无留言，赶紧留言吧~</span>
-      <span class="write" @click="writeMessage('comment', $route.params.sid)">写留言</span>
+      <span class="write" @click="writeMessage('comment', $route.params.id)">写留言</span>
     </div>
     <login-pop ref="login" :isFrom="'messagelist'"></login-pop>
   </div>
 </template>
 
 <script>
-  import baseUrl from '../../config/index'
-  import LoginPop from '../login/index.vue'
+  import baseUrl from '../config/index'
+  import LoginPop from './login/index.vue'
   import {
     mapState,
     mapActions
@@ -60,9 +60,8 @@
   import {
     makeFileUrl,
     dateFormat,
-    isWeiXin,
     downloadApp
-  } from '../../utils'
+  } from '../utils'
   export default {
     name: 'wrapper',
     components: {
@@ -78,17 +77,16 @@
     beforeMount() {
       let code = this.$route.query.code
   
-      if (this.$route.params.sid) {
+      if (this.$route.params.id) {
         this.getCommentsList({
-          "subjectid": this.$route.params.sid,
+          "subjectid": this.$route.params.id,
           "pagenum": this.pagenum,
           "pagesize": this.pagesize
         })
       }
     },
     mounted() {
-      console.log(1, window.EVN)
-      console.log('code---', this.$route.query.code)
+      console.log('this.res--', this.res)
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -101,16 +99,20 @@
       }
     },
     computed: {
-      ...mapState("messageboard", {
+      ...mapState('article', [
+        'res'
+      ]),
+      ...mapState('article', {
+        content: state => state.content
+      }),
+      ...mapState("common", {
         messagelist: state => state.messagelist,
       })
     },
     methods: {
-      ...mapActions("messageboard", [
+      ...mapActions("common", [
         "getCommentsList",
-        "checkIsLike"
-      ]),
-      ...mapActions("login", [
+        "checkIsLike",
         "getWxAuth",
         "getUserInfoWithWx"
       ]),
@@ -123,15 +125,20 @@
       writeMessage(type, id) {
         // 渲染页面前 先判断cookies user是否存在
         console.log('Cookies--', Cookies.get("GroukAuth"))
+        if (this.res.int_type === 2) {
+          window.sessionStorage.setItem("title", this.res.title);
+        } else {
+          window.sessionStorage.setItem("title", this.content.text);
+        }
         if (Cookies.get("user")) {
           this.gotoMessage(type, id);
         } else {
           // this.$refs.login.open()
           // 前期 仅微信后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
-          if (isWeiXin()) {
-  
+          if (window.ENV.wx) {
+
             console.log(this.$route.query.code)
-            let path = '/draft/' + this.$route.params.sid
+            let path = '/draft/' + this.$route.params.id
             let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
@@ -164,7 +171,7 @@
           });
         } else {
           this.$router.push({
-            path: `/message/${this.$route.params.sid}/${id}`
+            path: `/message/${this.$route.params.id}/${id}`
           });
         }
       },
@@ -245,7 +252,7 @@
             right: 64pr;
             color: #94928E;
             .res-icon {
-              background: url('../../pages/draft/assets/images/message.png') no-repeat center;
+              background: url('../pages/draft/assets/images/message.png') no-repeat center;
               background-size: cover;
             }
             .res-count {
@@ -277,7 +284,7 @@
               margin-left: 10pr;
               width: 10pr;
               height: 17pr;
-              background: url('../../pages/draft/assets/images/back@2x.png') no-repeat center;
+              background: url('../pages/draft/assets/images/back@2x.png') no-repeat center;
               background-size: cover;
             }
           }
@@ -293,7 +300,7 @@
           margin-left: 20pr;
           width: 18pr;
           height: 18pr;
-          background: url('../../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
+          background: url('../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
           background-size: cover;
         }
       }
