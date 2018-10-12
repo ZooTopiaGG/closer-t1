@@ -74,7 +74,7 @@
       padding: 0 40pr;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #dcdee2;
+      box-shadow: 0 1px 5px #efefef;
       background: #fff;
       color: #4b4945;
     }

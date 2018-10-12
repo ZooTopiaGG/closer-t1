@@ -2,7 +2,7 @@
   <div class="group">
     <downloadBar></downloadBar>
     <div class="member" v-if="group.group_info&&group.group_user_count">
-      <div class="title">群组成员{{group.group_user_count}}</div>
+      <div class="title">群组成员  {{group.group_user_count}}</div>
       <ul class="member-icons">
         <li class="head">
           <img v-lazy="fileUrlParse(group.group_info.group.attributes.monitor.user.avatar)" class="icon">

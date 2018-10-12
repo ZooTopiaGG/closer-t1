@@ -555,12 +555,8 @@ function getParam(paramName, str) {
   }
   return paramValue;
 }
-/*判断是否是微信 微博 QQ*/
-export function isWeiXin() {
-  if (typeof window != 'undefined') {
-    var wx = navigator.userAgent.toLowerCase();
-    return wx.indexOf('micromessenger') != -1
-  } else {
-    return false
-  }
+
+
+function loginAction() {
+
 }
