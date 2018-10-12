@@ -16,7 +16,7 @@
   import {
     Toast
   } from "mint-ui"
-  import LoginPop from '../../../components/login/index.vue'
+  import LoginPop from '../../../components/login.vue'
   import MessageSuccess from '../../../components/messageSuccess.vue'
   import Vue from "vue"
   import {

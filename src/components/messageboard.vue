@@ -51,8 +51,8 @@
 </template>
 
 <script>
-  import baseUrl from '../../config/index'
-  import LoginPop from '../login/index.vue'
+  import baseUrl from '../config/index'
+  import LoginPop from './login/index.vue'
   import {
     mapState,
     mapActions
@@ -62,7 +62,7 @@
     dateFormat,
     isWeiXin,
     downloadApp
-  } from '../../utils'
+  } from '../utils'
   export default {
     name: 'wrapper',
     components: {
@@ -101,16 +101,14 @@
       }
     },
     computed: {
-      ...mapState("messageboard", {
+      ...mapState("common", {
         messagelist: state => state.messagelist,
       })
     },
     methods: {
-      ...mapActions("messageboard", [
+      ...mapActions("common", [
         "getCommentsList",
-        "checkIsLike"
-      ]),
-      ...mapActions("login", [
+        "checkIsLike",
         "getWxAuth",
         "getUserInfoWithWx"
       ]),
@@ -245,7 +243,7 @@
             right: 64pr;
             color: #94928E;
             .res-icon {
-              background: url('../../pages/draft/assets/images/message.png') no-repeat center;
+              background: url('../pages/draft/assets/images/message.png') no-repeat center;
               background-size: cover;
             }
             .res-count {
@@ -277,7 +275,7 @@
               margin-left: 10pr;
               width: 10pr;
               height: 17pr;
-              background: url('../../pages/draft/assets/images/back@2x.png') no-repeat center;
+              background: url('../pages/draft/assets/images/back@2x.png') no-repeat center;
               background-size: cover;
             }
           }
@@ -293,7 +291,7 @@
           margin-left: 20pr;
           width: 18pr;
           height: 18pr;
-          background: url('../../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
+          background: url('../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
           background-size: cover;
         }
       }
