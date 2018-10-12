@@ -79,7 +79,7 @@
       
     },
     computed: {
-      ...mapState("login", {
+      ...mapState("common", {
         visible: state => state.visible,
         smsCode: state => state.smsCode
       })
@@ -90,11 +90,11 @@
       }
     },
     methods: {
-      ...mapMutations('login', [
+      ...mapMutations('common', [
         'show',
         'hide'
       ]),
-      ...mapActions("login", [
+      ...mapActions("common", [
         "getCode",
         "login"
       ]),
