@@ -242,7 +242,6 @@
             display: inline-block;
             width: 30pr;
             height: 28pr;
-            // border: 1px solid red;
           }
           .response {
             position: absolute;
