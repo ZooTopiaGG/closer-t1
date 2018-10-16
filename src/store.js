@@ -8,7 +8,6 @@ import {
 import common from './components/module'
 import article from './pages/article/index/module'
 import comment from './pages/comment/index/module'
-import draft from './pages/draft/index/module'
 import community from './pages/community/index/module'
 import message from './pages/message/index/module'
 import service from './components/service'
@@ -131,7 +130,6 @@ export default new Vuex.Store({
     common,
     article,
     comment,
-    draft,
     community,
     message,
     group

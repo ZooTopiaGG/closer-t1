@@ -138,7 +138,7 @@
           if (window.ENV.wx) {
 
             console.log(this.$route.query.code)
-            let path = '/draft/' + this.$route.params.id
+            let path = '/article/' + this.$route.params.id
             let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
@@ -249,7 +249,7 @@
             right: 64pr;
             color: #94928E;
             .res-icon {
-              background: url('../pages/draft/assets/images/message.png') no-repeat center;
+              background: url('../assets/images/message.png') no-repeat center;
               background-size: cover;
             }
             .res-count {
@@ -281,7 +281,7 @@
               margin-left: 10pr;
               width: 10pr;
               height: 17pr;
-              background: url('../pages/draft/assets/images/back@2x.png') no-repeat center;
+              background: url('../assets/images/back@2x.png') no-repeat center;
               background-size: cover;
             }
           }
@@ -297,7 +297,7 @@
           margin-left: 20pr;
           width: 18pr;
           height: 18pr;
-          background: url('../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
+          background: url('../assets/images/shape2.png') no-repeat center;
           background-size: cover;
         }
       }
