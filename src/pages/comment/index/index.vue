@@ -84,7 +84,7 @@
   import DownloadBar from '../../../components/downloadBar'
   import FocusBar from '../../../components/focusBar'
   import LikeBar from '../../../components/likeBar'
-  import MessageBoard from '../../../components/message'
+  import MessageBoard from '../../../components/messageBoard'
   import FootBar from '../../../components/footBar'
   import AuthorBar from '../../../components/authorBar'
   
