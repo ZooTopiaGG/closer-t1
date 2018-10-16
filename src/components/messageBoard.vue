@@ -138,7 +138,13 @@
           if (window.ENV.wx) {
 
             console.log(this.$route.query.code)
-            let path = '/article/' + this.$route.params.id
+            // let path = '/article/' + this.$route.params.id
+            let path;
+            if(type === 'comment') {
+              path = '/message/' + this.$route.params.id
+            } else {
+              path = '/message/' + this.$route.params.id + '/' +id
+            }
             let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
