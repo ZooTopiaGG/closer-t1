@@ -34,13 +34,13 @@
             <span class="replay-content">{{ commentItem.content }}</span>
           </div>
           <!-- 更多回复补丁 -->
-          <div class="replay-total" v-if="item.replyNumber > 3" @click="getMoreComment">
+          <div class="replay-total" v-if="item.replyNumber > 3" @click="downApp">
             <span>共{{ item.replyNumber }}条回复</span>
             <span class="right-icon"></span>
           </div>
         </div>
       </div>
-      <div class="more-comment" @click="getMoreComment">点击查看更多评论<span></span></div>
+      <div class="more-comment" @click="downApp">点击查看更多评论<span></span></div>
     </div>
     <div class="no-draft" v-else>
       <span class="text">暂无留言，赶紧留言吧~</span>
@@ -138,7 +138,7 @@
           if (window.ENV.wx) {
 
             console.log(this.$route.query.code)
-            let path = '/draft/' + this.$route.params.id
+            let path = '/article/' + this.$route.params.id
             let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
@@ -177,9 +177,6 @@
       },
   
       // 先登录，在下载流程
-      getMoreComment() {
-        this.downApp()
-      },
       downApp() {
         downloadApp()
       },
@@ -252,7 +249,7 @@
             right: 64pr;
             color: #94928E;
             .res-icon {
-              background: url('../pages/draft/assets/images/message.png') no-repeat center;
+              background: url('../assets/images/message.png') no-repeat center;
               background-size: cover;
             }
             .res-count {
@@ -284,7 +281,7 @@
               margin-left: 10pr;
               width: 10pr;
               height: 17pr;
-              background: url('../pages/draft/assets/images/back@2x.png') no-repeat center;
+              background: url('../assets/images/back@2x.png') no-repeat center;
               background-size: cover;
             }
           }
@@ -300,7 +297,7 @@
           margin-left: 20pr;
           width: 18pr;
           height: 18pr;
-          background: url('../pages/draft/assets/images/Shape2@2x.png') no-repeat center;
+          background: url('../assets/images/shape2.png') no-repeat center;
           background-size: cover;
         }
       }

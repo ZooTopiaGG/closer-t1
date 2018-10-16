@@ -13,7 +13,7 @@
     <div class="group-wrap" v-if="groupList.data && groupList.data.length > 0">
       <div class="gr-line1 box box-lr">
         <div class="gr-title">正在招募的群组</div>
-        <div class="gr-more">更多群组 ></div>
+        <div class="gr-more" @click="downApp">更多群组 ></div>
       </div>
       <div class="gr-group box box-lr" v-for="(item, index) in groupList.data" :key="index" @click="toGroup(item.id)">
         <div class="gr-left">
@@ -116,6 +116,9 @@
         'getUserInfoWithWx',
         'getHotSubjects'
       ]),
+      downApp() {
+        downloadApp()
+      },
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
