@@ -63,6 +63,7 @@ const actions = {
           commit("SET_CONTENT", content);
         }
         commit("SET_RES", res.result);
+        rootState.res = res.result;
       }
     } catch (err) {
       console.log('content.catch')

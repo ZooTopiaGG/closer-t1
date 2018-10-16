@@ -24,7 +24,7 @@ export default {
 
   },
   actions: {
-    async getGroupInfo({ commit, state }, payload) {
+    async getGroupInfo({ commit, state, rootState }, payload) {
       try {
         let { data } = await getGroupInfo(payload);
         console.log("code", data)
@@ -40,8 +40,6 @@ export default {
     async getGroupList({ commit, state, rootState, dispatch }, payload) {
       try {
         let { data } = await getGroupList(payload);
-        console.log("getGroupList", data)
-
         if (data.code === 0) {
           let arr = await data.result.data.map(x => {
             x.content = JSON.parse(x.content);

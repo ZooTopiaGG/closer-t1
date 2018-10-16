@@ -1,5 +1,5 @@
 <template>
-  <div class="feed">
+  <div class="feed" v-if="!ENV.app">
     <div class="head">{{title}}</div>
     <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, '', item.subjectid)">
       <div class="top">

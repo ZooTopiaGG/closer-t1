@@ -3,7 +3,9 @@ import Vuex from 'vuex'
 import { Toast } from 'mint-ui'
 import {
   makeHtmlContent,
-  mergeJsonObject
+  mergeJsonObject,
+  wxShareConfig,
+  makeFileUrl
 } from "./utils";
 
 import baseUrl from './config'
@@ -11,7 +13,6 @@ import baseUrl from './config'
 import common from './components/module'
 import article from './pages/article/index/module'
 import comment from './pages/comment/index/module'
-import draft from './pages/draft/index/module'
 import community from './pages/community/index/module'
 import message from './pages/message/index/module'
 import service from './service'
@@ -28,7 +29,6 @@ export default new Vuex.Store({
     IS_DEV: false,
     IMG_INDEX: 0,
     CONTENT_IMGS: [],
-    SUBJECT: {},
     content: '',
     exist: false,
     extension_text: '',
@@ -44,7 +44,17 @@ export default new Vuex.Store({
     get_login_type: '', // toFocus 来自关注后弹窗 toDown 来自登录后直接跳转下载 inviter 来自奖励金,
     visibleLogin: false,
     authSuccess: false,
-    res: {}
+    res: {},
+    shareLink: "",
+    wxConfig: {
+
+    },
+    shareConfig: {
+      title: "贴近一点，看身边",
+      desc: "能赚稿费的本地内容社区",
+      link: "",
+      imgUrl: ""
+    }
   },
   mutations: {
     // 设置贴子详情内容
@@ -128,12 +138,14 @@ export default new Vuex.Store({
     setAuthStatus(state) {
       state.authSuccess = true
     },
+    SET_WX_CONFIG(state, para) {
+      state.wxConfig = para
+    }
   },
   modules: {
     common,
     article,
     comment,
-    draft,
     community,
     message,
     group
@@ -262,8 +274,8 @@ export default new Vuex.Store({
           cookie: h5cookie, //	'cookie，以H5接入时使用，userId，deviceId，cookie三个中必须要传一个'
           platform: "H5", //	'设备平台,参数取值:Android IOS H5'
           attachPlatform: state.nvgTypeToPowerCase || null, //	'H5的载体，当platform为H5时，如果设备为安卓设备，则传Android，IOS设备则传IOS，其他不传'
-          communityId: state.SUBJECT.communityid || null, //		'栏目id,统计对象有该属性则需要填写'
-          title: state.SUBJECT.title || null, //		'标题 如果是文章或视频该参数需要上传'
+          communityId: state.res.communityid || null, //		'栏目id,统计对象有该属性则需要填写'
+          title: state.res.title || null, //		'标题 如果是文章或视频该参数需要上传'
           dreason: null, //		'负反馈内容，当action为feedback时必填，格式为：["负反馈内容1", "负反馈内容2"]'
           time: Date.now(), //		'行为发生的时间戳，单位毫秒'
           cost: Date.now() - state.enter_time || 0, //		'浏览时长/曝光时长，单位毫秒'
@@ -273,6 +285,131 @@ export default new Vuex.Store({
       let data = await service.common(para);
       if (data.code === 0) {
         return true
+      }
+    },
+    async wx_config({ state, commit }, payload) {
+      if (ENV.wx) {
+        console.log("wx_config")
+        let params = {
+          url: location.href
+        };
+        let { data } = await service.wechatConfig(params).catch(err => {
+          Toast('网络开小差啦，请稍后再试')
+          return;
+        })
+        if (typeof(data.code) != "undefined" && data.code == 0) {
+          commit('SET_WX_CONFIG', data.result);
+          let wxConfig = data.result;
+          if (JSON.stringify(state.res) == "{}" && JSON.stringify(state.group.group) == "{}") {
+            console.info("not index")
+            if (Cookies.get("shareConfig")) {
+              wxShareConfig(wxConfig, JSON.parse(Cookies.get("shareConfig")))
+            }
+            return;
+          }
+          let title, imgUrl, desc;
+          if (location.href.indexOf("/community") > -1) {
+            // 分享栏目主页
+            title = state.res.name ?
+              state.res.name :
+              "栏目主页";
+            desc = state.res.description ?
+              state.res.description :
+              "贴近一点 看身边";
+            imgUrl = state.res.slogo ?
+              state.res.slogo :
+              state.res.blogo;
+          } else if (location.href.indexOf("/group") > -1) {
+            console.log("state.res", JSON.stringify(state.group.group))
+              // 分享群组
+            if (
+              state.group.group &&
+              state.group.group.group_info.group
+            ) {
+              let group = state.group.group.group_info.group;
+              title = group.name ? group.name : "贴近群组";
+              if (group.description) {
+                let description;
+                try {
+                  description = JSON.parse(
+                    state.group.group.group_info.group.description
+                  );
+                  desc = description[0].content ?
+                    description[0].content :
+                    "贴近一点 看身边";
+                } catch (e) {
+                  desc =
+                    state.group.group.group_info.group.description;
+                }
+              } else {
+                desc = "贴近一点 看身边";
+              }
+              imgUrl = makeFileUrl(group.avatar);
+            }
+          } else {
+            let content = state.content;
+            // 分享长图文
+            if (state.res.int_type === 0) {
+              // 图集
+              if (content.text) {
+                title = content.text;
+              } else {
+                title = "分享图片";
+              }
+              if (content.images && content.images.length > 0) {
+                let d = content.images.map(x => {
+                  x = "[图片]";
+                  return x;
+                });
+                desc = d.join(" ");
+                imgUrl = makeFileUrl(content.images[0].link);
+              } else {
+                desc = "[图片]";
+                imgUrl = "";
+              }
+            } else if (state.res.int_type === 1) {
+              // 视频
+              if (content.text) {
+                title = content.text;
+              } else {
+                title = "分享视频";
+              }
+              if (content.videos && content.videos.length > 0) {
+                let d = content.videos.map(x => {
+                  x = "[视频]";
+                  return x;
+                });
+                desc = d.join(" ");
+                imgUrl = makeFileUrl(content.videos[0].imageUrl);
+              } else {
+                desc = "[视频]";
+                imgUrl = "";
+              }
+            } else {
+              // 长图文
+              if (state.res.title) {
+                title = state.res.title;
+              } else if (content.text) {
+                title = content.text;
+              } else {
+                title = content.summary;
+              }
+              desc = content.summary ? content.summary : "分享文章";
+              imgUrl = makeFileUrl(state.res.cover) ?
+                makeFileUrl(state.res.cover) :
+                makeFileUrl(state.res.bigcover);
+            }
+          }
+          let shareConfig = {
+            title,
+            desc,
+            imgUrl
+          }
+          Cookies.set("shareConfig", shareConfig)
+          wxShareConfig(wxConfig, shareConfig)
+        }
+      } else {
+        return;
       }
     }
   }

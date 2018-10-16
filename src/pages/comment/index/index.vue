@@ -1,9 +1,15 @@
 <template>
   <div>
+    <!-- 下载条 -->
+    <download-bar></download-bar>
     <div v-if="subjectExist">
       <div class="comment">
-        <div class="title">
+        <div class="title" v-if="!ENV.app">
           {{subject.title}}
+        </div>
+        <focus-bar></focus-bar>
+        <div class="cover-box">
+          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img">
         </div>
         <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </div>
@@ -46,8 +52,16 @@
           <div class="line"></div>
         </div>
         <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
+        <author-bar></author-bar>
       </div>
-      <Feedlist :subjectList="hotSubjects"></Feedlist>
+      <!-- 阅读 喜欢 -->
+      <like-bar class="like-bar"></like-bar>
+      <!-- 留言板 -->
+      <message-board></message-board>
+      <feed-list :subjectList="hotSubjects"></feed-list>
+      <!-- 底部Bar -->
+      <foot-bar></foot-bar>
+      <!-- 作者-->
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -58,24 +72,41 @@
     makeFileUrl,
     getCommonTime,
     appPlayVideo,
-    tabImg
+    tabImg,
+    wxShareConfig
   } from '../../../utils'
   import {
     mapState,
     mapActions
   } from "vuex";
   import Notfound from '../../../components/error/notfound'
-  import Feedlist from '../../../components/feedList'
+  import FeedList from '../../../components/feedList'
+  import DownloadBar from '../../../components/downloadBar'
+  import FocusBar from '../../../components/focusBar'
+  import LikeBar from '../../../components/likeBar'
+  import MessageBoard from '../../../components/messageBoard'
+  import FootBar from '../../../components/footBar'
+  import AuthorBar from '../../../components/authorBar'
+  
   export default {
     name: "commentIndex",
     components: {
       Notfound,
-      Feedlist
+      FeedList,
+      DownloadBar,
+      FocusBar,
+      LikeBar,
+      MessageBoard,
+      FootBar,
+      AuthorBar
     },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
       }
+    },
+    created() {
+  
     },
     computed: {
       ...mapState("comment", {
@@ -100,23 +131,13 @@
       }
   
     },
-    beforeMount() {
-      this.$store.commit("GET_VERSION");
-      this.$store.commit("SET_ENTER_TIME", Date.now());
-       // 存会话 h5Adid
-        if (this.$store.state.h5Adid) {
-          Cookies.set("h5Adid", this.$store.state.h5Adid);
-        } else {
-          Cookies.set("h5Adid", "");
-        }
-       
-    },
-    mounted() {
+    async mounted() {
       console.log('params.id:', this.$route.params.id)
       if (this.$route.params.id) {
-        this.getSubject({
+        await this.getSubject({
           "subjectid": this.$route.params.id
         });
+        this.$store.dispatch('wx_config');
         this.getHotSubjects()
       }
     },
@@ -170,6 +191,14 @@
       font-size: 44pr;
       line-height: 60pr;
       color: #4b4945;
+    }
+    .cover-box {
+      margin: 30pr auto;
+      border-radius: 10pr;
+      overflow: hidden;
+      .cover-img {
+        width: 100%;
+      }
     }
     .content {
       margin-top: 30pr;

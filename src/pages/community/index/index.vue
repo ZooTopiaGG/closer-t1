@@ -13,7 +13,7 @@
     <div class="group-wrap" v-if="groupList.data && groupList.data.length > 0">
       <div class="gr-line1 box box-lr">
         <div class="gr-title">正在招募的群组</div>
-        <div class="gr-more">更多群组 ></div>
+        <div class="gr-more" @click="downApp">更多群组 ></div>
       </div>
       <div class="gr-group box box-lr" v-for="(item, index) in groupList.data" :key="index" @click="toGroup(item.id)">
         <div class="gr-left">
@@ -29,8 +29,9 @@
       <p>本栏目暂不开放招新</p>
       <p>可通过投稿申请建群～</p>
     </div>
-    <feed-list ref="feedlist" class="feed-list"></feed-list>
+    <feed-list ref="feedlist" class="feed-list" :subjectList="hotSubjects"></feed-list>
     <foot-bar></foot-bar>
+    <focus-alert :communityName="communityShow.name"></focus-alert>
   </div>
 </template>
 
@@ -40,6 +41,7 @@
   import FeedList from '../../../components/feedList'
   import Focus from '../../../components/focus'
   import FootBar from '../../../components/footBar'
+  import FocusAlert from '../../../components/focusAlert'
   import {
     mapState,
     mapActions,
@@ -56,8 +58,8 @@
       DownloadBar,
       FeedList,
       Focus,
-      FootBar
-  
+      FootBar,
+      FocusAlert
     },
     data() {
       return {
@@ -65,7 +67,7 @@
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg=="
       }
     },
-    mounted() {
+    async mounted() {
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -78,15 +80,16 @@
       }
       // let communityid = this.$route.params.communityid.
       let communityid = '9cvm0OkWDX'
-      this.getCommunityShow(communityid)
+      await this.getCommunityShow(communityid)
       let groupPrm = {
         communityid: communityid,
         page: 1,
         count: 3
       }
+      this.$store.dispatch('wx_config');
       this.getGroupList(groupPrm)
+      this.getHotSubjects()
       console.log(this.communityShow)
-      console.log('authSuccess---', this.authSuccess)
     },
     computed: {
       ...mapState({
@@ -97,12 +100,10 @@
         groupList: state => state.groupList,
         isFollow: state => state.isFollow
       }),
-      ...mapState('messageboard', {
-        authSuccess: state => state.authSuccess
-      }),
-      ...mapMutations('messageboard', [
-        'setAuthStatus'
-      ])
+      ...mapState('common', {
+        authSuccess: state => state.authSuccess,
+        hotSubjects: state => state.hotSubjects,
+      })
     },
     methods: {
       ...mapActions('community', [
@@ -110,13 +111,15 @@
         'getGroupList',
         'getSubscription'
       ]),
-      ...mapActions('messageboard', [
-        'getWxAuth',
-        'getUserInfoWithWx'
-      ]),
       ...mapActions('common', [
-        'get_focus_stat'
+        'get_focus_stat',
+        'getWxAuth',
+        'getUserInfoWithWx',
+        'getHotSubjects'
       ]),
+      downApp() {
+        downloadApp()
+      },
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
@@ -137,9 +140,10 @@
           // 进行其他 ajax 操作
           let descPrm = {
             communityid: this.communityid,
-            flag: this.communityShow.isFollowed ? 0 : 1 // 0-取消关注 1-关注
+            flag: this.$store.state.is_follow ? 0 : 1 // 0-取消关注 1-关注
           }
           this.getSubscription(descPrm)
+  
         } else {
           // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (ENV.wx) {
@@ -184,6 +188,7 @@
         >img {
           width: 100%;
           overflow: hidden;
+          border-radius: 10pr;
         }
       }
       .cln-name {

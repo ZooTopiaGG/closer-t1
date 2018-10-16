@@ -1,7 +1,7 @@
 <template>
   <section class="community" :class="showStyle">
-    <img class="community-logo" :src="defaultImg" v-lazy="res.blogo" @click="toCommunity">
-    <span class="community-name ellipsis">{{ res.communityName || res.name }}</span>
+    <img class="community-logo" :src="defaultImg" v-lazy="this.$store.state.res.blogo" @click="toCommunity">
+    <span class="community-name ellipsis">{{ this.$store.state.res.communityName || this.$store.state.res.name }}</span>
   </section>
 </template>
 <script>
@@ -17,7 +17,6 @@ export default {
     };
   },
   computed: {
-    ...mapState('article', ['res']),
     showStyle() {
       return `community-${this.showType}`
     }
@@ -25,12 +24,12 @@ export default {
   methods: {
     toCommunity() {
       this.$router.push({
-        path: `/community/${this.res.communityid}`
+        path: `/community/${this.$store.state.res.communityid}`
       });
     }
   },
   mounted() {
-    console.log('res--', this.res)
+    console.log('res--', this.$store.res)
     this.$nextTick(() => {
       // logo图片预加载
       let tjimg = document.querySelector(".access-not");

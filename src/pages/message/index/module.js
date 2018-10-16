@@ -13,7 +13,7 @@ export default {
       state.visible = true
     },
     hide(state) {
-      state.hide = false
+      state.visible = false
     },
     updateData(state, payload) {
       console.log(1,payload)
@@ -21,7 +21,7 @@ export default {
     }
   },
   actions: {
-    async addReplyData({ commit }, payload) {
+    async addReplyData({ commit, state }, payload) {
       Indicator.open({
         text: '加载中...',
         spinnerType: 'fading-circle'
@@ -41,6 +41,7 @@ export default {
         commit({
           type: 'show'
         })
+        console.log('state.show:', state.visible)
       } else {
         data.result && Toast(data.result)
       }

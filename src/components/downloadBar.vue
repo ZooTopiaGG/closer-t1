@@ -5,23 +5,23 @@
       <div class="left">
         <div class="left-logo"></div>
         <mt-swipe :auto="4000" :show-indicators="false" class="mtswipe left-desc">
-            <mt-swipe-item>
-              <div class="swip-item">
-                <span>贴近一点 看身边</span>
-              </div>
-            </mt-swipe-item>
-            <mt-swipe-item>
-              <div class="swip-item">
-                <span>成都人自己的资讯社群</span>
-              </div>
-            </mt-swipe-item>
-            <mt-swipe-item>
-              <div class="swip-item">
-                <p>打开贴近看资讯</p>
-                <p>领10元红包</p>
-              </div>
-            </mt-swipe-item>
-          </mt-swipe>
+          <mt-swipe-item>
+            <div class="swip-item">
+              <span>贴近一点 看身边</span>
+            </div>
+          </mt-swipe-item>
+          <mt-swipe-item>
+            <div class="swip-item">
+              <span>能赚稿费的本地内容社区</span>
+            </div>
+          </mt-swipe-item>
+          <mt-swipe-item>
+            <div class="swip-item">
+              <p>打开贴近看资讯</p>
+              <p>领10元红包</p>
+            </div>
+          </mt-swipe-item>
+        </mt-swipe>
       </div>
       <div class="right">
         <div class="right-btn" @click="handleClick">下载贴近</div>
@@ -29,31 +29,41 @@
     </div>
   </section>
 </template>
+
 <script>
   import Vue from 'vue'
-  import { down_statistics } from '../utils/index'
+  import {
+    down_statistics,
+    wxShareConfig,
+    makeFileUrl
+  } from '../utils/index'
   import baseUrl from '../config'
-  import { Swipe, SwipeItem } from 'mint-ui';
-
+  import {
+    Swipe,
+    SwipeItem
+  } from 'mint-ui';
+  
   Vue.component(Swipe.name, Swipe);
   Vue.component(SwipeItem.name, SwipeItem);
   export default {
     name: 'downloadBar',
+    mounted() {  
+    },
     methods: {
       handleClick(e, str) {
-        let self = this,
-          redirectUrl = baseUrl.download;
+        let redirectUrl = baseUrl.download;
         down_statistics({
-         'store': self.$store,
-        'route':  self.$route,
+          'store': this.$store,
+          'route': this.$route,
           str,
-          "defaultStr":"direct_top",
-          redirectUrl}
-        );
+          "defaultStr": "direct_top",
+          redirectUrl
+        });
       }
     }
   }
 </script>
+
 <style scoped lang="less">
   @h: 108pr;
   .download-bar {
@@ -61,7 +71,6 @@
     width: 100%;
     height: @h;
     z-index: 999;
-    
     .place {
       height: 100%;
     }

@@ -57,5 +57,8 @@ export default {
    */
   isLike(payload) {
     return Axios.post(api.command.like, payload);
-  }
+  },
+  async wechatConfig(payload) {
+    return await Axios.post(api.admin.wechat_config, payload);
+  },
 }

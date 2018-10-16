@@ -1,8 +1,7 @@
-
 module.exports = {
   lintOnSave: false,
   devServer: {
-    host: "local.tiejin.cn",
+    host: "a-sandbox.tiejin.cn",
     port: "9999"
   },
   configureWebpack: {

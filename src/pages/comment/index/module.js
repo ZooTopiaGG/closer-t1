@@ -90,7 +90,7 @@ export default {
               }
               commit("setContent", content);
               delete data.result.content;
-              rootState.SUBJECT = data.result;
+              rootState.res = data.result;
               commit("setSubject", data.result);
             }
 

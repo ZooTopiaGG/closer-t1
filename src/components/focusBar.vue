@@ -1,5 +1,5 @@
 <template>
-  <section class="focus-bar">
+  <section class="focus-bar" v-if="!ENV.app">
     <section class="focus-wrap">
       <t-community></t-community>
       <t-focus></t-focus>

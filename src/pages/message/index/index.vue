@@ -80,8 +80,8 @@
           return
         }
         // 渲染页面前 先判断cookies user是否存在
-        console.log('user: ', JSON.parse(Cookies.get('user')))
         if (Cookies.get('user')) {
+          console.log('login')
           let userInfo = JSON.parse(Cookies.get('user'))
           if (userInfo.phones) {
             let params
@@ -103,6 +103,7 @@
             this.$refs.login.open()
           }
         } else {
+          console.log('not login')
           this.$refs.login.open()
         }
       }
