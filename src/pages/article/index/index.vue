@@ -88,6 +88,7 @@
       })
     },
     methods: {
+      ...mapActions(['getUserInfoWithWx']),
       ...mapActions("article",['fetch_content']),
       ...mapMutations("article",['GET_USER_AGENT']),
       ...mapActions("common", [
@@ -168,6 +169,16 @@
       //   nvg: navigator.userAgent,
       //   ref: location.pathname
       // });
+      if (this.$route.query.code) {
+        let params = {
+          plateform: 2,
+          code: this.$route.query.code,
+          protocol: "WEB_SOCKET",
+          adid: Cookies.get('h5Adid') || 'closer-t1'
+        }
+        console.log('params---', params)
+        this.getUserInfoWithWx(params)
+      }
       this.fetch();
       console.log('params.id:', this.$route.params.id)
       this.getHotSubjects()

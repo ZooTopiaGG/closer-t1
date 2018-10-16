@@ -37,7 +37,7 @@ const actions = {
         flag: flag
       }
       let data = await service.subscription(para);
-      if (data.code === 0) {
+      if (data.code === 0 && data.result) {
         if (flag == 0) {
           commit('SET_FOCUS_STAT', false, {
             root: true
@@ -74,7 +74,7 @@ const actions = {
     try {
       let view = await service.incr_view(params);
       console.log(view)
-      // 静态增加 阅读量
+        // 静态增加 阅读量
       if (view.code === 0) {
         commit("SET_INCR_VIEW", view.result);
       }
@@ -126,7 +126,7 @@ const actions = {
   }, payload) {
     console.log(payload)
     let user = Cookies.get('user')
-    let token = Cookies.get('GroukAuth')
+    let token = Cookies.get('token')
     if (user && token) {
       console.log('user-from-cookie:', JSON.parse(user));
       commit('SET_USER', JSON.parse(user));
@@ -146,7 +146,7 @@ const actions = {
         commit('SET_USER', user)
         console.log('token', token)
         console.log('user', user)
-        Cookies.set('GroukAuth', token, {
+        Cookies.set('token', token, {
           expires: 7
         })
         Cookies.set('user', user, {
@@ -218,7 +218,7 @@ const actions = {
     Indicator.close()
     if (typeof (data.code) != undefined && data.code == 0) {
       if (data.result && data.result.token) {
-        Cookies.set("GroukAuth", data.result.token, {
+        Cookies.set("token", data.result.token, {
           expires: 60
         });
         if (data.result.user) {

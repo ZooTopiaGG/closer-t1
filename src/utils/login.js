@@ -17,7 +17,7 @@ let UA = navigator.userAgent.toLowerCase() || navigator.userAgent.toLowerCase(),
   };
 
 function checkToken() {
-  return !!Cookies.get('GroukAuth');
+  return !!Cookies.get('token');
 }
 
 function getUserInfo(params) {
@@ -61,7 +61,7 @@ function nativeLogin() {
             //ios获取用户token 判断登录
             bridge.callHandler("getUserToken", null, function(token, responseCallback) {
               if (token) {
-                Cookies.set("GroukAuth", token, {
+                Cookies.set("token", token, {
                   expires: 30
                 });
               } else {
@@ -77,7 +77,7 @@ function nativeLogin() {
       if (typeof window.bridge != "undefined") {
         let token = window.bridge.getUserToken(null);
         if (token) {
-          Cookies.set("GroukAuth", token, {
+          Cookies.set("token", token, {
             expires: 30
           });
         } else {
@@ -140,7 +140,7 @@ function getUserInfoInWx(params) {
       user = data.result.user;
       token = data.result.token;
       console.log('user-from-server:', user);
-      Cookies.set('GroukAuth', token, {
+      Cookies.set('token', token, {
         expires: 7
       })
       return user;

@@ -71,7 +71,7 @@
           plateform: 2,
           code: this.$route.query.code,
           protocol: "WEB_SOCKET",
-          adid: Cookies.get('h5Adid') || 'closer-share'
+          adid: Cookies.get('h5Adid') || 'closer-t1'
         }
         console.log('params---', params)
         this.getUserInfoWithWx(params)
@@ -145,7 +145,7 @@
           if (ENV.wx) {
             // 通过微信授权 获取code
             let path = '/community/' + this.$route.params.id
-            let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
+            let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
             }

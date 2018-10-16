@@ -87,16 +87,16 @@
     },
     mounted() {
       console.log('this.res--', this.res)
-      if (this.$route.query.code) {
-        let params = {
-          plateform: 2,
-          code: this.$route.query.code,
-          protocol: "WEB_SOCKET",
-          adid: Cookies.get('h5Adid') || 'closer-share'
-        }
-        console.log('params---', params)
-        this.getUserInfoWithWx(params)
-      }
+      // if (this.$route.query.code) {
+      //   let params = {
+      //     plateform: 2,
+      //     code: this.$route.query.code,
+      //     protocol: "WEB_SOCKET",
+      //     adid: Cookies.get('h5Adid') || 'closer-t1'
+      //   }
+      //   console.log('params---', params)
+      //   this.getUserInfoWithWx(params)
+      // }
     },
     computed: {
       ...mapState('article', [
@@ -124,7 +124,7 @@
       },
       writeMessage(type, id) {
         // 渲染页面前 先判断cookies user是否存在
-        console.log('Cookies--', Cookies.get("GroukAuth"))
+        console.log('Cookies--', Cookies.get("token"))
         if (this.res.int_type === 2) {
           window.sessionStorage.setItem("title", this.res.title);
         } else {

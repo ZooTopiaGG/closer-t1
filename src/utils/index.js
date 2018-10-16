@@ -505,6 +505,16 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
   }
 }
 
+// 为url添加参数
+export function addUrlParams(url, params) {
+  let str = [];
+  for (let key in params) {
+    if (params.hasOwnProperty(key)) {
+      str.push(`${key}=${params[key]}`)
+    }
+  }
+  return url + (url.indexOf('?') > -1 ? '&' : '?') + str.join('&')
+}
 
 function isJumpOut() {
   if (typeof window != 'undefined') {

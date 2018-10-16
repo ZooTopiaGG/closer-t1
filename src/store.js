@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { Toast } from 'mint-ui'
 import {
   makeHtmlContent,
   mergeJsonObject
 } from "./utils";
+
+import baseUrl from './config'
 
 import common from './components/module'
 import article from './pages/article/index/module'
@@ -11,7 +14,7 @@ import comment from './pages/comment/index/module'
 import draft from './pages/draft/index/module'
 import community from './pages/community/index/module'
 import message from './pages/message/index/module'
-import service from './components/service'
+import service from './service'
 import group from './pages/group/module'
 
 
@@ -34,10 +37,13 @@ export default new Vuex.Store({
     get_login_type: false,
     visibleLogin: '',
     h5Cookies: '',
+    isLogin: false,
+    user: {},
     h5Adid: '',
     extension_text: '', // 来自某个按钮的点击
     get_login_type: '', // toFocus 来自关注后弹窗 toDown 来自登录后直接跳转下载 inviter 来自奖励金,
     visibleLogin: false,
+    authSuccess: false,
     res: {}
   },
   mutations: {
@@ -114,6 +120,14 @@ export default new Vuex.Store({
     SET_ENTER_TIME(state, para) {
       state.enter_time = para
     },
+    // 设置微信授权后用户信息
+    SET_USER(state, para) {
+      state.user = para
+      state.isLogin = true;
+    },
+    setAuthStatus(state) {
+      state.authSuccess = true
+    },
   },
   modules: {
     common,
@@ -125,6 +139,64 @@ export default new Vuex.Store({
     group
   },
   actions: {
+    getWxAuth({
+      commit,
+      state
+    }, payload) {
+      console.log('getWxAuth')
+      let _params = {
+        path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + payload)
+      }
+      return service.getAuthPath(_params).then(({data}) => {
+        console.log(data.result)
+        if (typeof (data.code != undefined) && data.code == 0) {
+          location.href = data.result
+          commit('setAuthStatus')
+          console.log('state.authSuccess---', state.authSuccess)
+        } else {
+          data.result && Toast(data.result)
+        }
+      }).catch(err => {
+        Toast('网络开小差啦~')
+      })
+    },
+    getUserInfoWithWx({
+      commit,
+      state
+    }, payload) {
+      console.log(payload)
+      let user = Cookies.get('user')
+      let token = Cookies.get('token')
+      if (user && token) {
+        console.log('user-from-cookie:', JSON.parse(user));
+        commit('SET_USER', JSON.parse(user));
+        return true;
+      } else {
+        return service.loginWithWechat(payload).then(({data}) => {
+          console.log('data:', data)
+          if (typeof (data.code != undefined) && data.code == 0) {
+            user = data.result.user
+            token = data.result.token
+            console.log('user-from-server:', user)
+            commit('SET_USER', user)
+            console.log('token', token)
+            console.log('user', user)
+            Cookies.set('token', token, {
+              expires: 7
+            })
+            Cookies.set('user', user, {
+              expires: 7
+            })
+            return user
+          } else {
+            data.result && Toast(data.result)
+            return false
+          }
+        }).catch(err => {
+          Toast('网络开小差啦~')
+        })
+      }
+    },
     // h5设置cookies埋点
     async get_adcookie({
       commit,
@@ -157,7 +229,7 @@ export default new Vuex.Store({
           webUdid: false,
           deviceType: rootState.nvgtype || 'ios',
           deviceVersion: rootState.nvgversion || '11_0_0',
-          adid: Cookies.get('h5Adid') || 'closer-share'
+          adid: Cookies.get('h5Adid') || 'closer-t1'
         }
       let data = await service.get_adcookie(para)
       return true
