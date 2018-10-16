@@ -34,13 +34,13 @@
             <span class="replay-content">{{ commentItem.content }}</span>
           </div>
           <!-- 更多回复补丁 -->
-          <div class="replay-total" v-if="item.replyNumber > 3" @click="getMoreComment">
+          <div class="replay-total" v-if="item.replyNumber > 3" @click="downApp">
             <span>共{{ item.replyNumber }}条回复</span>
             <span class="right-icon"></span>
           </div>
         </div>
       </div>
-      <div class="more-comment" @click="getMoreComment">点击查看更多评论<span></span></div>
+      <div class="more-comment" @click="downApp">点击查看更多评论<span></span></div>
     </div>
     <div class="no-draft" v-else>
       <span class="text">暂无留言，赶紧留言吧~</span>
@@ -177,9 +177,6 @@
       },
   
       // 先登录，在下载流程
-      getMoreComment() {
-        this.downApp()
-      },
       downApp() {
         downloadApp()
       },
