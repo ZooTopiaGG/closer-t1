@@ -54,10 +54,10 @@
         <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
       </div>
       <!-- 阅读 喜欢 -->
-        <like-bar class="like-bar"></like-bar>
-        <!-- 留言板 -->
-        <message-board></message-board>
-      <feed-list :subjectList="hotSubjects"></feed-list>
+      <like-bar class="like-bar"></like-bar>
+      <!-- 留言板 -->
+      <message-board></message-board>
+      <Feedlist :subjectList="hotSubjects"></Feedlist>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -78,19 +78,19 @@
   import Notfound from '../../../components/error/notfound'
   import Feedlist from '../../../components/feedList'
   import DownloadBar from '../../../components/downloadBar'
-  import focusBar from '../../../components/focusBar'
-    import likeBar from '../../../components/likeBar'
-  import messageBoard from '../../../components/messageBoard'
-
+  import FocusBar from '../../../components/focusBar'
+  import LikeBar from '../../../components/likeBar'
+  import MessageBoard from '../../../components/messageBoard'
+  
   export default {
     name: "commentIndex",
     components: {
       Notfound,
       Feedlist,
       DownloadBar,
-      focusBar,
-      likeBar,
-      messageBoard
+      FocusBar,
+      LikeBar,
+      MessageBoard
     },
     data() {
       return {
