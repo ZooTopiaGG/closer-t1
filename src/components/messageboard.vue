@@ -139,7 +139,7 @@
 
             console.log(this.$route.query.code)
             let path = '/draft/' + this.$route.params.id
-            let _path = baseUrl.wxAuthorization[window.ENV.env] + baseUrl.href[window.ENV.env] + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
+            let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
             let para = {
               path: _path
             }

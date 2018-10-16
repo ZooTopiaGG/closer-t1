@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import MessageBoard from '../../../components/messageboard'
+import MessageBoard from '../../../components/messageBoard'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: 'draft',

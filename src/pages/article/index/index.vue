@@ -53,7 +53,7 @@
   import FootBar from '../../../components/footBar'
   import FocusBar from '../../../components/focusBar'
   import LikeBar from '../../../components/likeBar'
-  import MessageBoard from '../../../components/messageboard'
+  import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
   export default {
     name: "Feed",

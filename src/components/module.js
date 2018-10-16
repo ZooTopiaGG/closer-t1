@@ -113,8 +113,8 @@ const actions = {
     console.log(data.data.result)
     if (typeof (data.data.code != undefined) && data.data.code == 0) {
       location.href = data.data.result
-      commit('setAuthStatus')
-      console.log('state.authSuccess---', state.authSuccess)
+      // commit('setAuthStatus')
+      // console.log('state.authSuccess---', state.authSuccess)
     } else {
       data.result && Toast(data.result)
       // next()

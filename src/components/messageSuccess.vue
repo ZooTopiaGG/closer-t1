@@ -86,7 +86,7 @@
       goBack() {
         let subjectid = this.$route.params.sid
         this.$router.push({
-          path: `/draft/${subjectid}`
+          path: `/article/${subjectid}`
         })
       }
     }

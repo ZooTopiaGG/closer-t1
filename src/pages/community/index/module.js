@@ -1,13 +1,21 @@
-import { getCommunityShow, getCommunityList, getSubscription, getGroupList } from './service'
-import { Toast } from 'mint-ui'
+import {
+    getCommunityShow,
+    getCommunityList,
+    getSubscription,
+    getGroupList
+} from './service'
+import {
+    Toast
+} from 'mint-ui'
 
 export default {
     namespaced: true,
     state: {
-       communityShow: {},
+        communityShow: {},
         groupList: {},
         descResult: {},
-        isFollow: false
+        isFollow: false,
+        visible: false
     },
     mutations: {
         setCommunityShow(state, payload) {
@@ -30,19 +38,31 @@ export default {
         isFollow(state, payload) {
             console.log('payload', payload)
             state.isFollow = payload
-        }
+        },
+        show(state) {
+            state.visible = true
+        },
+        hide(state) {
+            state.visible = false
+        },
     },
     actions: {
-        async getCommunityShow({ commit, state, rootState }, communityid) {
+        async getCommunityShow({
+            commit,
+            state,
+            rootState
+        }, communityid) {
             let params = {
                 communityid: communityid
             }
-            let { data } = await getCommunityShow(params).catch(err => {
+            let {
+                data
+            } = await getCommunityShow(params).catch(err => {
                 Toast('网络开小差啦~')
-            }) 
+            })
 
             console.log('data--', data)
-            if(typeof(data.code != undefined && data.code == 0)) {
+            if (typeof (data.code != undefined && data.code == 0)) {
                 commit({
                     type: "setCommunityShow",
                     data
@@ -51,25 +71,40 @@ export default {
                 data.result && Toast(data.result)
             }
         },
-        async getSubscription({ commit, state }, payload) {
-            let { data } = await getSubscription(payload).catch(err => {
+        async getSubscription({
+            commit,
+            state,
+            rootState
+        }, payload) {
+            let {
+                data
+            } = await getSubscription(payload).catch(err => {
                 Toast('网络开小差啦~')
-            }) 
+            })
             console.log('data', data)
-            if(typeof(data.code != undefined) && data.code == 0) {
-                if(data) {
+            if (typeof (data.code != undefined) && data.code == 0) {
+                if (data) {
                     commit("isFollow", true)
-                } 
+                    commit('show')
+                    commit("SET_FOCUS_STAT", "true", {
+                        root: true
+                      });
+                }
             } else {
                 data.result & Toast(data.result)
             }
         },
         // 获取群组列表
-        async getGroupList({ commit, state }, payload) {
-            let { data } = await getGroupList(payload).catch(err => {
+        async getGroupList({
+            commit,
+            state
+        }, payload) {
+            let {
+                data
+            } = await getGroupList(payload).catch(err => {
                 Toast('网络开小差啦~')
-            }) 
-            if(typeof(data.code != undefined) && data.code == 0) {
+            })
+            if (typeof (data.code != undefined) && data.code == 0) {
                 commit({
                     type: "getGroupList",
                     data
