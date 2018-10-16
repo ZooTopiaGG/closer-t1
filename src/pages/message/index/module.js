@@ -41,6 +41,7 @@ export default {
         commit({
           type: 'show'
         })
+        console.log('state.show:', state.visible)
       } else {
         data.result && Toast(data.result)
       }
