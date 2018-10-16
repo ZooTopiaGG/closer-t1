@@ -1,5 +1,5 @@
 <template>
-  <section class="focus">
+  <section class="focus" v-if="!ENV.app">
     <section v-if="is_follow" class="focus-btn-disabled"></section>
     <section @click="tjFocus">
       <section class="focus-community" v-if="$route.path.indexOf('community') > -1">

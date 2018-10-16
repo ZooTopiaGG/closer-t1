@@ -1,5 +1,5 @@
 <template>
-  <section class="footer">
+  <section class="footer" v-if="!ENV.app">
     <div class="footer-wrapper">
       <div class="footer-btn">{{btnText}} >></div>
     </div>

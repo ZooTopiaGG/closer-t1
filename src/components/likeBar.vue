@@ -1,6 +1,6 @@
 <template>
   <!-- 阅读量 点赞数 -->
-  <section class="like-bar" v-if="!ENV.v120">
+  <section class="like-bar" v-if="!ENV.v120&&!ENV.app">
     <section class="read">
       阅读
       <span class="read-count">{{ readCount }}</span>

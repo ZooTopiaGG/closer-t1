@@ -4,7 +4,7 @@
     <download-bar></download-bar>
     <div v-if="subjectExist">
       <div class="comment">
-        <div class="title">
+        <div class="title" v-if="!ENV.app">
           {{subject.title}}
         </div>
         <focus-bar></focus-bar>
@@ -52,12 +52,16 @@
           <div class="line"></div>
         </div>
         <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
+        <author-bar></author-bar>
       </div>
       <!-- 阅读 喜欢 -->
       <like-bar class="like-bar"></like-bar>
       <!-- 留言板 -->
       <message-board></message-board>
-      <Feedlist :subjectList="hotSubjects"></Feedlist>
+      <feed-list :subjectList="hotSubjects"></feed-list>
+      <!-- 底部Bar -->
+      <foot-bar></foot-bar>
+      <!-- 作者-->
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -76,21 +80,25 @@
     mapActions
   } from "vuex";
   import Notfound from '../../../components/error/notfound'
-  import Feedlist from '../../../components/feedList'
+  import FeedList from '../../../components/feedList'
   import DownloadBar from '../../../components/downloadBar'
   import FocusBar from '../../../components/focusBar'
   import LikeBar from '../../../components/likeBar'
   import MessageBoard from '../../../components/messageBoard'
+  import FootBar from '../../../components/footBar'
+  import AuthorBar from '../../../components/authorBar'
   
   export default {
     name: "commentIndex",
     components: {
       Notfound,
-      Feedlist,
+      FeedList,
       DownloadBar,
       FocusBar,
       LikeBar,
-      MessageBoard
+      MessageBoard,
+      FootBar,
+      AuthorBar
     },
     data() {
       return {

@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!ENV.v120" class="author-bar">
+  <section v-if="!ENV.app&&!ENV.v120" class="author-bar">
     <section class="author-list" v-if="res.int_category != 3">
       <p v-if="res.nickname">小编：{{ res.nickname }}</p>
       <p v-if="res.authors">作者：{{ res.authors }} </p>

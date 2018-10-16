@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-if="messagelist">
+  <div class="wrapper" v-if="!ENV.app&&messagelist">
     <div class="message-board" v-if="messagelist.length > 0">
       <div class="board-top">
         <span class="title" id="title">精彩留言</span>

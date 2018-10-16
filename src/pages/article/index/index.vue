@@ -16,11 +16,11 @@
           </div>
           <!-- 暂时隐藏 -->
           <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                          <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                        </section> -->
+                            <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                          </section> -->
           <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
-          
+          <author-bar></author-bar>
         </section>
         <!-- 阅读 喜欢 -->
         <like-bar class="like-bar"></like-bar>
@@ -40,9 +40,10 @@
   import Cookie from "js-cookie";
   import {
     mapState,
-    mapActions,mapMutations
+    mapActions,
+    mapMutations
   } from 'vuex'
- 
+  
   import {
     appPlayVideo,
     tabImg,
@@ -55,6 +56,7 @@
   import LikeBar from '../../../components/likeBar'
   import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
+  import AuthorBar from '../../../components/authorBar'
   export default {
     name: "Feed",
     components: {
@@ -64,7 +66,8 @@
       FocusBar,
       LikeBar,
       MessageBoard,
-      FeedList
+      FeedList,
+      AuthorBar
     },
     data() {
       return {
@@ -75,7 +78,7 @@
       };
     },
     computed: {
-      ...mapState("article",[
+      ...mapState("article", [
         'res',
         'content',
         'GET_MESSAGE_STATE',
@@ -88,8 +91,8 @@
       })
     },
     methods: {
-      ...mapActions("article",['fetch_content']),
-      ...mapMutations("article",['GET_USER_AGENT']),
+      ...mapActions("article", ['fetch_content']),
+      ...mapMutations("article", ['GET_USER_AGENT']),
       ...mapActions("common", [
         "getHotSubjects"
       ]),
