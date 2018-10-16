@@ -67,7 +67,7 @@
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg=="
       }
     },
-    mounted() {
+    async mounted() {
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -80,12 +80,13 @@
       }
       // let communityid = this.$route.params.communityid.
       let communityid = '9cvm0OkWDX'
-      this.getCommunityShow(communityid)
+      await this.getCommunityShow(communityid)
       let groupPrm = {
         communityid: communityid,
         page: 1,
         count: 3
       }
+      this.$store.dispatch('wx_config');
       this.getGroupList(groupPrm)
       this.getHotSubjects()
       console.log(this.communityShow)
@@ -142,7 +143,7 @@
             flag: this.$store.state.is_follow ? 0 : 1 // 0-取消关注 1-关注
           }
           this.getSubscription(descPrm)
-
+  
         } else {
           // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (ENV.wx) {

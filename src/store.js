@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {
   makeHtmlContent,
-  mergeJsonObject
+  mergeJsonObject,
+  wxShareConfig,
+  makeFileUrl
 } from "./utils";
 
 import common from './components/module'
@@ -214,10 +216,8 @@ export default new Vuex.Store({
       }
     },
     async wx_config({ state, commit }, payload) {
-      console.log("wx_config")
-      if (state.shareLink == location.href && state.wxConfig.signature && state.wxConfig.appId && state.wxConfig.nonceStr && state.wxConfig.timestamp) {
-
-      } else {
+      if (ENV.wx) {
+        console.log("wx_config")
         let params = {
           url: location.href
         };
@@ -227,9 +227,117 @@ export default new Vuex.Store({
         })
         if (typeof(data.code) != "undefined" && data.code == 0) {
           commit('SET_WX_CONFIG', data.result);
-        } else {
-          return;
+          let wxConfig = data.result;
+          if (JSON.stringify(state.res) == "{}" && JSON.stringify(state.group.group) == "{}") {
+            console.info("not index")
+            if (Cookies.get("shareConfig")) {
+              wxShareConfig(wxConfig, JSON.parse(Cookies.get("shareConfig")))
+            }
+            return;
+          }
+          let title, imgUrl, desc;
+          if (location.href.indexOf("/community") > -1) {
+            // 分享栏目主页
+            title = state.res.name ?
+              state.res.name :
+              "栏目主页";
+            desc = state.res.description ?
+              state.res.description :
+              "贴近一点 看身边";
+            imgUrl = state.res.slogo ?
+              state.res.slogo :
+              state.res.blogo;
+          } else if (location.href.indexOf("/group") > -1) {
+            console.log("state.res", JSON.stringify(state.group.group))
+              // 分享群组
+            if (
+              state.group.group &&
+              state.group.group.group_info.group
+            ) {
+              let group = state.group.group.group_info.group;
+              title = group.name ? group.name : "贴近群组";
+              if (group.description) {
+                let description;
+                try {
+                  description = JSON.parse(
+                    state.group.group.group_info.group.description
+                  );
+                  desc = description[0].content ?
+                    description[0].content :
+                    "贴近一点 看身边";
+                } catch (e) {
+                  desc =
+                    state.group.group.group_info.group.description;
+                }
+              } else {
+                desc = "贴近一点 看身边";
+              }
+              imgUrl = makeFileUrl(group.avatar);
+            }
+          } else {
+            let content = state.content;
+            // 分享长图文
+            if (state.res.int_type === 0) {
+              // 图集
+              if (content.text) {
+                title = content.text;
+              } else {
+                title = "分享图片";
+              }
+              if (content.images && content.images.length > 0) {
+                let d = content.images.map(x => {
+                  x = "[图片]";
+                  return x;
+                });
+                desc = d.join(" ");
+                imgUrl = makeFileUrl(content.images[0].link);
+              } else {
+                desc = "[图片]";
+                imgUrl = "";
+              }
+            } else if (state.res.int_type === 1) {
+              // 视频
+              if (content.text) {
+                title = content.text;
+              } else {
+                title = "分享视频";
+              }
+              if (content.videos && content.videos.length > 0) {
+                let d = content.videos.map(x => {
+                  x = "[视频]";
+                  return x;
+                });
+                desc = d.join(" ");
+                imgUrl = makeFileUrl(content.videos[0].imageUrl);
+              } else {
+                desc = "[视频]";
+                imgUrl = "";
+              }
+            } else {
+              // 长图文
+              if (state.res.title) {
+                title = state.res.title;
+              } else if (content.text) {
+                title = content.text;
+              } else {
+                title = content.summary;
+              }
+              desc = content.summary ? content.summary : "分享文章";
+              imgUrl = makeFileUrl(state.res.cover) ?
+                makeFileUrl(state.res.cover) :
+                makeFileUrl(state.res.bigcover);
+            }
+          }
+          let shareConfig = {
+            title,
+            desc,
+            imgUrl
+          }
+          Cookies.set("shareConfig", shareConfig)
+          wxShareConfig(wxConfig, shareConfig)
         }
+      } else {
+        return;
       }
     }
   }

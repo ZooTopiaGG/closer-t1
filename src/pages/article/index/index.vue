@@ -166,12 +166,13 @@
         return makeFileUrl(url)
       }
     },
-    mounted() {
+   async mounted() {
       // this.GET_USER_AGENT({
       //   nvg: navigator.userAgent,
       //   ref: location.pathname
       // });
-      this.fetch();
+      await this.fetch();
+              this.$store.dispatch('wx_config');
       console.log('params.id:', this.$route.params.id)
       this.getHotSubjects()
     }

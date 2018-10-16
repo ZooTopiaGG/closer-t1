@@ -106,9 +106,7 @@
       }
     },
     created() {
-      if (ENV.wx) {
-        this.$store.dispatch('wx_config');
-      }
+  
     },
     computed: {
       ...mapState("comment", {
@@ -133,16 +131,13 @@
       }
   
     },
-    mounted() {
+    async mounted() {
       console.log('params.id:', this.$route.params.id)
       if (this.$route.params.id) {
-        this.getSubject({
+        await this.getSubject({
           "subjectid": this.$route.params.id
         });
-        let shareConfig = {
-  
-        }
-        wxShareConfig(this.$store.state.wxConfig, shareConfig)
+        this.$store.dispatch('wx_config');
         this.getHotSubjects()
       }
     },

@@ -27,7 +27,7 @@
         <div class="current-topic">当前话题 <i class="arrow-right"></i>
         </div>
         <div class="topic-content">{{announcement()}}</div>
-      </div> -->
+      </div>
      <div class="split-box"></div>
       <div class="group-info" v-if="groupFeedList&&groupFeedList.length>0" @click="toCommunity(group.group_info.communityid)">
         <span class="title">所属贴近号</span>
@@ -56,9 +56,6 @@
       DownloadBar,
       Feedlist
     },
-    created() {
-  
-    },
     computed: {
       ...mapState("group", {
         group: state => state.group,
@@ -72,6 +69,7 @@
         await this.getGroupInfo({
           groupId: this.$route.params.id
         });
+              this.$store.dispatch('wx_config');
         let params = {
           flag: 1,
           classid: this.$route.params.id,
