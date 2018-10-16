@@ -465,7 +465,7 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1) {
       _page = "article";
       url = `closer://feed/${did}`;
-      if (store.state.SUBJECT.int_type === 1) {
+      if (store.state.res.int_type === 1) {
         _page = "video";
       } else {
         _page = "article";
@@ -552,6 +552,49 @@ function getParam(paramName, str) {
   return paramValue;
 }
 
+export function wxShareConfig(wxConfig, shareConfig, jsApiList) {
+  console.info("wxshare content:", shareConfig)
+  if (wxConfig.signature && wxConfig.appId && wxConfig.nonceStr && wxConfig.timestamp) {
+    wx.config({
+      "debug": false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      "signature": wxConfig.signature,
+      "appId": wxConfig.appId,
+      "nonceStr": wxConfig.nonceStr,
+      "timestamp": wxConfig.timestamp,
+      jsApiList: jsApiList || ['onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone', 'onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+    wx.ready(function() {
+      // 分享朋友
+      wx.onMenuShareAppMessage({
+          title: shareConfig.title, // 分享标题
+          desc: shareConfig.desc, // 分享描述
+          imgUrl: shareConfig.imgUrl, // 分享图标
+          link: shareConfig.link || location.href,
+          type: '', // 分享类型,music、video或link，不填默认为link
+          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+          success: function() {
+            // 用户点击了分享后执行的回调函数
+            Toast('分享成功~')
+          }
+        })
+        // 分享朋友圈
+      wx.onMenuShareTimeline({
+          title: shareConfig.title, // 分享标题
+          imgUrl: shareConfig.imgUrl, // 分享图标
+          link: shareConfig.link || location.href,
+          success: function() {
+            // 用户点击了分享后执行的回调函数
+            Toast('分享成功~')
+          }
+        })
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+    })
+    wx.error(function(res) {
+      console.error("wx.config.error", res)
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+    });
+  }
+}
 
 function loginAction() {
 

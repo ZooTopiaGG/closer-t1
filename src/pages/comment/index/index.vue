@@ -1,9 +1,15 @@
 <template>
   <div>
+    <!-- 下载条 -->
+    <download-bar></download-bar>
     <div v-if="subjectExist">
       <div class="comment">
         <div class="title">
           {{subject.title}}
+        </div>
+        <focus-bar></focus-bar>
+        <div class="cover-box">
+          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img">
         </div>
         <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </div>
@@ -58,7 +64,8 @@
     makeFileUrl,
     getCommonTime,
     appPlayVideo,
-    tabImg
+    tabImg,
+    wxShareConfig
   } from '../../../utils'
   import {
     mapState,
@@ -66,15 +73,25 @@
   } from "vuex";
   import Notfound from '../../../components/error/notfound'
   import Feedlist from '../../../components/feedList'
+  import DownloadBar from '../../../components/downloadBar'
+  import focusBar from '../../../components/focusBar'
+  
   export default {
     name: "commentIndex",
     components: {
       Notfound,
-      Feedlist
+      Feedlist,
+      DownloadBar,
+      focusBar
     },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
+      }
+    },
+    created() {
+      if (ENV.wx) {
+        this.$store.dispatch('wx_config');
       }
     },
     computed: {
@@ -100,23 +117,16 @@
       }
   
     },
-    beforeMount() {
-      this.$store.commit("GET_VERSION");
-      this.$store.commit("SET_ENTER_TIME", Date.now());
-       // 存会话 h5Adid
-        if (this.$store.state.h5Adid) {
-          Cookies.set("h5Adid", this.$store.state.h5Adid);
-        } else {
-          Cookies.set("h5Adid", "");
-        }
-       
-    },
     mounted() {
       console.log('params.id:', this.$route.params.id)
       if (this.$route.params.id) {
         this.getSubject({
           "subjectid": this.$route.params.id
         });
+        let shareConfig = {
+  
+        }
+        wxShareConfig(this.$store.state.wxConfig, shareConfig)
         this.getHotSubjects()
       }
     },
@@ -170,6 +180,14 @@
       font-size: 44pr;
       line-height: 60pr;
       color: #4b4945;
+    }
+    .cover-box {
+      margin: 30pr auto;
+      border-radius: 10pr;
+      overflow: hidden;
+      .cover-img {
+        width: 100%;
+      }
     }
     .content {
       margin-top: 30pr;

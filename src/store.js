@@ -25,7 +25,6 @@ export default new Vuex.Store({
     IS_DEV: false,
     IMG_INDEX: 0,
     CONTENT_IMGS: [],
-    SUBJECT: {},
     content: '',
     exist: false,
     extension_text: '',
@@ -38,7 +37,17 @@ export default new Vuex.Store({
     extension_text: '', // 来自某个按钮的点击
     get_login_type: '', // toFocus 来自关注后弹窗 toDown 来自登录后直接跳转下载 inviter 来自奖励金,
     visibleLogin: false,
-    res: {}
+    res: {},
+    shareLink: "",
+    wxConfig: {
+
+    },
+    shareConfig: {
+      title: "贴近一点，看身边",
+      desc: "能赚稿费的本地内容社区",
+      link: "",
+      imgUrl: ""
+    }
   },
   mutations: {
     // 设置贴子详情内容
@@ -114,6 +123,9 @@ export default new Vuex.Store({
     SET_ENTER_TIME(state, para) {
       state.enter_time = para
     },
+    SET_WX_CONFIG(state, para) {
+      state.wxConfig = para
+    }
   },
   modules: {
     common,
@@ -190,8 +202,8 @@ export default new Vuex.Store({
           cookie: h5cookie, //	'cookie，以H5接入时使用，userId，deviceId，cookie三个中必须要传一个'
           platform: "H5", //	'设备平台,参数取值:Android IOS H5'
           attachPlatform: state.nvgTypeToPowerCase || null, //	'H5的载体，当platform为H5时，如果设备为安卓设备，则传Android，IOS设备则传IOS，其他不传'
-          communityId: state.SUBJECT.communityid || null, //		'栏目id,统计对象有该属性则需要填写'
-          title: state.SUBJECT.title || null, //		'标题 如果是文章或视频该参数需要上传'
+          communityId: state.res.communityid || null, //		'栏目id,统计对象有该属性则需要填写'
+          title: state.res.title || null, //		'标题 如果是文章或视频该参数需要上传'
           dreason: null, //		'负反馈内容，当action为feedback时必填，格式为：["负反馈内容1", "负反馈内容2"]'
           time: Date.now(), //		'行为发生的时间戳，单位毫秒'
           cost: Date.now() - state.enter_time || 0, //		'浏览时长/曝光时长，单位毫秒'
@@ -201,6 +213,25 @@ export default new Vuex.Store({
       let data = await service.common(para);
       if (data.code === 0) {
         return true
+      }
+    },
+    async wx_config({ state, commit }, payload) {
+      console.log("wx_config")
+      if (state.shareLink == location.href && state.wxConfig.signature && state.wxConfig.appId && state.wxConfig.nonceStr && state.wxConfig.timestamp) {
+
+      } else {
+        let params = {
+          url: location.href
+        };
+        let { data } = await service.wechatConfig(params).catch(err => {
+          Toast('网络开小差啦，请稍后再试')
+          return;
+        })
+        if (typeof(data.code) != "undefined" && data.code == 0) {
+          commit('SET_WX_CONFIG', data.result);
+        } else {
+          return;
+        }
       }
     }
   }
