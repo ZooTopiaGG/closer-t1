@@ -1,5 +1,5 @@
 <template>
-  <section class="download-bar">
+  <section class="download-bar" v-if="!ENV.app">
     <div class="place"></div>
     <div class="wrap">
       <div class="left">

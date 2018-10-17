@@ -18,5 +18,8 @@ export default {
 
   loginWithWechat(payload) {
     return Axios.post(api.admin.login_with_wechat, payload)
-  }
+  },
+  async wechatConfig(payload) {
+    return await Axios.post(api.admin.wechat_config, payload);
+  },
 }
