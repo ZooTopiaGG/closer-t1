@@ -8,7 +8,7 @@
       <div class="cln-name">{{communityShow.name}}</div>
       <div class="cln-text" v-if="communityShow.description">{{communityShow.description}}</div>
       <div class="cln-text" v-else>用心写出有态度，有深度，有高度的文章 <br>请关注我们吧～</div>
-      <Focus :tjFocus="tjFocus" class="cln-btn"></Focus>
+      <Focus :communityid="communityid" class="cln-btn"></Focus>
     </div>
     <div class="group-wrap" v-if="groupList.data && groupList.data.length > 0">
       <div class="gr-line1 box box-lr">
@@ -63,11 +63,12 @@
     },
     data() {
       return {
-        communityid: '9cvm0OkWDX',
+        communityid: '',
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg=="
       }
     },
     async mounted() {
+      console.log('query params:---', this.$route.params)
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -78,11 +79,10 @@
         console.log('params---', params)
         this.getUserInfoWithWx(params)
       }
-      // let communityid = this.$route.params.communityid.
-      let communityid = '9cvm0OkWDX'
-      await this.getCommunityShow(communityid)
+      this.communityid = this.$route.params.id
+      await this.getCommunityShow(this.communityid)
       let groupPrm = {
-        communityid: communityid,
+        communityid: this.communityid,
         page: 1,
         count: 3
       }
@@ -130,43 +130,44 @@
         });
       },
       // 需要登录的操作 先判断后执行
-      async tjFocus() {
-        this.$store.commit("SET_FOCUS_STAT", "true", {
-          root: true
-        });
-        console.log('is_follow', this.is_follow)
-        // 渲染页面前 先判断cookies token是否存在
-        if (Cookies.get("user")) {
-          // 进行其他 ajax 操作
-          let descPrm = {
-            communityid: this.communityid,
-            flag: this.$store.state.is_follow ? 0 : 1 // 0-取消关注 1-关注
-          }
-          this.getSubscription(descPrm)
+      // async tjFocus() {
+      //   this.$store.commit("SET_FOCUS_STAT", "true", {
+      //     root: true
+      //   });
+      //   console.log('is_follow', this.is_follow)
+      //   // 渲染页面前 先判断cookies token是否存在
+      //   if (Cookies.get("user")) {
+      //     // 进行其他 ajax 操作
+      //     let descPrm = {
+      //       communityid: this.$route.params.id,
+      //       flag: this.$store.state.is_follow ? 0 : 1 // 0-取消关注 1-关注
+      //     }
+      //     console.log('descPrm: ', descPrm)
+      //     this.getSubscription(descPrm)
   
-        } else {
-          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
-          if (ENV.wx) {
-            // 通过微信授权 获取code
-            let path = '/community/' + this.$route.params.id
-            let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
-            let para = {
-              path: _path
-            }
-            console.log('para---', para)
-            if (!this.$route.query.code) {
-              this.getWxAuth(para)
-            }
-          } else {
-            this.$store.commit("GET_LOGIN_TYPE", "toFocus", {
-              root: true
-            });
-            this.$store.commit("SET_VISIBLE_LOGIN", true, {
-              root: true
-            });
-          }
-        }
-      }
+      //   } else {
+      //     // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
+      //     if (ENV.wx) {
+      //       // 通过微信授权 获取code
+      //       let path = '/community/' + this.$route.params.id
+      //       let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
+      //       let para = {
+      //         path: _path
+      //       }
+      //       console.log('para---', para)
+      //       if (!this.$route.query.code) {
+      //         this.getWxAuth(para)
+      //       }
+      //     } else {
+      //       this.$store.commit("GET_LOGIN_TYPE", "toFocus", {
+      //         root: true
+      //       });
+      //       this.$store.commit("SET_VISIBLE_LOGIN", true, {
+      //         root: true
+      //       });
+      //     }
+      //   }
+      // }
     }
   }
 </script>
