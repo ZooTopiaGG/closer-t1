@@ -8,7 +8,7 @@
 </template>
 <script>
 import Cookie from "js-cookie";
-import tCommunity from "./community";
+import tCommunity from "./communityInfo";
 import tFocus from "./focus";
 export default {
   data() {
@@ -33,6 +33,7 @@ export default {
     .focus-wrap {
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
   }
 @media screen and (min-width: 681px) {
