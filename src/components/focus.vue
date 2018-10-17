@@ -27,14 +27,12 @@
 import { mapState, mapActions } from 'vuex';
 import { addUrlParams } from '../utils';
   export default {
-    // props: {
-    //   tjFocus: {
-    //     type: Function,
-    //     default: () => {
-    //       return false;
-    //     }
-    //   }
-    // },
+    props: {
+      communityid: {
+        type: String,
+        default: ''
+      }
+    },
     data() {
       return {};
     },
@@ -68,7 +66,7 @@ import { addUrlParams } from '../utils';
           //   self.$store.commit("SHOW_ALERT", true, {root: true});
           // }
           this.get_focus_stat({
-            communityid: this.res.communityid,
+            communityid: this.res.communityid ? this.res.communityid : this.communityid,
             flag: this.is_follow ? 0 : 1
           })
         } else {

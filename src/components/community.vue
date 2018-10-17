@@ -1,6 +1,6 @@
 <template>
-  <section class="community" :class="showStyle">
-    <img class="community-logo" :src="defaultImg" v-lazy="this.$store.state.res.blogo" @click="toCommunity">
+  <section class="community" :class="showStyle" @click="toCommunity">
+    <img class="community-logo" :src="defaultImg" v-lazy="this.$store.state.res.blogo">
     <span class="community-name ellipsis">{{ this.$store.state.res.communityName || this.$store.state.res.name }}</span>
   </section>
 </template>
