@@ -1,7 +1,7 @@
 <template>
   <section class="footer" v-if="!ENV.app">
     <div class="footer-wrapper" @click="downApp">
-      <div class="footer-btn">{{btnText}} >></div>
+      <div class="footer-btn">{{btnText}}</div>
     </div>
   </section>
 </template>
@@ -34,6 +34,12 @@ export default {
         text-align: center;
         background: #FDDB00;
         color: #4B4945;
+        &::after {
+          content: '>>';
+          position: relative;
+          top: -4pr;
+          margin-left: 6pr;
+        }
       }
     }
   }

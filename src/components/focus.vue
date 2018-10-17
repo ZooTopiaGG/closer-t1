@@ -15,7 +15,6 @@
           <span>已关注</span>
         </section>
         <section class="no-focus" v-else>
-          <i></i>
           <span>关注</span>
         </section>
       </section>
@@ -105,15 +104,23 @@ import { addUrlParams } from '../utils';
     font-size: 32pr;
     position: relative;
     .other {
-      .no-focus {
-        i {
-          display: inline-block;
-          width: @m20;
-          height: @m20;
-          margin-right: 5pr;
-          background: url("../assets/images/add@2x.png") no-repeat;
-          background-size: cover;
-        }
+      background: #fddb00;
+      border-radius: 10pr;
+      padding: 10pr 25pr;
+      color: #333;
+      .no-focus::before {
+        content: '+';
+        position: relative;
+        top: -2pr;
+        margin-right: 6pr;
+        // i {
+        //   display: inline-block;
+        //   width: @m20;
+        //   height: @m20;
+        //   margin-right: 5pr;
+        //   background: url("../assets/images/add@2x.png") no-repeat;
+        //   background-size: cover;
+        // }
       }
     }
     .focus-btn-disabled {

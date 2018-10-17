@@ -11,7 +11,7 @@ export default {
     build: 'https://a.tiejin.cn',
     dev: 'https://a-qa.tiejin.cn',
     sandbox: 'https://t1-sandbox.tiejin.cn',
-    local: 'http://a-sandbox.tiejin.cn:9999'
+    local: 'http://local.tiejin.cn:9999'
   },
   file: {
     build: 'https://file.tiejin.cn',
@@ -26,10 +26,10 @@ export default {
     local: 'https://api-sandbox.tiejin.cn/command/'
   },
   download: {
-    build: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer',
-    dev: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer',
-    sandbox: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer',
-    local: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer'
+    build: 'https://download.tiejin.cn/?adid=closer-t1&fs=false&microlink=https%3a%2f%2fa.app.qq.com%2fo%2fsimple.jsp%3fpkgname%3dcom.ums.closer%26ckey%3dCK1409137336588',
+    dev: 'https://download-qa.tiejin.cn/?adid=closer-t1&fs=false&microlink=https%3a%2f%2fa.app.qq.com%2fo%2fsimple.jsp%3fpkgname%3dcom.ums.closer%26ckey%3dCK1409137336588',
+    sandbox: 'https://download-sandbox.tiejin.cn/?adid=closer-t1&fs=false&microlink=https%3a%2f%2fa.app.qq.com%2fo%2fsimple.jsp%3fpkgname%3dcom.ums.closer%26ckey%3dCK1409137336588',
+    local: 'https://download-sandbox.tiejin.cn/?adid=closer-t1&fs=false&microlink=https%3a%2f%2fa.app.qq.com%2fo%2fsimple.jsp%3fpkgname%3dcom.ums.closer%26ckey%3dCK1409137336588'
   },
   wxAuthorization: {
     build: 'https://h5.tiejin.cn/redirect?redirectUrl=',

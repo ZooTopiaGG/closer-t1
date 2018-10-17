@@ -1,11 +1,15 @@
 <template>
-  <section class="community" :class="showStyle" @click="toCommunity">
-    <img class="community-logo" :src="defaultImg" v-lazy="this.$store.state.res.blogo">
-    <span class="community-name ellipsis">{{ this.$store.state.res.communityName || this.$store.state.res.name }}</span>
+  <section class="community" :class="showStyle">
+    <img class="community-logo" :src="defaultImg" v-lazy="this.$store.state.res.blogo" @click="toCommunity">
+    <div class="community-info">
+      <p class="community-name ellipsis">{{ this.$store.state.res.communityName || this.$store.state.res.name }}</p>
+      <p class="community-time">{{dateFromNow}}</p>
+    </div>
   </section>
 </template>
 <script>
 import { mapState } from 'vuex'
+import { dateFromNow } from '../utils'
 export default {
   props: {
     showType: String
@@ -17,8 +21,12 @@ export default {
     };
   },
   computed: {
+    ...mapState(['res']),
     showStyle() {
       return `community-${this.showType}`
+    },
+    dateFromNow() {
+      return dateFromNow(this.res.long_update_time)
     }
   },
   methods: {
@@ -45,14 +53,18 @@ export default {
     display: flex;
     align-items: center;
     &-logo {
-      width: 104pr;
-      height: 44pr;
+      width: 74pr;
+      height: 74pr;
       margin-right: 22pr;
-
+      border-radius: 10pr;
     }
     &-name {
       font-size: 28pr;
       color: #4b4945;
+    }
+    &-time {
+      font-size: 20pr;
+      color: #aaa;
     }
   }
   .community-1 {

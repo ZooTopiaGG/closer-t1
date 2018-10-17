@@ -17,7 +17,7 @@ export function downloadApp() {
   // if (ua.indexOf('ipad') > -1 || ua.indexOf('iphone') > -1) {
   //     location.href = "https://itunes.apple.com/us/app/%E8%B4%B4%E8%BF%91/id1363128511?l=zh&ls=1&mt=8";
   // } else if (ua.indexOf('android')) {
-  location.href = "http://tiejin.cn/down?downurl=closer://jump";
+  location.href = baseUrl.download;
   // }
 }
 
@@ -638,4 +638,27 @@ function countImgs() {
     }
   }
 
+}
+
+export function dateFromNow(time) {
+  let now = Date.now(),
+    _time = +new Date(time),
+    diff = now - _time,
+    str = '',
+    unit = '';
+  if (diff >= 6.048e8) {
+    str = dateFormat(time, 'date')
+  } else if (diff >= 8.64e7) {
+    str = parseInt(diff / 8.64e7);
+    unit = '天前'
+  } else if (diff >= 3.6e6) {
+    str = parseInt(diff / 3.6e6);
+    unit = '小时前'
+  } else if (diff >= 6e4) {
+    str = parseInt(diff / 6e4);
+    unit = '分钟前'
+  } else {
+    str = '刚刚'
+  }
+  return str + unit;
 }
