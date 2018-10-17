@@ -15,7 +15,7 @@ import article from './pages/article/index/module'
 import comment from './pages/comment/index/module'
 import community from './pages/community/index/module'
 import message from './pages/message/index/module'
-import service from './service'
+import service from './components/service'
 import group from './pages/group/module'
 
 
@@ -159,9 +159,9 @@ export default new Vuex.Store({
       let _params = {
         path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + payload)
       }
-      return service.getAuthPath(_params).then(({data}) => {
+      return service.getAuthPath(_params).then(({ data }) => {
         console.log(data.result)
-        if (typeof (data.code != undefined) && data.code == 0) {
+        if (typeof(data.code != undefined) && data.code == 0) {
           location.href = data.result
           commit('setAuthStatus')
           console.log('state.authSuccess---', state.authSuccess)
@@ -184,9 +184,9 @@ export default new Vuex.Store({
         commit('SET_USER', JSON.parse(user));
         return true;
       } else {
-        return service.loginWithWechat(payload).then(({data}) => {
+        return service.loginWithWechat(payload).then(({ data }) => {
           console.log('data:', data)
-          if (typeof (data.code != undefined) && data.code == 0) {
+          if (typeof(data.code != undefined) && data.code == 0) {
             user = data.result.user
             token = data.result.token
             console.log('user-from-server:', user)
