@@ -163,6 +163,8 @@ export function makeHtmlContent(html) {
           minH = '28.27vw';
           newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
         }
+        console.log("srcArray[i]", srcArray[i])
+        Store.state.CONTENT_IMGS.push(srcArray[i])
         Store.state.IMG_INDEX++;
       } else {
         newM = '';
@@ -606,7 +608,35 @@ export function wxShareConfig(wxConfig, shareConfig, jsApiList) {
   }
 }
 
-function loginAction() {
+
+function countImgs() {
+  // 在浏览器可以点击图片预览
+  let preimg;
+  if (document.querySelectorAll("img[data-index]")) {
+    preimg = document.querySelectorAll("img[data-index]");
+    if (preimg) {
+      var imgList = [];
+      // 遍历查找出来的元素type HTMLCOLLECTION
+      Array.prototype.forEach.call(preimg, (x, i) => {
+        if (x.dataset.index && x.dataset.src) {
+          imgList.push({
+            current: {
+              src: x.dataset.src
+            },
+            index: i
+          });
+          // 监听点击图片事件 闭包
+          preimg[i].onclick = (function() {
+            return function() {
+              self.preIndex = i;
+              self.preShow = true;
+            };
+          })(i);
+        }
+      });
+      self.imgList = imgList;
+    }
+  }
 
 }
 

@@ -23,7 +23,7 @@ export default {
 <style lang="less" scoped>
   .footer {
     background: #fff;
-    border: 1px solid#fff;
+    border-top: 20pr solid #f1f1f1;
     .footer-wrapper {
       margin: 14pr 40pr;
       .footer-btn {

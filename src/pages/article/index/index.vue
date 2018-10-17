@@ -16,18 +16,18 @@
           </div>
           <!-- 暂时隐藏 -->
           <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                            <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                          </section> -->
+                              <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                            </section> -->
           <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
           <author-bar></author-bar>
         </section>
         <!-- 阅读 喜欢 -->
         <like-bar class="like-bar"></like-bar>
-        <!-- 留言板 -->
-        <message-board></message-board>
         <!-- 热门文章 -->
         <feed-list :subjectList="hotSubjects"></feed-list>
+        <!-- 留言板 -->
+        <message-board></message-board>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
       </section>
@@ -167,7 +167,7 @@
         return makeFileUrl(url)
       }
     },
-   async mounted() {
+    async mounted() {
       // this.GET_USER_AGENT({
       //   nvg: navigator.userAgent,
       //   ref: location.pathname
