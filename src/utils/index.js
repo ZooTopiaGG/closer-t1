@@ -609,7 +609,7 @@ export function wxShareConfig(wxConfig, shareConfig, jsApiList) {
 }
 
 
-function countImgs() {
+export function countImgs() {
   // 在浏览器可以点击图片预览
   let preimg;
   if (document.querySelectorAll("img[data-index]")) {
@@ -618,6 +618,7 @@ function countImgs() {
       var imgList = [];
       // 遍历查找出来的元素type HTMLCOLLECTION
       Array.prototype.forEach.call(preimg, (x, i) => {
+        console.log("-----", x.dataset.src)
         if (x.dataset.index && x.dataset.src) {
           imgList.push({
             current: {
@@ -628,13 +629,13 @@ function countImgs() {
           // 监听点击图片事件 闭包
           preimg[i].onclick = (function() {
             return function() {
-              self.preIndex = i;
-              self.preShow = true;
+              Store.state.preIndex = i;
+              Store.state.preShow = true;
             };
           })(i);
         }
       });
-      self.imgList = imgList;
+      Store.state.preImgs = imgList;
     }
   }
 

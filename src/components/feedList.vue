@@ -2,11 +2,11 @@
   <div class="feed" v-if="!ENV.app">
     <div class="head">{{title}}</div>
     <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, '', item.subjectid)">
-      <div class="top">
-        <img class="icon" :src="item.blogo" />
-        <span class="column">{{item.communityName}}</span>
-        <span class="time">{{dateFormate(item.long_publish_time,'yy-mm-dd hh:MM')}}</span>
-      </div>
+      <!-- <div class="top">
+            <img class="icon" :src="item.blogo" />
+            <span class="column">{{item.communityName}}</span>
+            <span class="time">{{dateFormate(item.long_publish_time,'yy-mm-dd hh:MM')}}</span>
+          </div> -->
       <!-- 纯图片类型 int_type == 0-->
       <div class="middle" v-if="item.int_type===0">
         <div class="title">{{item.content.text}} </div>
@@ -37,8 +37,12 @@
           </div>
         </div>
       </div>
+      <div class="bottom">
+        <span class="name">{{item.communityName}}</span> <span class="community-count">{{item.commentNumber}}</span> <span class="like-count">{{item.like}}</span>
+      </div>
     </div>
-    <div></div>
+    <div>
+    </div>
   </div>
 </template>
 
@@ -71,9 +75,9 @@
       }
     },
     computed: {
-     
+  
     },
-   
+  
     methods: {
       dateFormate(t, f) {
         return getCommonTime(t, f);
@@ -81,15 +85,15 @@
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
-       downloadApp(e, str, id) {
+      downloadApp(e, str, id) {
         let redirectUrl = `closer://feed/${id}`;
         down_statistics({
-          "store":this.$store,
-          "route":this.$route,
-          "str":str,
-          "defaultStr":"hot_feed",
-          "redirectUrl":redirectUrl}
-        );
+          "store": this.$store,
+          "route": this.$route,
+          "str": str,
+          "defaultStr": "hot_feed",
+          "redirectUrl": redirectUrl
+        });
       }
     }
   }
@@ -110,27 +114,26 @@
       border-bottom: 20pr solid #f1f1f1;
       padding-bottom: 20pr;
       margin-top: 30pr;
-      .top {
-        .icon {
-          width: 142pr;
-          height: 60pr;
-        }
-        .column {
-          margin: 16pr 0 0 20pr;
-          font-size: 32pr;
-          line-height: 40pr;
-          margin-left: 20pr;
-          color: #4B4945;
-        }
-        .time {
-          font-size: 28pr;
-          line-height: 34pr;
-          color: #94928E;
-          margin-right: 40pr;
-          float: right;
-        }
-      }
-    }
+      // .top {
+      //   .icon {
+      //     width: 142pr;
+      //     height: 60pr;
+      //   }
+      //   .column {
+      //     margin: 16pr 0 0 20pr;
+      //     font-size: 32pr;
+      //     line-height: 40pr;
+      //     margin-left: 20pr;
+      //     color: #4B4945;
+      //   }
+      //   .time {
+      //     font-size: 28pr;
+      //     line-height: 34pr;
+      //     color: #94928E;
+      //     margin-right: 40pr;
+      //     float: right;
+      //   }
+      // }
     .middle {
       margin: 26pr 0pr 0 0pr;
       .title {
@@ -205,5 +208,10 @@
         }
       }
     }
+    .bottom{
+            padding:0 0 30pr 40pr;
+
+    }
+  }
   }
 </style>

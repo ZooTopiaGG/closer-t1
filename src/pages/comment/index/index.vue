@@ -41,9 +41,9 @@
                 </div>
                 <div v-else class="video-out">
                   <video :src="item.video.src" style="object-fit:fill;
-                                              width:100%;
-                                              height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
-                                              </video>
+                                                width:100%;
+                                                height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
+                                                </video>
                 </div>
               </div>
               <div v-else-if="item.type===3">
@@ -71,7 +71,7 @@
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
-      <preview-list :preview-list="this.$store.state.CONTENT_IMGS" :preview-index="preIndex" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
+      <preview-list :preview-list="this.$store.state.preImgs" :preview-index="this.$store.state.preIndex" :preview-show="this.$store.state.preShow" v-on:preview-show="listenToMyChild"></preview-list>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -83,7 +83,8 @@
     getCommonTime,
     appPlayVideo,
     tabImg,
-    wxShareConfig
+    wxShareConfig,
+    countImgs
   } from '../../../utils'
   import {
     mapState,
@@ -152,7 +153,9 @@
           "subjectid": this.$route.params.id
         });
         this.$store.dispatch('wx_config');
-        this.getHotSubjects()
+        this.getHotSubjects();
+        countImgs();
+  
       }
     },
     methods: {
@@ -188,7 +191,7 @@
       tabImg(e) {
         if (window.ENV.app) {
           tabImg(e.target.dataset.index);
-        } 
+        }
       },
       tofeed(fid) {
         if (ENV.app) {

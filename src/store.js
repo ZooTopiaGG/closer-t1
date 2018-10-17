@@ -46,6 +46,9 @@ export default new Vuex.Store({
     authSuccess: false,
     res: {},
     shareLink: "",
+    preShow: false,
+    preImgs: [],
+    preIndex: 0,
     wxConfig: {
 
     },
