@@ -9,7 +9,7 @@
         </div>
         <focus-bar></focus-bar>
         <div class="cover-box">
-          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img">
+          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img" data-index="0">
         </div>
         <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </div>
@@ -31,11 +31,20 @@
               </div>
               <div v-else-if="item.type===1">
                 <!-- 图片 -->
-                <img class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+                <img v-if="ENV.app" class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+                <img v-else class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
               </div>
-              <div v-else-if="item.type===2" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
+              <div v-else-if="item.type===2">
                 <!-- 视频 -->
-                <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
+                <div v-if="ENV.app" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
+                  <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
+                </div>
+                <div v-else class="video-out">
+                  <video :src="item.video.src" style="object-fit:fill;
+                                              width:100%;
+                                              height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
+                                              </video>
+                </div>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
@@ -62,6 +71,7 @@
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
+      <preview-list :preview-list="this.$store.state.CONTENT_IMGS" :preview-index="preIndex" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -87,6 +97,7 @@
   import MessageBoard from '../../../components/messageBoard'
   import FootBar from '../../../components/footBar'
   import AuthorBar from '../../../components/authorBar'
+  import PreviewList from '../../../components/previewList'
   
   export default {
     name: "commentIndex",
@@ -98,11 +109,14 @@
       LikeBar,
       MessageBoard,
       FootBar,
-      AuthorBar
+      AuthorBar,
+      PreviewList
     },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
+        preIndex: 0,
+        preShow: false
       }
     },
     created() {
@@ -174,10 +188,19 @@
       tabImg(e) {
         if (window.ENV.app) {
           tabImg(e.target.dataset.index);
-        }
+        } 
       },
       tofeed(fid) {
-        location.href = `closer://feed/${fid}`;
+        if (ENV.app) {
+          location.href = `closer://feed/${fid}`;
+        } else {
+          this.$router.push({
+            path: `/feed/${fid}?type=2`
+          });
+        }
+      },
+      listenToMyChild(somedata) {
+        this.preShow = somedata;
       },
     }
   }
@@ -288,6 +311,18 @@
               width: 120pr;
               height: 120pr;
               margin: 103pr 230pr 103pr 230pr;
+            }
+          }
+          .video-out {
+            width: 100%;
+            height: auto;
+            position: relative;
+            border-radius: 3px;
+            >video {
+              width: 100%;
+              height: auto;
+              background-color: rgba(0, 0, 0, 0.8);
+              overflow: hidden;
             }
           }
         }
