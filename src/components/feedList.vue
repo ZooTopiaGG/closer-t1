@@ -83,7 +83,7 @@
         return makeFileUrl(url, type, size);
       },
       async downloadApp(e, str, id) {
-        let redirectUrl = `closer://feed/${id}`;
+        let redirectUrl = '';//`closer://feed/${id}`;
         down_statistics({
           "store":this.$store,
           "route":this.$route,
