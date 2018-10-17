@@ -41,235 +41,241 @@
 </template>
 
 <script>
-  import DownloadBar from '../../components/downloadBar';
-  import Feedlist from '../../components/feedList'
-  import {
-    makeFileUrl,
-    down_statistics
-  } from '../../utils'
-  import {
-    mapState,
-    mapActions
-  } from "vuex";
-  export default {
-    components: {
-      DownloadBar,
-      Feedlist
+import DownloadBar from "../../components/downloadBar";
+import Feedlist from "../../components/feedList";
+import { addUrlParams } from "../../utils";
+import { makeFileUrl, down_statistics } from "../../utils";
+import { mapState, mapActions } from "vuex";
+export default {
+  components: {
+    DownloadBar,
+    Feedlist
+  },
+  computed: {
+    ...mapState("group", {
+      group: state => state.group,
+      groupFeedList: state => state.groupFeedList,
+      groupFeedTitle: state => state.groupFeedTitle
+    })
+  },
+  async beforeMount() {
+    if (this.$route.params.id) {
+      await this.getGroupInfo({
+        groupId: this.$route.params.id
+      });
+      this.$store.dispatch("wx_config");
+      let params = {
+        flag: 1,
+        classid: this.$route.params.id,
+        index: "",
+        pagesize: 5
+      };
+      this.getGroupList(params);
+    }
+    if (this.$route.query.code) {
+      let params = {
+        plateform: 2,
+        code: this.$route.query.code,
+        protocol: "WEB_SOCKET",
+        adid: Cookies.get("h5Adid") || "closer-t1"
+      };
+      console.log("params---", params);
+      this.getUserInfoWithWx(params);
+    }
+  },
+  methods: {
+    ...mapActions(["getWxAuth", "getUserInfoWithWx"]),
+    ...mapActions("group", ["getGroupInfo", "getGroupList"]),
+    fileUrlParse(url, type, size) {
+      return makeFileUrl(url, type, size);
     },
-    computed: {
-      ...mapState("group", {
-        group: state => state.group,
-        groupFeedList: state => state.groupFeedList,
-        groupFeedTitle: state => state.groupFeedTitle
-      }),
-  
-    },
-    async beforeMount() {
-      if (this.$route.params.id) {
-        await this.getGroupInfo({
-          groupId: this.$route.params.id
-        });
-              this.$store.dispatch('wx_config');
-        let params = {
-          flag: 1,
-          classid: this.$route.params.id,
-          index: "",
-          pagesize: 5
-        };
-        this.getGroupList(params);
+    description() {
+      try {
+        return JSON.parse(
+          this.$store.state.group.group.group_info.group.description
+        )[0].content;
+      } catch (e) {
+        return this.$store.state.group.group.group_info.group.description;
       }
     },
-    methods: {
-      ...mapActions('group', ['getGroupInfo', 'getGroupList']),
-      fileUrlParse(url, type, size) {
-        return makeFileUrl(url, type, size);
-      },
-      description() {
-        try {
-          return JSON.parse(
-            this.$store.state.group.group.group_info.group.description
-          )[0].content;
-        } catch (e) {
-          return this.$store.state.group.group.group_info.group.description;
-        }
-      },
-      announcement() {
-        try {
-          return JSON.parse(
-            this.$store.state.group.group.group_info.announcement
-          )[0].content;
-        } catch (e) {
-          return this.$store.group.group.state.group.group_info.announcement;
-        }
-      },
-      async moreMember() {
-        this.$store.commit("SET_EXTENSION_TEXT", "more_group_member");
-        // 渲染页面前 先判断cookies token是否存在
-        if (Cookies.get("token")) {
-          this.downApp();
+    announcement() {
+      try {
+        return JSON.parse(
+          this.$store.state.group.group.group_info.announcement
+        )[0].content;
+      } catch (e) {
+        return this.$store.group.group.state.group.group_info.announcement;
+      }
+    },
+    async moreMember() {
+      this.$store.commit("SET_EXTENSION_TEXT", "more_group_member");
+      // 渲染页面前 先判断cookies token是否存在
+      if (Cookies.get("token")) {
+        this.downloadApp();
+      } else {
+        // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
+        if (ENV.wx) {
+          // 通过微信授权 获取code
+          this.getWxAuth(
+            addUrlParams(this.$route.path, Object.assign({}, this.$route.query))
+          );
         } else {
-          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
-          if (ENV.wx) {
-            // 通过微信授权 获取code
-  
-          } else {
-            this.$store.commit("GET_LOGIN_TYPE", "toDown");
-            this.$store.commit("SET_VISIBLE_LOGIN", true);
-          }
+          this.$store.commit("GET_LOGIN_TYPE", "toDown");
+          this.$store.commit("SET_VISIBLE_LOGIN", true);
         }
-      },
-      async downloadApp(e, str, id) {
-        down_statistics({
-          "store": this.$store,
-          "route": this.$route,
-          "str": str,
-          "defaultStr": "more_group_member",
-        });
-      },
-      toCommunity(cid) {
-        this.$router.push({
-          path: `/community/${cid}`
-        });
       }
-  
+    },
+    async downloadApp(e, str, id) {
+      down_statistics({
+        store: this.$store,
+        route: this.$route,
+        str: str,
+        defaultStr: "more_group_member"
+      });
+    },
+    toCommunity(cid) {
+      this.$router.push({
+        path: `/community/${cid}`
+      });
     }
   }
+};
 </script>
 
 <style lang="less" scoped>
-  .group {
-    .member {
-      padding: 40pr;
-      .title {
+.group {
+  .member {
+    padding: 40pr;
+    .title {
+      text-align: center;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.7;
+      font-size: 16px;
+      margin-bottom: 40pr;
+    }
+    .member-icons {
+      display: flex;
+      width: 670pr;
+      .head {
+        margin-right: 16pr;
+        position: relative;
         text-align: center;
-        font-weight: 600;
-        text-align: center;
-        line-height: 1.7;
-        font-size: 16px;
-        margin-bottom: 40pr;
-      }
-      .member-icons {
-        display: flex;
-        width: 670pr;
-        .head {
-          margin-right: 16pr;
-          position: relative;
-          text-align: center;
-          width: 124pr;
-          .icon {
-            width: 100pr;
-            height: 100pr;
-            border-radius: 100pr;
-            margin-bottom: 10pr;
-          }
-          .owner {
-            width: 80pr;
-            height: 80pr;
-            background: url("../../assets/images/group_icon_tag.png") no-repeat;
-            background-size: cover;
-            position: absolute;
-            top: -14pr;
-            left: -14pr;
-            text-align: center;
-            span {
-              margin-top: 26pr;
-              font-size: 22pr;
-              -webkit-transform: rotate(-45deg);
-              transform: rotate(-45deg);
-              color: #fff;
-              display: block;
-            }
-          }
-          .name {
-            font-size: 28pr;
-            color: #4B4945;
-            text-align: center;
-            width: 100%;
-            height: 40pr;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
+        width: 124pr;
+        .icon {
+          width: 100pr;
+          height: 100pr;
+          border-radius: 100pr;
+          margin-bottom: 10pr;
         }
-      }
-      .more-member {
-        margin: 40pr 0 40pr 0;
-        text-align: center;
-        color: #507caf;
-        font-size: 14px;
-        .arrow {
-          display: inline-block;
-          width: 18pr;
-          height: 18pr;
-          background: url("../../assets/images/group_down_arrow.png") no-repeat;
+        .owner {
+          width: 80pr;
+          height: 80pr;
+          background: url("../../assets/images/group_icon_tag.png") no-repeat;
           background-size: cover;
-          margin-left: 6pr;
+          position: absolute;
+          top: -14pr;
+          left: -14pr;
+          text-align: center;
+          span {
+            margin-top: 26pr;
+            font-size: 22pr;
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            color: #fff;
+            display: block;
+          }
+        }
+        .name {
+          font-size: 28pr;
+          color: #4b4945;
+          text-align: center;
+          width: 100%;
+          height: 40pr;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
-      .split-line {
-        width: 100%;
-        height: 1px;
-        background: #E6E6E6;
+    }
+    .more-member {
+      margin: 40pr 0 40pr 0;
+      text-align: center;
+      color: #507caf;
+      font-size: 14px;
+      .arrow {
+        display: inline-block;
+        width: 18pr;
+        height: 18pr;
+        background: url("../../assets/images/group_down_arrow.png") no-repeat;
+        background-size: cover;
+        margin-left: 6pr;
       }
     }
-    .arrow-right {
-      margin-top: 14pr;
-      float: right;
-      display: inline-block;
-      width: 10pr;
-      height: 24pr;
-      background: url("../../assets/images/back.png") no-repeat;
-      background-size: cover;
-    }
-    .description {
-      .desc {
-        margin: 20pr 40pr 20pr 40pr;
-        font-size: 32pr;
-        font-weight: 600;
-        position: relative;
-      }
-      .desc-content {
-        padding: 0 40pr 0 40pr;
-        margin-bottom: 40pr;
-        font-size: 28pr;
-        color: #94928E;
-      }
-    }
-    .topic {
-      .current-topic {
-        margin: 20pr 40pr 20pr 40pr;
-        font-size: 32pr;
-        font-weight: 600;
-        position: relative;
-      }
-      .topic-content {
-        padding: 0 40pr 0 40pr;
-        margin-bottom: 40pr;
-        font-size: 28pr;
-        color: #94928E;
-      }
-    }
-    .split-box {
+    .split-line {
       width: 100%;
-      height: 20pr;
-      background: #f4f4f4;
-    }
-    .group-info {
-      margin: 48pr 40pr 48pr 40pr;
-      color: #4B4945;
-      .title {
-        font-weight: 600;
-        margin-right: 150pr;
-      }
-      .icon {
-        width: 142pr;
-        height: 60pr;
-        border-radius: 10pr;
-        margin-right: 20pr;
-      }
-      .name {
-        font-size: 28pr;
-      }
+      height: 1px;
+      background: #e6e6e6;
     }
   }
+  .arrow-right {
+    margin-top: 14pr;
+    float: right;
+    display: inline-block;
+    width: 10pr;
+    height: 24pr;
+    background: url("../../assets/images/back.png") no-repeat;
+    background-size: cover;
+  }
+  .description {
+    .desc {
+      margin: 20pr 40pr 20pr 40pr;
+      font-size: 32pr;
+      font-weight: 600;
+      position: relative;
+    }
+    .desc-content {
+      padding: 0 40pr 0 40pr;
+      margin-bottom: 40pr;
+      font-size: 28pr;
+      color: #94928e;
+    }
+  }
+  .topic {
+    .current-topic {
+      margin: 20pr 40pr 20pr 40pr;
+      font-size: 32pr;
+      font-weight: 600;
+      position: relative;
+    }
+    .topic-content {
+      padding: 0 40pr 0 40pr;
+      margin-bottom: 40pr;
+      font-size: 28pr;
+      color: #94928e;
+    }
+  }
+  .split-box {
+    width: 100%;
+    height: 20pr;
+    background: #f4f4f4;
+  }
+  .group-info {
+    margin: 48pr 40pr 48pr 40pr;
+    color: #4b4945;
+    .title {
+      font-weight: 600;
+      margin-right: 150pr;
+    }
+    .icon {
+      width: 142pr;
+      height: 60pr;
+      border-radius: 10pr;
+      margin-right: 20pr;
+    }
+    .name {
+      font-size: 28pr;
+    }
+  }
+}
 </style>
