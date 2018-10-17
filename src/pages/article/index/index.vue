@@ -16,8 +16,8 @@
           </div>
           <!-- 暂时隐藏 -->
           <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                            <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                          </section> -->
+                              <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                            </section> -->
           <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
           <author-bar></author-bar>
@@ -166,13 +166,13 @@
         return makeFileUrl(url)
       }
     },
-   async mounted() {
+    async mounted() {
       // this.GET_USER_AGENT({
       //   nvg: navigator.userAgent,
       //   ref: location.pathname
       // });
       await this.fetch();
-              this.$store.dispatch('wx_config');
+      this.$store.dispatch('wx_config');
       console.log('params.id:', this.$route.params.id)
       this.getHotSubjects()
     }
