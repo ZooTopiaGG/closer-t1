@@ -75,15 +75,14 @@
     },
    
     methods: {
-    
       dateFormate(t, f) {
         return getCommonTime(t, f);
       },
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
-      async downloadApp(e, str, id) {
-        let redirectUrl = '';//`closer://feed/${id}`;
+       downloadApp(e, str, id) {
+        let redirectUrl = `closer://feed/${id}`;
         down_statistics({
           "store":this.$store,
           "route":this.$route,
