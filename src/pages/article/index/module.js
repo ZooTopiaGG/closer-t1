@@ -1,6 +1,10 @@
-import { fetchContent } from './service';
+import {
+  fetchContent
+} from './service';
 
-import { makeHtmlContent } from "../../../utils";
+import {
+  makeHtmlContent
+} from "../../../utils";
 const state = {
   // GET_MESSAGE_STATE: false,
   // GET_IS_APP: false,
@@ -15,7 +19,13 @@ const state = {
 
 const actions = {
   // 获取文章内容
-  async fetch_content({ commit, state, rootState }, { id }) {
+  async fetch_content({
+    commit,
+    state,
+    rootState
+  }, {
+    id
+  }) {
     try {
       // 获取贴子详情
       let res = await fetchContent(id)

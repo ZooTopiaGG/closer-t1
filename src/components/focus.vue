@@ -24,21 +24,75 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import { addUrlParams } from '../utils';
   export default {
-    props: {
-      tjFocus: {
-        type: Function,
-        default: () => {
-          return false;
-        }
-      }
-    },
+    // props: {
+    //   tjFocus: {
+    //     type: Function,
+    //     default: () => {
+    //       return false;
+    //     }
+    //   }
+    // },
     data() {
       return {};
     },
     computed: {
-      ...mapState(['is_follow'])
+      ...mapState(['is_follow', 'isLogin']),
+      ...mapState('article', ['res'])
+    },
+    watch: {
+      isLogin: function(newVal, oldVal) {
+        console.log('isLogin:', newVal, oldVal);
+        if (newVal && this.$route.query.useraction == 'focus') {
+          console.log('actons:tjFocus');
+          this.tjFocus()
+        }
+      }
+    },
+    methods: {
+      ...mapActions(['getWxAuth']),
+      ...mapActions('common', ['get_focus_stat']),
+      // 需要登录的操作 先判断后执行
+      async tjFocus() {
+        // self.$store.commit("SET_EXTENSION_TEXT", "follow", {root: true});
+        // 渲染页面前 先判断cookies token是否存在
+        if (Cookies.get("token")) {
+          // 进行其他 ajax 操作
+          // let result = await self.$store.dispatch("get_focus_stat", {
+          //   communityid: self.$store.state.res.communityid,
+          //   flag: self.$store.state.is_follow ? 0 : 1
+          // });
+          // if (result) {
+          //   self.$store.commit("SHOW_ALERT", true, {root: true});
+          // }
+          this.get_focus_stat({
+            communityid: this.res.communityid,
+            flag: this.is_follow ? 0 : 1
+          })
+        } else {
+          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
+          if (this.ENV.wx) {
+            // 通过微信授权 获取code
+            // await self.$store.dispatch("get_wx_auth", {
+            //   // 正式
+            //   url: `${location.protocol}//${location.hostname}${
+            //     self.$route.fullPath
+            //   }`
+            // });
+            this.getWxAuth(
+              addUrlParams(this.$route.path, Object.assign({}, this.$route.query, {
+                useraction: 'focus'
+              })))
+          } else {
+            // self.$store.commit("GET_LOGIN_TYPE", "toFocus", {root: true});
+            // self.$store.commit("SET_VISIBLE_LOGIN", true, {root: true});
+          }
+        }
+      }
+    },
+    mounted() {
     }
   };
 </script>

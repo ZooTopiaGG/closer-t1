@@ -73,7 +73,7 @@
           plateform: 2,
           code: this.$route.query.code,
           protocol: "WEB_SOCKET",
-          adid: Cookies.get('h5Adid') || 'closer-share'
+          adid: Cookies.get('h5Adid') || 'closer-t1'
         }
         console.log('params---', params)
         this.getUserInfoWithWx(params)

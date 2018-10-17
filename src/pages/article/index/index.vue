@@ -91,8 +91,9 @@
       })
     },
     methods: {
-      ...mapActions("article", ['fetch_content']),
-      ...mapMutations("article", ['GET_USER_AGENT']),
+      ...mapActions(['getUserInfoWithWx']),
+      ...mapActions("article",['fetch_content']),
+      ...mapMutations("article",['GET_USER_AGENT']),
       ...mapActions("common", [
         "getHotSubjects"
       ]),
@@ -171,6 +172,16 @@
       //   nvg: navigator.userAgent,
       //   ref: location.pathname
       // });
+      if (this.$route.query.code) {
+        let params = {
+          plateform: 2,
+          code: this.$route.query.code,
+          protocol: "WEB_SOCKET",
+          adid: Cookies.get('h5Adid') || 'closer-t1'
+        }
+        console.log('params---', params)
+        this.getUserInfoWithWx(params)
+      }
       await this.fetch();
       this.$store.dispatch('wx_config');
       console.log('params.id:', this.$route.params.id)
