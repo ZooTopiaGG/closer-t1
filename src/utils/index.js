@@ -373,6 +373,7 @@ export function appPlayVideo(u, v) {
 }
 
 export function tabImg(i) {
+  console.log(Store.state.CONTENT_IMGS)
   let imgArray = Store.state.CONTENT_IMGS;
   let index = parseInt(i);
   let imgJson = {

@@ -190,7 +190,7 @@
       clickImg(e) {
         let target=e.target;
                 console.log("target",target.dataset)
-        if (window.ENV.app && target.dataset.index) {
+        if ( target.dataset.index) {
           tabImg(target.dataset.index);
         } else if (target.dataset.src) {
           this.clickImgOuter(target.dataset.src)

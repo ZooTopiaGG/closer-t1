@@ -100,7 +100,7 @@ export default {
                   content.end_html = end_html;
                 }
               }
-              rootState.CONTENT_IMGS == contentImgs;
+              rootState.CONTENT_IMGS = contentImgs;
               rootState.IMG_INDEX = imgIndex;
               commit("setContent", content);
               delete data.result.content;
