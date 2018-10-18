@@ -8,10 +8,10 @@
 
 export default {
   href: {
-    build: 'https://t1.tiejin.cn',
-    dev: 'https://t1-qa.tiejin.cn',
+    build: 'https://a.tiejin.cn',
+    dev: 'https://a-qa.tiejin.cn',
     sandbox: 'https://t1-sandbox.tiejin.cn',
-    local: 'http://t1.tiejin.cn:9999'
+    local: 'http://t1-sandbox.tiejin.cn:9999'
   },
   file: {
     build: 'https://file.tiejin.cn',

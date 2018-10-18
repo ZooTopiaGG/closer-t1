@@ -36,21 +36,19 @@ import { addUrlParams } from '../utils';
       return {};
     },
     computed: {
-      ...mapState(['is_follow', 'isLogin']),
-      ...mapState('article', ['res'])
+      ...mapState(['is_follow']),
+      ...mapState('article', ['res']),
+      ...mapState('common', ['isLogin'])
     },
     watch: {
       isLogin: function(newVal, oldVal) {
-        console.log('isLogin:', newVal, oldVal);
-        if (newVal && this.$route.query.useraction == 'focus') {
-          console.log('actons:tjFocus');
+        if (newVal && sessionStorage.userAction == 'focus') {
           this.tjFocus()
         }
       }
     },
     methods: {
-      ...mapActions(['getWxAuth']),
-      ...mapActions('common', ['get_focus_stat']),
+      ...mapActions('common', ['getWxAuth', 'get_focus_stat']),
       // 需要登录的操作 先判断后执行
       async tjFocus() {
         // self.$store.commit("SET_EXTENSION_TEXT", "follow", {root: true});
@@ -65,9 +63,15 @@ import { addUrlParams } from '../utils';
           //   self.$store.commit("SHOW_ALERT", true, {root: true});
           // }
           this.get_focus_stat({
-            communityid: this.res.communityid ? this.res.communityid : this.communityid,
-            flag: this.is_follow ? 0 : 1
+            payload: {
+              communityid: this.res.communityid ? this.res.communityid : this.communityid,
+              flag: this.is_follow ? 0 : 1
+            },
+            after: () => {
+              sessionStorage.userAction = null;
+            }
           })
+
         } else {
           // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (this.ENV.wx) {
@@ -78,10 +82,15 @@ import { addUrlParams } from '../utils';
             //     self.$route.fullPath
             //   }`
             // });
-            this.getWxAuth(
-              addUrlParams(this.$route.path, Object.assign({}, this.$route.query, {
-                useraction: 'focus'
-              })))
+            this.getWxAuth({
+              payload: {
+                path: this.$route.path, 
+                query: this.$route.query
+              },
+              before: () => {
+                sessionStorage.userAction = 'focus';
+              }
+            })
           } else {
             // self.$store.commit("GET_LOGIN_TYPE", "toFocus", {root: true});
             // self.$store.commit("SET_VISIBLE_LOGIN", true, {root: true});

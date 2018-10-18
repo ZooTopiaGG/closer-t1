@@ -77,6 +77,8 @@
     border-bottom: 20pr solid #f1f1f1;
     font-size: 28pr;
     color: #94928e;
+    padding: 0 24pr 0;
+    background: #fff;
     .like {
       display: flex;
       align-items: center;

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-if="!ENV.app&&messagelist">
+  <div class="wrapper bg-f" v-if="!ENV.app&&messagelist">
     <div class="message-board" v-if="messagelist.length > 0">
       <div class="board-top">
         <span class="title" id="title">精彩留言</span>
@@ -145,14 +145,13 @@
             } else {
               path = '/message/' + this.$route.params.id + '/' +id
             }
-            let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
-            let para = {
-              path: _path
-            }
-            console.log('para---', para)
-  
             if (!this.$route.query.code) {
-              this.getWxAuth(para)
+              this.getWxAuth({
+                payload: {
+                  path,
+                  query: this.$route.query
+                }
+              })
             }
             // let url;
             // if (type === "comment") {
@@ -206,7 +205,8 @@
     width: 100%;
     height: 100%;
     // background: #F8F8F8;
-    border-top: 1px solid #F8F8F8;
+    // border-top: 1px solid #F8F8F8;
+    border-bottom: 20pr solid #f1f1f1;
     .message-board {
       color: #4b4945;
       background: #fff;
@@ -309,8 +309,8 @@
     }
     .no-draft {
       background: #fff;
-      padding: 20pr 40pr;
-      margin: 20pr 0;
+      padding: 20pr 24pr;
+      // margin: 20pr 0;
       font-size: 32pr;
       line-height: 44pr;
       .write {

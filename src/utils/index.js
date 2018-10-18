@@ -33,6 +33,22 @@ export function getQueryString() {
   return str[strLen - 1]
 }
 
+// 获取url中参数，返回所有参数组成的object对象
+export function getQueryObject(url) {
+  url = url || window.location.href;
+  var search = url.substring(url.lastIndexOf("?") + 1);
+  var obj = {};
+  var reg = /([^?&=]+)=([^?&=]*)/g;
+  search.replace(reg, (rs, $1, $2) => {
+    var name = decodeURIComponent($1);
+    var val = decodeURIComponent($2);
+    val = String(val);
+    obj[name] = val;
+    return rs;
+  });
+  return obj;
+};
+
 export function getPlatform() {
   var u = navigator.userAgent;
   return {
@@ -508,14 +524,19 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
 }
 
 // 为url添加参数
-export function addUrlParams(url, params) {
+export function addUrlParams(url = '', params = {}) {
+  url = url.split('?');
+  let _url = url[0];
   let str = [];
+  if (url[1]) {
+    params = Object.assign(getQueryObject(url), params)
+  }
   for (let key in params) {
     if (params.hasOwnProperty(key)) {
       str.push(`${key}=${params[key]}`)
     }
   }
-  return url + (url.indexOf('?') > -1 ? '&' : '?') + str.join('&')
+  return _url + '?' + str.join('&')
 }
 
 function isJumpOut() {
@@ -609,7 +630,7 @@ export function wxShareConfig(wxConfig, shareConfig, jsApiList) {
 }
 
 
-function countImgs() {
+export function countImgs() {
   // 在浏览器可以点击图片预览
   let preimg;
   if (document.querySelectorAll("img[data-index]")) {
@@ -618,6 +639,7 @@ function countImgs() {
       var imgList = [];
       // 遍历查找出来的元素type HTMLCOLLECTION
       Array.prototype.forEach.call(preimg, (x, i) => {
+        console.log("-----", x.dataset.src)
         if (x.dataset.index && x.dataset.src) {
           imgList.push({
             current: {
@@ -628,13 +650,13 @@ function countImgs() {
           // 监听点击图片事件 闭包
           preimg[i].onclick = (function() {
             return function() {
-              self.preIndex = i;
-              self.preShow = true;
+              Store.state.preIndex = i;
+              Store.state.preShow = true;
             };
           })(i);
         }
       });
-      self.imgList = imgList;
+      Store.state.preImgs = imgList;
     }
   }
 
@@ -644,21 +666,43 @@ export function dateFromNow(time) {
   let now = Date.now(),
     _time = +new Date(time),
     diff = now - _time,
-    str = '',
-    unit = '';
+    str = '';
   if (diff >= 6.048e8) {
-    str = dateFormat(time, 'date')
+    // 大于7天直接显示日期
+    str = new Date(time).Format('MM-dd')
   } else if (diff >= 8.64e7) {
-    str = parseInt(diff / 8.64e7);
-    unit = '天前'
+    // 大于24小时显示“天”
+    str = parseInt(diff / 8.64e7) + '天前';
   } else if (diff >= 3.6e6) {
-    str = parseInt(diff / 3.6e6);
-    unit = '小时前'
+    // 大于60分钟显示“小时”
+    str = parseInt(diff / 3.6e6) + '小时前';
   } else if (diff >= 6e4) {
-    str = parseInt(diff / 6e4);
-    unit = '分钟前'
+    // 大于60秒显示“分钟”
+    str = parseInt(diff / 6e4) + '分钟前';
   } else {
+    // 小于1分钟显示“刚刚”
     str = '刚刚'
   }
-  return str + unit;
+  return str;
 }
+
+// 日期格式化(new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
+Date.prototype.Format = function(fmt) {
+  fmt = fmt || 'yyyy-MM-dd hh:mm:ss';
+  if (this == 'Invalid Date') return '';
+  var o = {
+    "M+": this.getMonth() + 1, //月份
+    "d+": this.getDate(), //日
+    "h+": this.getHours(), //小时
+    "m+": this.getMinutes(), //分
+    "s+": this.getSeconds(), //秒
+    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+    "S": this.getMilliseconds() //毫秒
+  };
+  if (/(y+)/.test(fmt))
+    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt))
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+};

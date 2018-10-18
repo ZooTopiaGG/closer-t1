@@ -119,3 +119,7 @@
 .toast {
 	z-index: 2003 !important;
 }
+
+.bg-f {
+	background: #FFFFFF;
+}
