@@ -107,7 +107,7 @@ const actions = {
   }, {payload, before}) {
     console.log('getWxAuth', payload)
     let _params = {
-      path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + addUrlParams(payload.path + payload.query))
+      path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + addUrlParams(payload.path, payload.query))
     }
     before && before();
     let data = await service.getAuthPath(_params).catch(err => {
