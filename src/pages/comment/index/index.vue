@@ -83,8 +83,7 @@
     getCommonTime,
     appPlayVideo,
     tabImg,
-    wxShareConfig,
-    countImgs
+    wxShareConfig
   } from '../../../utils'
   import {
     mapState,
@@ -154,8 +153,6 @@
         });
         this.$store.dispatch('wx_config');
         this.getHotSubjects();
-        countImgs();
-  
       }
     },
     methods: {
