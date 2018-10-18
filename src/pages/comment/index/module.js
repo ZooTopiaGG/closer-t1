@@ -73,7 +73,7 @@ export default {
                     }
                   }
                   if (x.image) {
-                    x.image['index'] = rootState.IMG_INDEX;
+                    x.image['index'] = imgIndex;
                     contentImgs.push(x.image.link)
                     imgIndex++;
                   }
