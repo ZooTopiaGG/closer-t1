@@ -30,26 +30,28 @@
                         </div>
                       </div> -->
       <!-- 长图文有封面 int_type == 2 int_category=== 3神议论 1是征稿-->
-      <div class="middle">
-        <div class="cover">
-          <div class="feed-title" v-if="item.int_type===2">{{item.title}}</div>
-          <div class="feed-title" v-else>{{item.content.text}}</div>
-          <div v-if="item.int_type===2&&item.cover" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover)">
-          </div>
-          <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover)">
-            <div class="image-num">{{item.content.images.length}}图</div>
-          </div>
-          <div v-else-if="item.int_type===1" class="feed-cover" v-lazy:background-image="item.content.videos[0].imageUrl">
-            <div class="play-icon"></div>
+      <div class="wrap">
+        <div class="middle">
+          <div class="cover">
+            <div class="feed-title" v-if="item.int_type===2">{{item.title}}</div>
+            <div class="feed-title" v-else>{{item.content.text}}</div>
+            <div v-if="item.int_type===2&&item.cover" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover)">
+            </div>
+            <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover)">
+              <div class="image-num">{{item.content.images.length}}图</div>
+            </div>
+            <div v-else-if="item.int_type===1" class="feed-cover" v-lazy:background-image="item.content.videos[0].imageUrl">
+              <div class="play-icon"></div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="bottom">
-        <label class="name">{{item.communityName}}</label>
-        <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
-        <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
-        <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
-        <label class="date">{{dateFormate(item.long_publish_time)}}</label>
+        <div class="bottom">
+          <label class="name">{{item.communityName}}</label>
+          <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
+          <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
+          <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
+          <label class="date">{{dateFormate(item.long_publish_time)}}</label>
+        </div>
       </div>
     </div>
     <div>
@@ -115,17 +117,19 @@
   .feed {
     margin-top: 20pr;
     background: #fff;
+    border-bottom: 20pr solid #f1f1f1;
     .head {
-      color: #4B4945;
+      color: #272727;
       line-height: 44pr;
       font-size: 32pr;
-      padding: 30pr 0 30pr 40pr;
+      font-weight: bold;
+      padding: 30pr 0 30pr 24pr;
       border-bottom: 1px solid #f1f1f1;
     }
     .feed-content {
-      border-bottom: 20pr solid #f1f1f1;
-      padding-bottom: 20pr;
-      margin-top: 30pr;
+      padding: 24pr 24pr 0;
+      // padding-bottom: 20pr;
+      // margin-top: 30pr;
       // .top {
       //   .icon {
       //     width: 142pr;
@@ -146,12 +150,15 @@
       //     float: right;
       //   }
       // }
+      .wrap {
+        border-bottom: 1px solid #f1f1f1;
+        padding-bottom: 24pr;
+      }
       .middle {
-        margin: 26pr 0pr 0 0pr;
+        // margin: 24pr;
         .title {
-          color: #4B4945;
+          color: #242424;
           line-height: 52pr;
-          font-weight: 500;
           font-size: 34pr;
           padding: 0 40pr;
         }
@@ -203,11 +210,11 @@
         .cover {
           display: flex;
           flex-direction: row;
-          margin: 24pr 0 16pr 24pr;
+          margin: 0 0 16pr 0;
           .feed-title {
             width: 447pr;
             height: 135pr;
-            color: #4B4945;
+            color: #242424;
             margin-right: 24pr;
             line-height: 45pr;
             font-size: 34pr;
@@ -243,7 +250,7 @@
         }
       }
       .bottom {
-        padding: 0 0 30pr 40pr;
+        // padding: 0 0 24pr 24pr;
         color: #94928E;
         font-size: 24pr;
         .name {
@@ -251,7 +258,6 @@
         }
         .date {
           float: right;
-          margin-right: 24pr;
         }
       }
     }

@@ -112,8 +112,6 @@
         'getSubscription'
       ]),
       ...mapActions('common', [
-        'get_focus_stat',
-        'getWxAuth',
         'getUserInfoWithWx',
         'getHotSubjects'
       ]),
@@ -128,46 +126,7 @@
         this.$router.push({
           path: `/group/${id}`
         });
-      },
-      // 需要登录的操作 先判断后执行
-      // async tjFocus() {
-      //   this.$store.commit("SET_FOCUS_STAT", "true", {
-      //     root: true
-      //   });
-      //   console.log('is_follow', this.is_follow)
-      //   // 渲染页面前 先判断cookies token是否存在
-      //   if (Cookies.get("user")) {
-      //     // 进行其他 ajax 操作
-      //     let descPrm = {
-      //       communityid: this.$route.params.id,
-      //       flag: this.$store.state.is_follow ? 0 : 1 // 0-取消关注 1-关注
-      //     }
-      //     console.log('descPrm: ', descPrm)
-      //     this.getSubscription(descPrm)
-  
-      //   } else {
-      //     // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
-      //     if (ENV.wx) {
-      //       // 通过微信授权 获取code
-      //       let path = '/community/' + this.$route.params.id
-      //       let _path = baseUrl.wxAuthorization + baseUrl.href + path + '?params=' + encodeURIComponent(JSON.stringify(this.$route.query))
-      //       let para = {
-      //         path: _path
-      //       }
-      //       console.log('para---', para)
-      //       if (!this.$route.query.code) {
-      //         this.getWxAuth(para)
-      //       }
-      //     } else {
-      //       this.$store.commit("GET_LOGIN_TYPE", "toFocus", {
-      //         root: true
-      //       });
-      //       this.$store.commit("SET_VISIBLE_LOGIN", true, {
-      //         root: true
-      //       });
-      //     }
-      //   }
-      // }
+      }
     }
   }
 </script>

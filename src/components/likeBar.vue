@@ -72,10 +72,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80pr;
+    height: 100pr;
     border-top: 1px solid #eaeaea;
+    border-bottom: 20pr solid #f1f1f1;
     font-size: 28pr;
     color: #94928e;
+    padding: 0 24pr 0;
+    background: #fff;
     .like {
       display: flex;
       align-items: center;
@@ -83,7 +86,6 @@
     .like-icon {
       width: 34pr;
       height: 30pr;
-
     }
   }
 </style>

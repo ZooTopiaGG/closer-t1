@@ -9,9 +9,9 @@
         </div>
         <focus-bar></focus-bar>
         <div class="cover-box">
-          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img" data-index="0">
+          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt=""   class="cover-img" data-index="0">
         </div>
-        <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+        <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }"  @click="openClick($event)">
         </div>
         <div class="discuss" v-for="(item,key) in discuss" :key="key">
           <div class="discuss-content">
@@ -31,8 +31,8 @@
               </div>
               <div v-else-if="item.type===1">
                 <!-- 图片 -->
-                <img v-if="ENV.app" class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
-                <img v-else class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="tabImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+                <img v-if="ENV.app" class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="clickImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+                <img v-else class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" :data-index="item.image.index" @click="clickImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
               </div>
               <div v-else-if="item.type===2">
                 <!-- 视频 -->
@@ -41,9 +41,9 @@
                 </div>
                 <div v-else class="video-out">
                   <video :src="item.video.src" style="object-fit:fill;
-                                                  width:100%;
-                                                  height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
-                                                  </video>
+                                                        width:100%;
+                                                        height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
+                                                        </video>
                 </div>
               </div>
               <div v-else-if="item.type===3">
@@ -71,7 +71,7 @@
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
-      <preview-list :preview-list="this.$store.state.preImgs" :preview-index="this.$store.state.preIndex" :preview-show="this.$store.state.preShow" v-on:preview-show="listenToMyChild"></preview-list>
+      <preview-list :preview-list="this.$store.state.CONTENT_IMGS" :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -83,8 +83,7 @@
     getCommonTime,
     appPlayVideo,
     tabImg,
-    wxShareConfig,
-    countImgs
+    wxShareConfig
   } from '../../../utils'
   import {
     mapState,
@@ -116,7 +115,7 @@
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
-        preIndex: 0,
+        preSrc: "",
         preShow: false
       }
     },
@@ -154,8 +153,6 @@
         });
         this.$store.dispatch('wx_config');
         this.getHotSubjects();
-        countImgs();
-  
       }
     },
     methods: {
@@ -184,14 +181,24 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        } else if (target.dataset.index) {
-          tabImg(target.dataset.index);
+        } else if (target.dataset.index&&ENV.app) { //app内部点击图片
+          this.clickImg(event);
+        } else if (target.dataset.src&&!ENV.app) {
+          this.clickImgOuter(target.dataset.src)
         }
       },
-      tabImg(e) {
-        if (window.ENV.app) {
-          tabImg(e.target.dataset.index);
+      clickImg(e) {
+        let target=e.target;
+                console.log("target",target.dataset)
+        if (window.ENV.app && target.dataset.index) {
+          tabImg(target.dataset.index);
+        } else if (target.dataset.src) {
+          this.clickImgOuter(target.dataset.src)
         }
+      },
+      clickImgOuter(src) {
+        this.preSrc = src;
+        this.preShow = true;
       },
       tofeed(fid) {
         if (ENV.app) {
