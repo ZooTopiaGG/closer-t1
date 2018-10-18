@@ -12,15 +12,12 @@
           <section class="article-title" v-if="!ENV.app"> {{ res.title }} </section>
           <!-- 关注bar -->
           <focus-bar class="focus-bar"></focus-bar>
-          <div class="article-cover-box">
-            <img :src="makeFileUrl(res.bigcover || res.cover)" alt="" class="article-cover-img">
+          <div class="content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+            <div class="article-cover-box">
+              <img :data-src="makeFileUrl(res.bigcover || res.cover)" class="article-cover-img">
+            </div>
+            <div class="article-content" v-html="content.html"></div>
           </div>
-          <!-- 暂时隐藏 -->
-          <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                              <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                            </section> -->
-          <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
-          </section>
           <author-bar></author-bar>
         </section>
         <!-- 阅读 喜欢 -->
