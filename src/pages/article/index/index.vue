@@ -25,10 +25,10 @@
         </section>
         <!-- 阅读 喜欢 -->
         <like-bar class="like-bar"></like-bar>
-        <!-- 留言板 -->
-        <message-board></message-board>
         <!-- 热门文章 -->
         <feed-list :subjectList="hotSubjects"></feed-list>
+        <!-- 留言板 -->
+        <message-board></message-board>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
       </section>
@@ -92,11 +92,11 @@
       })
     },
     methods: {
-      ...mapActions(['getUserInfoWithWx']),
       ...mapActions("article",['fetch_content']),
       ...mapMutations("article",['GET_USER_AGENT']),
       ...mapActions("common", [
-        "getHotSubjects"
+        "getHotSubjects",
+        'getUserInfoWithWx'
       ]),
       // ...mapActions("comment", [
       //   "getSubject"

@@ -76,7 +76,7 @@
     border-top: 1px solid #eaeaea;
     font-size: 28pr;
     color: #94928e;
-    padding: 0 40pr 0;
+    padding: 0 24pr 0;
     background: #fff;
     .like {
       display: flex;
