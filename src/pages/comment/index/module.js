@@ -45,14 +45,16 @@ export default {
           if (data.result.content) {
             let content = JSON.parse(data.result.content);
             if (data.result.int_type === 2) {
-              rootState.CONTENT_IMGS == [];
-              rootState.IMG_INDEX = 0;
+
               let _html = makeHtmlContent(
                 content.html
               );
               if (_html) {
                 content.html = _html;
               }
+
+              let contentImgs = [];
+              let imgIndex = 0;
               if (content.discuss) {
                 let discuss = content.discuss.map(x => {
                   if (x.text) {
@@ -71,9 +73,9 @@ export default {
                     }
                   }
                   if (x.image) {
-                    x.image['index'] = rootState.IMG_INDEX;
-                    rootState.CONTENT_IMGS.push(x.image.link)
-                    rootState.IMG_INDEX++;
+                    x.image['index'] = imgIndex;
+                    contentImgs.push(x.image.link)
+                    imgIndex++;
                   }
                   return x;
                 });
@@ -83,10 +85,23 @@ export default {
                 let end_html = makeHtmlContent(
                   content.end_html
                 );
+                const regexImg = /<img.*?(?:>|\/>)/gi;
+                const regexSrc = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+                const regexDatasrc = /data-index=[\'\"]?([^\'\"]*)[\'\"]?/i;
+                let pImg = end_html.match(regexImg);
+                pImg.forEach((x, i) => {
+                  end_html = end_html.replace(x, x.replace(regexDatasrc, `data-index='${imgIndex}'`)); //改data-index
+                  let srcArray = x.match(regexSrc);
+                  let imgStr = srcArray[i].replace("src=", "");
+                  contentImgs.push(imgStr.substring(1, (srcArray[i].replace("src=", "").length - 1))) //计算全局图片
+                  imgIndex++;
+                })
                 if (end_html) {
                   content.end_html = end_html;
                 }
               }
+              rootState.CONTENT_IMGS = contentImgs;
+              rootState.IMG_INDEX = imgIndex;
               commit("setContent", content);
               delete data.result.content;
               rootState.res = data.result;
