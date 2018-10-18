@@ -181,7 +181,7 @@ export function makeHtmlContent(html) {
           minH = '28.27vw';
           newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
         }
-        Store.state.CONTENT_IMGS.push(srcArray[0].substring(4)) //计算全局图片
+        Store.state.CONTENT_IMGS.push(srcArray[0].replace("src=", "").substring(1, (srcArray[0].replace("src=", "").length - 1))) //计算全局图片
         Store.state.IMG_INDEX++;
       } else {
         newM = '';
@@ -190,6 +190,7 @@ export function makeHtmlContent(html) {
       // 替换不同文本
       html = html.replace(x, `<div class="img-box">${newM}</div>`);
     });
+    console.log(":xxxx", Store.state.CONTENT_IMGS)
   }
   const regexVideo = /<video.*?(?:>|\/>|<\/video>)/gi;
   let pVideo = html.match(regexVideo);
