@@ -86,8 +86,10 @@ export default {
                 );
                 const regexImg = /<img.*?(?:>|\/>)/gi;
                 const regexSrc = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+                const regexDatasrc = /data-index=[\'\"]?([^\'\"]*)[\'\"]?/i;
                 let pImg = end_html.match(regexImg);
                 pImg.forEach((x, i) => {
+                  end_html = end_html.replace(x, x.replace(regexDatasrc, `data-index='${rootState.IMG_INDEX}'`)); //改data-index
                   let srcArray = x.match(regexSrc);
                   rootState.CONTENT_IMGS.push(srcArray[i]) //计算全局图片
                   rootState.IMG_INDEX++;
