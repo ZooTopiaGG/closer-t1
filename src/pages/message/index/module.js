@@ -22,16 +22,17 @@ export default {
   },
   actions: {
     async addReplyData({ commit, state }, payload) {
+      commit({
+        type: 'hide'
+      })
       Indicator.open({
         text: '加载中...',
         spinnerType: 'fading-circle'
       });
-      console.log(2, payload)
       let { data } = await addReply(payload).catch(err => {
         Indicator.close()
         Toast('网络开小差啦~')
       })
-      console.log('2-data---', data)
       Indicator.close()
       if(typeof(data.code) != undefined && data.code == 0) {
         commit({
