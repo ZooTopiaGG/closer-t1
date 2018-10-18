@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-if="!ENV.app&&messagelist">
+  <div class="wrapper bg-f" v-if="!ENV.app&&messagelist">
     <div class="message-board" v-if="messagelist.length > 0">
       <div class="board-top">
         <span class="title" id="title">精彩留言</span>
@@ -207,6 +207,7 @@
     height: 100%;
     background: #F8F8F8;
     border-top: 1px solid #F8F8F8;
+    margin-top: 20pr;
     .message-board {
       color: #4b4945;
       background: #fff;

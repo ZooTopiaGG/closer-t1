@@ -7,7 +7,7 @@
       <!-- 帖子内容 -->
       <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
       <section class="article-wrap">
-        <section class="article-container">
+        <section class="article-container bg-f">
           <!-- 标题 -->
           <section class="article-title" v-if="!ENV.app"> {{ res.title }} </section>
           <!-- 关注bar -->
