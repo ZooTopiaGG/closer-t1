@@ -52,8 +52,9 @@ export default {
               if (_html) {
                 content.html = _html;
               }
-              rootState.CONTENT_IMGS == [];
-              rootState.IMG_INDEX = 0;
+
+              let contentImgs = [];
+              let imgIndex = 0;
               if (content.discuss) {
                 let discuss = content.discuss.map(x => {
                   if (x.text) {
@@ -73,8 +74,8 @@ export default {
                   }
                   if (x.image) {
                     x.image['index'] = rootState.IMG_INDEX;
-                    rootState.CONTENT_IMGS.push(x.image.link)
-                    rootState.IMG_INDEX++;
+                    contentImgs.push(x.image.link)
+                    imgIndex++;
                   }
                   return x;
                 });
@@ -91,13 +92,16 @@ export default {
                 pImg.forEach((x, i) => {
                   end_html = end_html.replace(x, x.replace(regexDatasrc, `data-index='${rootState.IMG_INDEX}'`)); //改data-index
                   let srcArray = x.match(regexSrc);
-                  rootState.CONTENT_IMGS.push(srcArray[i]) //计算全局图片
-                  rootState.IMG_INDEX++;
+                  let imgStr = srcArray[i].replace("src=", "");
+                  contentImgs.push(imgStr.substring(1, (srcArray[i].replace("src=", "").length - 1))) //计算全局图片
+                  imgIndex++;
                 })
                 if (end_html) {
                   content.end_html = end_html;
                 }
               }
+              rootState.CONTENT_IMGS == contentImgs;
+              rootState.IMG_INDEX = imgIndex;
               commit("setContent", content);
               delete data.result.content;
               rootState.res = data.result;
