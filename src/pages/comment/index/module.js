@@ -90,7 +90,7 @@ export default {
                 const regexDatasrc = /data-index=[\'\"]?([^\'\"]*)[\'\"]?/i;
                 let pImg = end_html.match(regexImg);
                 pImg.forEach((x, i) => {
-                  end_html = end_html.replace(x, x.replace(regexDatasrc, `data-index='${rootState.IMG_INDEX}'`)); //改data-index
+                  end_html = end_html.replace(x, x.replace(regexDatasrc, `data-index='${imgIndex}'`)); //改data-index
                   let srcArray = x.match(regexSrc);
                   let imgStr = srcArray[i].replace("src=", "");
                   contentImgs.push(imgStr.substring(1, (srcArray[i].replace("src=", "").length - 1))) //计算全局图片
