@@ -80,7 +80,7 @@
       left: 0;
       width: 100%;
       display: flex;
-      padding: 0 40pr;
+      padding: 0 24pr;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 1px 5px #efefef;

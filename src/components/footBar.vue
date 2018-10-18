@@ -23,9 +23,8 @@ export default {
 <style lang="less" scoped>
   .footer {
     background: #fff;
-    border: 1px solid#fff;
     .footer-wrapper {
-      margin: 14pr 40pr;
+      padding: 24pr;
       .footer-btn {
         border-radius: 10pr;
         font-size: 32pr;

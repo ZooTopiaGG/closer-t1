@@ -7,7 +7,7 @@
       <!-- 帖子内容 -->
       <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
       <section class="article-wrap">
-        <section class="article-container">
+        <section class="article-container bg-f">
           <!-- 标题 -->
           <section class="article-title" v-if="!ENV.app"> {{ res.title }} </section>
           <!-- 关注bar -->
@@ -25,10 +25,10 @@
         </section>
         <!-- 阅读 喜欢 -->
         <like-bar class="like-bar"></like-bar>
-        <!-- 留言板 -->
-        <message-board></message-board>
         <!-- 热门文章 -->
         <feed-list :subjectList="hotSubjects"></feed-list>
+        <!-- 留言板 -->
+        <message-board></message-board>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
       </section>
@@ -92,11 +92,11 @@
       })
     },
     methods: {
-      ...mapActions(['getUserInfoWithWx']),
       ...mapActions("article",['fetch_content']),
       ...mapMutations("article",['GET_USER_AGENT']),
       ...mapActions("common", [
-        "getHotSubjects"
+        "getHotSubjects",
+        'getUserInfoWithWx'
       ]),
       // ...mapActions("comment", [
       //   "getSubject"

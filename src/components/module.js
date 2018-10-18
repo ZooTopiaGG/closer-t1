@@ -1,5 +1,5 @@
 import {
-  mergeJsonObject
+  addUrlParams
 } from '../utils';
 import service from './service';
 import Cookie from 'js-cookie';
@@ -8,6 +8,7 @@ import {
   Indicator
 } from 'mint-ui'
 
+import baseUrl from '../config'
 const namespaced = true;
 const state = {
   h5Cookies: '',
@@ -15,6 +16,7 @@ const state = {
   hotSubjects: [],
   visible: false,
   smsCode: '',
+  isLogin: false,
   user: {},
   authSuccess: false,
   messagelist: {
@@ -27,18 +29,14 @@ const actions = {
   async get_focus_stat({
     commit
   }, {
-    communityid,
-    flag
+    payload, 
+    after
   }) {
     let self = this
     try {
-      let para = {
-        communityid: communityid,
-        flag: flag
-      }
-      let data = await service.subscription(para);
+      let {data} = await service.subscription(payload);
       if (data.code === 0 && data.result) {
-        if (flag == 0) {
+        if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
             root: true
           })
@@ -64,6 +62,7 @@ const actions = {
         position: 'top'
       })
     }
+    after && after();
   },
 
   // 阅读数量
@@ -105,9 +104,13 @@ const actions = {
   async getWxAuth({
     commit,
     state
-  }, payload) {
-    console.log('getWxAuth')
-    let data = await service.getAuthPath(payload).catch(err => {
+  }, {payload, before}) {
+    console.log('getWxAuth', payload)
+    let _params = {
+      path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + addUrlParams(payload.path + payload.query))
+    }
+    before && before();
+    let data = await service.getAuthPath(_params).catch(err => {
       Toast('网络开小差啦~')
     })
     console.log(data.data.result)

@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getWxAuth", "getUserInfoWithWx"]),
+    ...mapActions("common", ["getWxAuth", "getUserInfoWithWx"]),
     ...mapActions("group", ["getGroupInfo", "getGroupList"]),
     fileUrlParse(url, type, size) {
       return makeFileUrl(url, type, size);
@@ -116,9 +116,12 @@ export default {
         // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
         if (ENV.wx) {
           // 通过微信授权 获取code
-          this.getWxAuth(
-            addUrlParams(this.$route.path, Object.assign({}, this.$route.query))
-          );
+          this.getWxAuth({
+            payload: {
+              path: this.$route.path, 
+              query: this.$route.query
+            }
+          });
         } else {
           this.$store.commit("GET_LOGIN_TYPE", "toDown");
           this.$store.commit("SET_VISIBLE_LOGIN", true);
