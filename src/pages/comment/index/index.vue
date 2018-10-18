@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- 下载条 -->
-    <download-bar></download-bar>
     <div v-if="subjectExist">
+      <download-bar></download-bar>
       <div class="comment">
         <div class="title" v-if="!ENV.app">
           {{subject.title}}
@@ -41,9 +41,9 @@
                 </div>
                 <div v-else class="video-out">
                   <video :src="item.video.src" style="object-fit:fill;
-                                                width:100%;
-                                                height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
-                                                </video>
+                                                  width:100%;
+                                                  height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
+                                                  </video>
                 </div>
               </div>
               <div v-else-if="item.type===3">
