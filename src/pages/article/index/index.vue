@@ -1,9 +1,9 @@
 <template>
   <div>
-   
+  
     <section class="article" v-if="exist">
-       <!-- 下载条 -->
-    <download-bar></download-bar>
+      <!-- 下载条 -->
+      <download-bar></download-bar>
       <!-- 帖子内容 -->
       <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
       <section class="article-wrap">
@@ -17,8 +17,8 @@
           </div>
           <!-- 暂时隐藏 -->
           <!-- <section class="feeder-cover flex flex-align-center" v-if="!GET_MESSAGE_STATE">
-                              <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
-                            </section> -->
+                                    <span> {{ $com.getCommonTime(res.long_publish_time, 'yy-mm-dd hh:MM') }}</span>
+                                  </section> -->
           <section class="content article-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
           <author-bar></author-bar>
@@ -31,6 +31,8 @@
         <message-board></message-board>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
+        <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
+  
       </section>
     </section>
     <Notfound v-else :isDelete="res.bool_delete"></Notfound>
@@ -58,6 +60,8 @@
   import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
   import AuthorBar from '../../../components/authorBar'
+  import PreviewList from '../../../components/previewList'
+  
   export default {
     name: "Feed",
     components: {
@@ -68,14 +72,17 @@
       LikeBar,
       MessageBoard,
       FeedList,
-      AuthorBar
+      AuthorBar,
+      PreviewList
     },
     data() {
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
         vid: "",
         video: {},
-        playIconTimer: null
+        playIconTimer: null,
+        preSrc: "",
+        preShow: false
       };
     },
     computed: {
@@ -92,8 +99,8 @@
       })
     },
     methods: {
-      ...mapActions("article",['fetch_content']),
-      ...mapMutations("article",['GET_USER_AGENT']),
+      ...mapActions("article", ['fetch_content']),
+      ...mapMutations("article", ['GET_USER_AGENT']),
       ...mapActions("common", [
         "getHotSubjects",
         'getUserInfoWithWx'
@@ -105,9 +112,17 @@
         console.log('fetch')
         await this.fetch_content(this.$route.params)
       },
-      tabImg(e) {
-        console.log(e.target.dataset.index)
-        tabImg(e.target.dataset.index);
+      clickImg(e) {
+        let target = e.target;
+        if (ENV.app && target.dataset.index) {
+          tabImg(target.dataset.index);
+        } else if (target.dataset.src) {
+          this.clickImgOuter(target.dataset.src)
+        }
+      },
+      clickImgOuter(src) {
+        this.preSrc = src;
+        this.preShow = true;
       },
       // 在app端 长图文贴子 打开原生视频
       openClick(event) {
@@ -152,21 +167,24 @@
         //   }
   
         // }
-        if (window.ENV.app) {
-          if (target.dataset.vid && target.dataset.uid) {
-            appPlayVideo(
-              target.dataset.uid,
-              target.dataset.vid
-            );
-          } else if (target.dataset.index) {
-            tabImg(target.dataset.index);
-          }
+        if (ENV.app && target.dataset.vid && target.dataset.uid) {
+          appPlayVideo(
+            target.dataset.uid,
+            target.dataset.vid
+          );
+        } else if (target.dataset.index ) { //app内部点击图片
+          this.clickImg(event);
+        } else if (target.dataset.src && !ENV.app) {
+          this.clickImgOuter(target.dataset.src)
         }
       },
       makeFileUrl(url = '') {
         console.log('url', decodeURI(url))
         return makeFileUrl(url)
-      }
+      },
+      listenToMyChild(somedata) {
+        this.preShow = somedata;
+      },
     },
     async mounted() {
       // this.GET_USER_AGENT({

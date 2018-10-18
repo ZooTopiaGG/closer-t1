@@ -71,7 +71,7 @@
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
-      <preview-list :preview-list="this.$store.state.CONTENT_IMGS" :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
+      <preview-list  :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -190,7 +190,7 @@
       clickImg(e) {
         let target=e.target;
                 console.log("target",target.dataset)
-        if ( target.dataset.index) {
+        if (ENV.app&&target.dataset.index) {
           tabImg(target.dataset.index);
         } else if (target.dataset.src) {
           this.clickImgOuter(target.dataset.src)
