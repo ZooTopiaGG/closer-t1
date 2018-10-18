@@ -153,6 +153,8 @@ export function makeHtmlContent(html) {
     const regexWidth = /width=[\'\"]?([^\'\"]*)[\'\"]?/i;
     const regexHeight = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
     let size, flag;
+    Store.state.CONTENT_IMGS = [];
+    Store.state.IMG_INDEX = 0;
     pImg.forEach((x, i) => {
       let
         srcArray = x.match(regexSrc),
@@ -179,12 +181,11 @@ export function makeHtmlContent(html) {
           minH = '28.27vw';
           newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
         }
-        Store.state.CONTENT_IMGS.push(srcArray[i]) //计算全局图片
+        Store.state.CONTENT_IMGS.push(srcArray[0].substring(4)) //计算全局图片
         Store.state.IMG_INDEX++;
       } else {
         newM = '';
       }
-
       // 正则替换富文本内的img标签
       // 替换不同文本
       html = html.replace(x, `<div class="img-box">${newM}</div>`);
