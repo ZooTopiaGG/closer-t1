@@ -18,6 +18,10 @@ const Message = () =>
 const Community = () =>
   import ('@/pages/community/index/index')
 
+// 图集
+const Image = () =>
+  import ('@/pages/images/index/index')
+
 // jssdk DEMO
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
@@ -55,6 +59,11 @@ const router = new Router({
       path: "/community/:id",
       name: 'community',
       component: Community,
+    },
+    {
+      path: "/image/:id",
+      name: 'image',
+      component: Image,
     }
   ]
 })
