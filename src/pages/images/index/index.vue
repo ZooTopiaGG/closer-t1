@@ -16,7 +16,7 @@
         <section class="feeder-images" v-if="!ENV.app">
           <section class="feeder-img flex flex-pack-justify" v-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 1">
             <section class="feeder-img-list feeder-img-list-cell-1" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index" @click="openClick($event)">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -24,7 +24,7 @@
           </section>
           <section class="feeder-img flex flex-pack-justify" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 2">
             <section class="feeder-img-list feeder-img-list-cell-2" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index" @click="openClick($event)">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -32,7 +32,7 @@
           </section>
           <section class="feeder-img flex" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 3 || stringToJson(res.content).images && stringToJson(res.content).images.length > 4">
             <section class="feeder-img-list feeder-img-list-cell-3" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index" @click="openClick($event)">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -40,7 +40,7 @@
           </section>
           <section class="feeder-img flex flex-pack-justify" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 4">
             <section class="feeder-img-list feeder-img-list-cell-4" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index" @click="openClick($event)">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -151,6 +151,7 @@
       },
       // 在app端 长图文贴子 打开原生视频
       openClick(event) {
+        console.log('fdfadfdfd123131312;')
         const target = event.target,
           classList = target.classList;
         // if (classList.contains('video-play-icon')) {
