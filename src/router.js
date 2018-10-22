@@ -25,6 +25,11 @@ const Jssdk = () =>
 const Group = () =>
   import ('@/pages/group/index')
 
+// 视频
+const Video = () => 
+  import ('@/pages/video/index/index')
+  
+  
 Vue.use(Router)
 
 const router = new Router({
@@ -55,6 +60,11 @@ const router = new Router({
       path: "/community/:id",
       name: 'community',
       component: Community,
+    },
+    {
+      path: "/video/:id",
+      name: 'video',
+      component: Video
     }
   ]
 })
@@ -98,6 +108,10 @@ router.beforeEach(({
             path: path.replace("feed", "article")
           })
         }
+      } else if (type == '1') {
+        router.replace({
+          path: path.replace("feed", "video")
+        })
       } else {
         next();
       }

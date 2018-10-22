@@ -66,9 +66,8 @@ function init() {
   let result = store.dispatch("get_adcookie", { webUdid: true }).then((() => {}));
 }
 
-
 new Vue({
   store,
   router,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app1')

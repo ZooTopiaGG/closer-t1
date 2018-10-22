@@ -115,7 +115,7 @@
 
 <style scoped lang="less">
   .feed {
-    margin-top: 20pr;
+    // margin-top: 20pr;
     background: #fff;
     border-bottom: 20pr solid #f1f1f1;
     .head {

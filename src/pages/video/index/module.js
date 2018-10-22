@@ -6,12 +6,6 @@ import {
   makeHtmlContent
 } from "../../../utils";
 const state = {
-  // GET_MESSAGE_STATE: false,
-  // GET_IS_APP: false,
-  GET_APP_TOKEN: '',
-  version_1_2: false,
-  // agent: '',
-  // isPre: false,
   res: {},
   content: {},
   exist: true,
@@ -52,16 +46,17 @@ const actions = {
           var content = JSON.parse(data.result.content);
           rootState.CONTENT_IMGS == [];
           rootState.IMG_INDEX = 0;
-          // 解析长图文html
-          if (data.result.int_type === 2) {
-            let _html = makeHtmlContent(
-              content.html
-            );
-            if (_html) {
-              content.html = _html;
-            }
-          }
+          // 解析长图文video
+          // if (data.result.int_type === 1) {
+          //   let _html = makeHtmlContent(
+          //     content.video
+          //   );
+          //   if (_html) {
+          //     content.video = _html;
+          //   }
+          // }
           // 返回在渲染页面之前得结果
+          console.log('content:', content)
           commit("SET_CONTENT", content);
         }
         commit("SET_RES", data.result);
