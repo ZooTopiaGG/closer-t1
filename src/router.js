@@ -107,6 +107,11 @@ router.beforeEach(({
             path: path.replace("feed", "article")
           })
         }
+      } else if(type == '0') {
+        // 图集
+        router.replace({
+          path: path.replace("feed", "image")
+        })
       } else {
         next();
       }
