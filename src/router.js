@@ -18,6 +18,10 @@ const Message = () =>
 const Community = () =>
   import ('@/pages/community/index/index')
 
+// 图集
+const Image = () =>
+  import ('@/pages/images/index/index')
+
 // jssdk DEMO
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
@@ -65,6 +69,11 @@ const router = new Router({
       path: "/video/:id",
       name: 'video',
       component: Video
+    },
+    {
+      path: "/image/:id",
+      name: 'image',
+      component: Image,
     }
   ]
 })
@@ -109,8 +118,14 @@ router.beforeEach(({
           })
         }
       } else if (type == '1') {
+        // 视频
         router.replace({
           path: path.replace("feed", "video")
+        })
+      } else if(type == '0') {
+        // 图集
+        router.replace({
+          path: path.replace("feed", "image")
         })
       } else {
         next();
