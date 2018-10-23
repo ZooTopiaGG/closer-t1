@@ -13,8 +13,8 @@
         <span> {{ getCommonTime }}</span>
       </section> -->
     <!-- 作者信息 -->
-    <section class="author-info" v-if="res.authorsString">
-      <div class="author">作者：{{res.authorsString}}</div>
+    <section class="author-info" v-if="author">
+      <div class="author" v-if="res.authorsString">作者：{{res.authorsString}}</div>
     </section>
     <section class="read">
       阅读
@@ -33,6 +33,12 @@
     mapActions
   } from 'vuex';
   export default {
+    props: {
+      author: {
+        type: Boolean,
+        default: false
+      }
+    },
     computed: {
       ...mapState('article', [
         'res'
@@ -90,6 +96,7 @@
     .like {
       display: flex;
       align-items: center;
+      margin-top: 30pr;
       .like-box {
         width: 100pr;
         height: 100pr;
@@ -106,9 +113,13 @@
       text-align: left;
       margin-top: 20pr;
       line-height: 60pr;
+      .author {
+        border-bottom: 1px solid #f1f1f1
+      }
+
     }
     .author-info {
-      border-bottom: 1px solid #f1f1f1
+      // border-bottom: 1px solid #f1f1f1
     }
   }
 </style>

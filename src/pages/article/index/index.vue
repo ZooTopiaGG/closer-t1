@@ -23,7 +23,7 @@
           <author-bar></author-bar>
         </section>
         <!-- 阅读 喜欢 -->
-        <like-bar class="like-bar"></like-bar>
+        <like-bar class="like-bar" :author="true"></like-bar>
         <!-- 热门文章 -->
         <feed-list :subjectList="hotSubjects"></feed-list>
         <!-- 留言板 -->
