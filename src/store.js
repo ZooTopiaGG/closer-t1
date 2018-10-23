@@ -353,6 +353,8 @@ export default new Vuex.Store({
               }
               imgUrl = makeFileUrl(group.avatar);
             }
+          } else if (location.href.indexOf("/draft") > -1) {
+
           } else {
             let content = state.content;
             // 分享长图文

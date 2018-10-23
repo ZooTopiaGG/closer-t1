@@ -28,7 +28,7 @@ const actions = {
   }) {
     try {
       // 获取贴子详情
-      let {data} = await fetchContent({
+      let { data } = await fetchContent({
         subjectid: id
       })
       if (data.code != 0) {

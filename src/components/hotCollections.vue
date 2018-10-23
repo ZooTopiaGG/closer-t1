@@ -2,67 +2,74 @@
   <!-- 热门投稿 -->
   <div class="hot-colletions">
     <mt-navbar v-model="selected">
-      <mt-tab-item  id="1">精华</mt-tab-item>
-      <mt-tab-item  id="0">全部</mt-tab-item>
+      <mt-tab-item id="1">精华</mt-tab-item>
+      <mt-tab-item id="0">全部</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="0">
-        <div class="empty" v-if="hotColletions0.length==0">
+        <div class="empty" v-if="hotColletions0&&hotColletions0.length==0">
           <div class="empty-icon"></div>
           <div class="empty-desc">暂时没有精选内容赶紧投稿吧</div>
         </div>
-        <div class="collections-content" v-else v-for="(item,key) in hotColletions0" :key="key" @click="downloadApp($event, '', item.subjectid)">
+        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="downloadApp($event, '', item.subjectid)">
+          <div class="top">
+            <img class="icon" :src="fileUrlParse(item.user.attributes.roster.avatar||item.user.avatar)" />
+            <span class="column">{{item.user.attributes.roster.name||item.user.fullname}}</span>
+            <span class="time">{{dateFormate(item.long_publish_time,'yy-mm-dd hh:MM')}}</span>
+          </div>
           <div class="wrap">
             <div class="middle">
               <div class="cover">
-                <div class="collections-title">{{item.title}}</div>
+                <div :class="(item.cover||JSON.parse(item.content).videos) ?  'collections-title' :'collections-title2'">{{JSON.parse(item.content).summary}}</div>
                 <div v-if="item.int_type===2&&item.cover" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
                 </div>
                 <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
                   <div class="image-num">{{item.content.images.length}}图</div>
                 </div>
-                <div v-else-if="item.int_type===1" class="collections-cover" v-lazy:background-image="item.content.videos[0].imageUrl">
+                <div v-else-if="item.int_type===1" class="collections-cover" v-lazy:background-image="JSON.parse(item.content).videos[0].imageUrl">
                   <div class="play-icon"></div>
                 </div>
               </div>
             </div>
             <div class="bottom">
-              <label class="name">{{item.communityName}}</label>
               <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
               <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
               <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
-              <label class="date">{{dateFormate(item.long_publish_time)}}</label>
+              <!-- <label class="date">{{dateFormate(item.long_publish_time)}}</label> -->
             </div>
           </div>
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="1">
-        <div class="empty" v-if="hotColletions1.length==0">
+        <div class="empty" v-if="hotColletions1&&hotColletions1.length==0">
           <div class="empty-icon"></div>
           <div class="empty-desc">暂时没有精选内容赶紧投稿吧</div>
         </div>
         <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="downloadApp($event, '', item.subjectid)">
+          <div class="top">
+            <img class="icon" :src="fileUrlParse(item.user.attributes.roster.avatar||item.user.avatar)" />
+            <span class="column">{{item.user.attributes.roster.name||item.user.fullname}}</span>
+            <span class="time">{{dateFormate(item.long_publish_time,'yy-mm-dd hh:MM')}}</span>
+          </div>
           <div class="wrap">
             <div class="middle">
               <div class="cover">
-                <div class="collections-title" v-if="item.int_type===2">{{item.title}}</div>
-                <div class="collections-title" v-else>{{item.content.text}}</div>
+                <div :class="(item.cover||JSON.parse(item.content).videos) ?  'collections-title' :'collections-title2'">{{JSON.parse(item.content).summary}}</div>
                 <div v-if="item.int_type===2&&item.cover" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
                 </div>
                 <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
                   <div class="image-num">{{item.content.images.length}}图</div>
                 </div>
-                <div v-else-if="item.int_type===1" class="collections-cover" v-lazy:background-image="item.content.videos[0].imageUrl">
+                <div v-else-if="item.int_type===1" class="collections-cover" v-lazy:background-image="JSON.parse(item.content).videos[0].imageUrl">
                   <div class="play-icon"></div>
                 </div>
               </div>
             </div>
             <div class="bottom">
-              <label class="name">{{item.communityName}}</label>
               <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
               <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
               <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
-              <label class="date">{{dateFormate(item.long_publish_time)}}</label>
+              <!-- <label class="date">{{dateFormate(item.long_publish_time)}}</label> -->
             </div>
           </div>
         </div>
@@ -125,10 +132,6 @@
           "defaultStr": "hot_collections",
           "redirectUrl": redirectUrl
         });
-      },
-      getColections() {
-        console.log("getHotCollections")
-  
       }
     },
     mounted() {
@@ -164,7 +167,6 @@
       border-bottom: 3px solid #fddb00 !important;
       color: #4B4945 !important;
     }
-    
     .empty {
       .empty-icon {
         background: url("../assets/images/collection-empty.png") center;
@@ -192,7 +194,31 @@
     }
     .collections-content {
       padding: 24pr 24pr 0;
+      padding-bottom: 20pr;
+      margin-top: 30pr;
+      .top {
+        .icon {
+          width: 60pr;
+          height: 60pr;
+          border-radius: 60pr;
+        }
+        .column {
+          margin: 16pr 0 0 20pr;
+          font-size: 28pr;
+          line-height: 40pr;
+          margin-left: 10pr;
+          color: #4B4945;
+        }
+        .time {
+          font-size: 28pr;
+          line-height: 34pr;
+          color: #94928E;
+          margin-right: 40pr;
+          float: right;
+        }
+      }
       .wrap {
+        margin-top: 30pr;
         border-bottom: 1px solid #f1f1f1;
         padding-bottom: 24pr;
       }
@@ -207,6 +233,20 @@
           display: flex;
           flex-direction: row;
           margin: 0 0 16pr 0;
+          .collection-title2 {
+            width: 100%;
+            height: 135pr;
+            color: #242424;
+            margin-right: 24pr;
+            line-height: 45pr;
+            font-size: 34pr;
+            font-weight: 500;
+            display: -webkit-box;
+            // 超出省略号
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+          }
           .collections-title {
             width: 447pr;
             height: 135pr;
@@ -222,6 +262,7 @@
             overflow: hidden;
           }
           .collections-cover {
+            float: right;
             width: 231pr;
             height: 144pr;
             border-radius: 8pr;

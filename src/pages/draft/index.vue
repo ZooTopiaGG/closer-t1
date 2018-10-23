@@ -34,15 +34,15 @@
           </div>
         </div>
         <!-- 阅读 喜欢 -->
-        <like-bar class="like-bar"></like-bar>
+        <!-- <like-bar class="like-bar"></like-bar> -->
         <!-- 留言板 -->
-        <message-board></message-board>
+        <message-board v-if="res.int_category&&res.int_category==2"></message-board>
         <!-- 热门文章 -->
         <feed-list v-if="res.int_category&&res.int_category==2" :subjectList="hotSubjects"></feed-list>
         <!-- 精华全部 -->
         <hot-collections class="hot-collections" v-if="res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
-        <foot-bar></foot-bar>
+        <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
         <!-- 预览图片 -->
         <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
       </div>

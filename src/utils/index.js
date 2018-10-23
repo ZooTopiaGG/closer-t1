@@ -491,6 +491,9 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     } else if (route.path.indexOf("/group") > -1) {
       _page = "group";
       url = `closer://group/${did}`;
+    } else if (route.path.indexOf("/draft") > -1) {
+      _page = "draft";
+      url = `closer://draft/${did}`;
     } else {
       _page = "inviter";
       url = `closer://jump/to/mine`;
