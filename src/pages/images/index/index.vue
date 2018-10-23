@@ -51,7 +51,7 @@
     </div>
     <!-- 阅读 喜欢 -->
     <div class="read-like">
-      <like-bar></like-bar>
+      <like-bar :author="true"></like-bar>
     </div>
     <!-- 留言板 -->
     <message-board></message-board>
