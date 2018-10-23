@@ -12,6 +12,7 @@ import Vconsole from 'vconsole';
 import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
 import VueLazyLoad from 'vue-lazyload';
+import Preview from './plugins/preview'
 
 import ENV from './config/init'
 
@@ -48,6 +49,7 @@ Vue.use(VueLazyLoad, {
   loading: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
   attempt: 1,
 })
+Vue.use(Preview)
 
 // 运行时动态设置
 pageResize()
@@ -63,7 +65,6 @@ init();
 function init() {
   let result = store.dispatch("get_adcookie", { webUdid: true }).then((() => {}));
 }
-
 
 new Vue({
   store,

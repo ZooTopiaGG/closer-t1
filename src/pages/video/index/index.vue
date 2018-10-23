@@ -1,24 +1,29 @@
 <template>
   <div>
   
-    <section class="article" v-if="exist">
+    <section class="video" v-if="exist">
       <!-- 下载条 -->
       <download-bar></download-bar>
       <!-- 帖子内容 -->
       <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
-      <section class="article-wrap">
-        <section class="article-container bg-f">
-          <!-- 标题 -->
-          <section class="article-title" v-if="!ENV.app"> {{ res.title }} </section>
+      <section class="video-wrap">
+        <div class="video-main">
+          <video :src="videoInfo.src"
+            :poster="videoInfo.img"
+            controls
+          ></video>
+        </div>
+        <section class="video-container bg-f">
+
           <!-- 关注bar -->
           <focus-bar class="focus-bar"></focus-bar>
-          <div class="article-content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <div class="content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
             <!-- 封面大图 -->
-            <div class="article-cover-box" v-if="cover">
-              <img :data-src="makeFileUrl(cover)" class="article-cover-img">
+            <div class="video-cover-box" v-if="res.bigcover || res.cover">
+              <img :data-src="makeFileUrl(res.bigcover || res.cover)" class="video-cover-img">
             </div>
             <!-- 主内容 -->
-            <div class="content" v-html="content.html"></div>
+            <div class="video-content" v-html="content.text"></div>
           </div>
           <author-bar></author-bar>
         </section>
@@ -62,7 +67,6 @@
   import PreviewList from '../../../components/previewList'
   
   export default {
-    name: "Feed",
     components: {
       DownloadBar,
       FootBar,
@@ -78,30 +82,32 @@
       return {
         defaultImg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
         vid: "",
+        video: {},
+        playIconTimer: null,
         preSrc: "",
         preShow: false
       };
     },
     computed: {
-      ...mapState("article", [
+      ...mapState("video", [
         'res',
         'content',
-        'GET_MESSAGE_STATE',
-        'version_1_2',
-        'agent',
         'exist'
       ]),
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       }),
       ...mapState(['CONTENT_IMGS']),
-      cover() {
-        return (this.res.bigcover || this.res.cover)
+      videoInfo() {
+        return {
+          src: this.content.videos && this.content.videos[0].src,
+          img: this.content.videos && this.content.videos[0].imageUrl
+        }
       }
     },
     methods: {
-      ...mapActions("article", ['fetch_content']),
-      ...mapMutations("article", ['GET_USER_AGENT']),
+      ...mapActions("video", ['fetch_content']),
+      ...mapMutations("video", ['GET_USER_AGENT']),
       ...mapActions("common", [
         "getHotSubjects",
         'getUserInfoWithWx'
@@ -134,13 +140,14 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        // } else if (target.dataset.index ) { //app内部点击图片
-        //   this.clickImg(event);
-        // } else if (target.dataset.src && !ENV.app) {
-        //   this.clickImgOuter(target.dataset.src)
+        } else if (target.dataset.index ) { //app内部点击图片
+          this.clickImg(event);
+        } else if (target.dataset.src && !ENV.app) {
+          this.clickImgOuter(target.dataset.src)
         }
       },
       makeFileUrl(url = '') {
+        console.log('url', decodeURI(url))
         return makeFileUrl(url)
       },
       listenToMyChild(somedata) {
@@ -148,6 +155,11 @@
       },
     },
     async mounted() {
+      // this.GET_USER_AGENT({
+      //   nvg: navigator.userAgent,
+      //   ref: location.pathname
+      // });
+      console.log('video.mounted');
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -155,17 +167,18 @@
           protocol: "WEB_SOCKET",
           adid: Cookies.get('h5Adid') || 'closer-t1'
         }
+        console.log('params---', params)
         this.getUserInfoWithWx(params)
       }
       await this.fetch();
       this.$store.dispatch('wx_config');
+      console.log('params.id:', this.$route.params.id)
       this.getHotSubjects()
-      this.$preview.init('.article-content');
+      // this.$preview.show('https://file-sandbox.tiejin.cn/public/a4DI17gt2A/%E5%85%A8%E6%99%AF%E5%9B%BE1.jpg', this.CONTENT_IMGS)
     }
   };
 </script>
 
-<style lang="less">
-  @import "../../../assets/style/content.less";
-  @import "../assets/style/article.less";
+<style scoped lang="less">
+  @import "../assets/style/video.less";
 </style>

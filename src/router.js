@@ -18,6 +18,10 @@ const Message = () =>
 const Community = () =>
   import ('@/pages/community/index/index')
 
+// 图集
+const Image = () =>
+  import ('@/pages/images/index/index')
+
 // jssdk DEMO
 const Jssdk = () =>
   import ('@/pages/jssdk/index')
@@ -27,6 +31,11 @@ const Group = () =>
 
 const Draft = () =>
   import ('@/pages/draft/index')
+
+// 视频
+const Video = () =>
+  import ('@/pages/video/index/index')
+
 
 Vue.use(Router)
 
@@ -63,6 +72,15 @@ const router = new Router({
       path: '/draft/:id',
       name: 'draft',
       component: Draft
+    }, {
+      path: "/video/:id",
+      name: 'video',
+      component: Video
+    },
+    {
+      path: "/image/:id",
+      name: 'image',
+      component: Image,
     }
   ]
 })
@@ -111,6 +129,16 @@ router.beforeEach(({
             path: path.replace("feed", "article")
           })
         }
+      } else if (type == '1') {
+        // 视频
+        router.replace({
+          path: path.replace("feed", "video")
+        })
+      } else if (type == '0') {
+        // 图集
+        router.replace({
+          path: path.replace("feed", "image")
+        })
       } else {
         next();
       }

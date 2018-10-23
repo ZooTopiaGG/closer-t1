@@ -8,6 +8,7 @@ import {
   makeFileUrl
 } from "./utils";
 
+import baseUrl from './config'
 
 import common from './components/module'
 import article from './pages/article/index/module'
@@ -17,6 +18,8 @@ import message from './pages/message/index/module'
 import service from './components/service'
 import group from './pages/group/module'
 import draft from './pages/draft/module'
+import video from './pages/video/index/module'
+
 
 Vue.use(Vuex)
 
@@ -151,9 +154,72 @@ export default new Vuex.Store({
     community,
     message,
     group,
-    draft
+    <<
+    << << < HEAD
+    draft ===
+    === =
+    video >>>
+    >>> > 16 b8670a3f2a9ee0d480ced7886f35610b9f5bc7
   },
   actions: {
+    getWxAuth({
+      commit,
+      state
+    }, payload) {
+      console.log('getWxAuth')
+      let _params = {
+        path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + payload)
+      }
+      return service.getAuthPath(_params).then(({ data }) => {
+        console.log(data.result)
+        if (typeof(data.code != undefined) && data.code == 0) {
+          location.href = data.result
+          commit('setAuthStatus')
+          console.log('state.authSuccess---', state.authSuccess)
+        } else {
+          data.result && Toast(data.result)
+        }
+      }).catch(err => {
+        Toast('网络开小差啦~')
+      })
+    },
+    getUserInfoWithWx({
+      commit,
+      state
+    }, payload) {
+      console.log(payload)
+      let user = Cookies.get('user')
+      let token = Cookies.get('token')
+      if (user && token) {
+        console.log('user-from-cookie:', JSON.parse(user));
+        commit('SET_USER', JSON.parse(user));
+        return true;
+      } else {
+        return service.loginWithWechat(payload).then(({ data }) => {
+          console.log('data:', data)
+          if (typeof(data.code != undefined) && data.code == 0) {
+            user = data.result.user
+            token = data.result.token
+            console.log('user-from-server:', user)
+            commit('SET_USER', user)
+            console.log('token', token)
+            console.log('user', user)
+            Cookies.set('token', token, {
+              expires: 7
+            })
+            Cookies.set('user', user, {
+              expires: 7
+            })
+            return user
+          } else {
+            data.result && Toast(data.result)
+            return false
+          }
+        }).catch(err => {
+          Toast('网络开小差啦~')
+        })
+      }
+    },
     // h5设置cookies埋点
     async get_adcookie({
       commit,
