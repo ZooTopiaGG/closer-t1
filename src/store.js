@@ -17,6 +17,7 @@ import community from './pages/community/index/module'
 import message from './pages/message/index/module'
 import service from './components/service'
 import group from './pages/group/module'
+import draft from './pages/draft/module'
 import video from './pages/video/index/module'
 
 
@@ -153,6 +154,7 @@ export default new Vuex.Store({
     community,
     message,
     group,
+    draft,
     video
   },
   actions: {

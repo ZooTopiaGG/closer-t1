@@ -66,11 +66,6 @@
     down_statistics,
     dateFromNow
   } from '../utils'
-  import {
-    mapActions,
-    mapState
-  } from "vuex"
-  
   export default {
     name: "feedList",
     data() {

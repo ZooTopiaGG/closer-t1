@@ -9,9 +9,9 @@
         </div>
         <focus-bar showTime></focus-bar>
         <div class="cover-box">
-          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt=""   class="cover-img" data-index="0">
+          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img" data-index="0">
         </div>
-        <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }"  @click="openClick($event)">
+        <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </div>
         <div class="discuss" v-for="(item,key) in discuss" :key="key">
           <div class="discuss-content">
@@ -39,12 +39,8 @@
                 <div v-if="ENV.app" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                   <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
-                <div v-else class="video-out">
-                  <video :src="item.video.src" style="object-fit:fill;
-                                                        width:100%;
-                                                        height:auto;" preload="auto" class="feed-video-bg" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true" :data-duration="item.video.duration" :poster="item.video.imageUrl" :data-bg="item.video.imageUrl">
-                                                        </video>
-                </div>
+                <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill"  controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true" x5-playsinline="true">
+                </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
@@ -71,7 +67,7 @@
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
-      <preview-list  :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
+      <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
     </div>
     <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
   </div>
@@ -181,16 +177,16 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        } else if (target.dataset.index&&ENV.app) { //app内部点击图片
+        } else if (target.dataset.index && ENV.app) { //app内部点击图片
           this.clickImg(event);
-        } else if (target.dataset.src&&!ENV.app) {
+        } else if (target.dataset.src && !ENV.app) {
           this.clickImgOuter(target.dataset.src)
         }
       },
       clickImg(e) {
-        let target=e.target;
-                console.log("target",target.dataset)
-        if (ENV.app&&target.dataset.index) {
+        let target = e.target;
+        console.log("target", target.dataset)
+        if (ENV.app && target.dataset.index) {
           tabImg(target.dataset.index);
         } else if (target.dataset.src) {
           this.clickImgOuter(target.dataset.src)
@@ -327,13 +323,6 @@
             width: 100%;
             height: auto;
             position: relative;
-            border-radius: 3px;
-            >video {
-              width: 100%;
-              height: auto;
-              background-color: rgba(0, 0, 0, 0.8);
-              overflow: hidden;
-            }
           }
         }
       }

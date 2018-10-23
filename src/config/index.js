@@ -23,7 +23,7 @@ export default {
     build: 'https://api.tiejin.cn/command/',
     dev: 'https://api-qa.tiejin.cn/command/',
     sandbox: 'https://api-sandbox.tiejin.cn/command/',
-    local: 'https://api-sandbox.tiejin.cn/command/'
+    local: 'https://api-qa.tiejin.cn/command/'
   },
   download: {
     build: 'https://download.tiejin.cn/?adid=closer-t1&fs=false&microlink=https%3a%2f%2fa.app.qq.com%2fo%2fsimple.jsp%3fpkgname%3dcom.ums.closer%26ckey%3dCK1409137336588',

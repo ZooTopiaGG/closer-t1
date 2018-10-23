@@ -5,21 +5,31 @@
     </div>
   </section>
 </template>
+
 <script>
-import { downloadApp } from '../utils'
-export default {
-  data() {
-    return {
-      btnText: '打开贴近app，查看更多精彩文章' //立即投稿，赚取稿费
-    }
-  },
-  methods: {
-    downApp() {
-      downloadApp()
+  import {
+    downloadApp
+  } from '../utils'
+  export default {
+    props: {
+      btnText: {
+        type: String,
+        default: '打开贴近app，查看更多精彩文章'
+      }
     },
+    data() {
+      return {
+  
+      }
+    },
+    methods: {
+      downApp() {
+        downloadApp()
+      },
+    }
   }
-}
 </script>
+
 <style lang="less" scoped>
   .footer {
     background: #fff;

@@ -61,4 +61,10 @@ export default {
   wechatConfig(payload) {
     return Axios.post(api.admin.wechat_config, payload);
   },
+  wechatConfig(payload) {
+    return Axios.post(api.admin.wechat_config, payload);
+  },
+  getCollections(payload) {
+    return Axios.post(`${api.command.collectionsV2}`, payload).then(res => res.data);
+  }
 }
