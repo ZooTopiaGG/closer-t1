@@ -154,12 +154,8 @@ export default new Vuex.Store({
     community,
     message,
     group,
-    <<
-    << << < HEAD
-    draft ===
-    === =
-    video >>>
-    >>> > 16 b8670a3f2a9ee0d480ced7886f35610b9f5bc7
+    draft,
+    video
   },
   actions: {
     getWxAuth({
