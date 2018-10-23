@@ -7,7 +7,7 @@
         <div class="title" v-if="!ENV.app">
           {{subject.title}}
         </div>
-        <focus-bar></focus-bar>
+        <focus-bar showTime></focus-bar>
         <div class="cover-box">
           <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt=""   class="cover-img" data-index="0">
         </div>

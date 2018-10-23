@@ -11,7 +11,7 @@
           <!-- 标题 -->
           <section class="article-title" v-if="!ENV.app"> {{ res.title }} </section>
           <!-- 关注bar -->
-          <focus-bar class="focus-bar"></focus-bar>
+          <focus-bar showTime class="focus-bar"></focus-bar>
           <div class="article-content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
             <!-- 封面大图 -->
             <div class="article-cover-box" v-if="cover">

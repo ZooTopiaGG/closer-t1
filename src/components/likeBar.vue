@@ -74,7 +74,7 @@
     align-items: center;
     height: 100pr;
     border-top: 1px solid #eaeaea;
-    // border-bottom: 20pr solid #f1f1f1;
+    border-bottom: 20pr solid #f1f1f1;
     font-size: 28pr;
     color: #94928e;
     padding: 0 24pr 0;

@@ -1,9 +1,15 @@
 <template>
+  <transition 
+    @before-enter="beforeEnter"
+    @enter="enter" 
+    @leave="leave" 
+    :class="false"
+    >
   <section v-if="display" class="preview" @click="handleClick">
     <div v-if="showCount" class="count">{{currentIndex+1}}/{{list.length}}</div>
     <div class="name"></div>
-    <div class="container" :style="aniStyle">
-      <mt-swipe :auto="0" :show-indicators="false" :defaultIndex="currentIndex" @change="handleChange">
+    <div class="container" ref="con" :style="aniStyle">
+      <mt-swipe :auto="0" :show-indicators="false" :speed=100 :defaultIndex="currentIndex" @change="handleChange">
         <mt-swipe-item v-for="(item, index) in list" :key="index">
           <div class="item">
             <img v-if="imgUrls[index]" class="img" :src="imgUrls[index]">
@@ -13,6 +19,7 @@
       </mt-swipe>
     </div>
   </section>
+  </transition>
 </template>
 <script>
   import { Swipe, SwipeItem } from 'mint-ui';
@@ -39,6 +46,7 @@
       return {
         img: null,
         currentIndex: 0,
+        showCount: false,
         imgUrls: [],
         imgError: [],
         ww: window.innerWidth,
@@ -47,38 +55,43 @@
         loadingImg: loadingImg
       }
     },
-    computed: {
-      showCount() {
-        return this.list.length > 1
-      },
-      currentStyle() {
-        if (this.current) {
-          let rect = this.current.getBoundingClientRect();
-          let rate = rect.width / this.ww;
-          let dx = rect.x + (rect.width - this.ww) / 2;
-          let dy = rect.y + (rect.height - this.wh) / 2;
-          this.aniStyle = {
-            opacity: 0,
-            transform: `translate(${dx}px, ${dy}px) scale(${rate})`
-          }
-          this.$nextTick(function() {
-            this.aniStyle = {}
-          })
-        }
-      }
-    },
     watch: {
       display: function(newVal) {
         if (newVal) {
           let i = this.findIndex(this.current, this.list)
-          console.log(i,newVal, this.list)
           this.showCurrentImg(i);
+          this.showCount = this.list.length > 1
         }
       }
     },
     methods: {
+      beforeEnter(el) {
+        let trans = this.getTranslate();
+        el.style.opacity = 0;
+        this.$refs.con.style.transform = `translate(${trans.dx}px, ${trans.dy}px) scale(${trans.rate})`;
+      },
+      enter(el) {
+        setTimeout(() => {
+          el.style.opacity = 1;
+          this.$refs.con.style.transform = `translate(0, 0) scale(1)`;
+        },0)
+      },
+      leave(el) {
+        let trans = this.getTranslate();
+        el.style.opacity = 0;
+        this.$refs.con.style.transform = `translate(${trans.dx}px, ${trans.dy}px) scale(${trans.rate})`;
+      },
       getSrc(img) {
         return img.dataset['src'] || img.src
+      },
+      getTranslate() {
+        let img = this.list[this.currentIndex],
+          rect = img.getBoundingClientRect();
+        return {
+          rate: rect.width / this.ww,
+          dx: rect.left + (rect.width - this.ww) / 2,
+          dy: rect.top + (rect.height - this.wh) / 2
+        }
       },
       findIndex(item, list) {
         return list.indexOf(item)
@@ -94,31 +107,10 @@
         this.img.dataset['i'] = i;
         this.img.src = this.getSrc(this.list[i]);
       },
-      show() {
-        let rect = this.current.getBoundingClientRect();
-        let rate = rect.width / this.ww;
-        let dx = rect.x + (rect.width - this.ww) / 2;
-        let dy = rect.y + (rect.height - this.wh) / 2;
-        this.aniStyle = {
-          opacity: 0.5,
-          transform: `translate(${dx}px, ${dy}px) scale(${rate})`
-        }
-        setTimeout(() => {
-          this.aniStyle = {
-            opacity: 1,
-            transform: `translate(0, 0) scale(1)`
-          }
-        }, 50) 
-        this.display = true;
-      },
-      hide() {
-        this.display = false;
-      },
       loadImg(flag) {
         let i = this.img.dataset['i'],
           src = this.img.src;
         i && (flag ? this.$set(this.imgUrls, i, src) : this.$set(this.imgError, i, errorImg))
-
       }
     },
     mounted() {
@@ -136,10 +128,11 @@
     width: 100%;
     height: 100%;
     z-index: 999;
-    animation: fadeIn .1s linear .1s 1 forwards;
+    background:#000;
+    transition: all .2s ease;
     .container {
       height: 100%;
-      transition: all .2s ease-out;
+      transition: all .2s ease;
     }
     .count {
       position: absolute;
@@ -148,7 +141,7 @@
       padding: 5pr 20pr;
       border: 1px solid #fff;
       border-radius: 50pr;
-      background: rgba(0,0,0,.5);
+      background: rgba(0,0,0,1);
       color: #fff;
       z-index: 9;
     }
@@ -169,11 +162,6 @@
       width: 200pr;
       // height: 200pr;
       margin-left: -100pr;
-    }
-    @keyframes fadeIn {
-      to {
-        background: rgba(0,0,0,.8);
-      }
     }
   }
 </style>
