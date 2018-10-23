@@ -16,7 +16,7 @@ import community from './pages/community/index/module'
 import message from './pages/message/index/module'
 import service from './components/service'
 import group from './pages/group/module'
-
+import draft from './pages/draft/module'
 
 Vue.use(Vuex)
 
@@ -150,7 +150,8 @@ export default new Vuex.Store({
     comment,
     community,
     message,
-    group
+    group,
+    draft
   },
   actions: {
     // h5设置cookies埋点

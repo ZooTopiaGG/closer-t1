@@ -1,4 +1,4 @@
-import api from '../../utils/api';
+import api from '../../config/api';
 //  群组信息
 export async function getGroupInfo(payload) {
   return await Axios.post(api.group.share_group, payload);

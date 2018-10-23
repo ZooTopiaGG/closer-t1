@@ -25,6 +25,9 @@ const Jssdk = () =>
 const Group = () =>
   import ('@/pages/group/index')
 
+const Draft = () =>
+  import ('@/pages/draft/index')
+
 Vue.use(Router)
 
 const router = new Router({
@@ -55,6 +58,11 @@ const router = new Router({
       path: "/community/:id",
       name: 'community',
       component: Community,
+    },
+    {
+      path: '/draft/:id',
+      name: 'draft',
+      component: Draft
     }
   ]
 })
@@ -85,6 +93,7 @@ router.beforeEach(({
    *       3 - 神议论(班长合成的)
    *       5 - 官方普通(栏目运营人员发出的)
    */
+  console.log(path)
   switch (pathName[0]) {
     case 'feed':
       if (type == '2') {
@@ -92,6 +101,10 @@ router.beforeEach(({
           // 神议论
           router.replace({
             path: path.replace("feed", "comment")
+          })
+        } else if (category == "1" || category == "2") { //征稿1  投稿2 
+          router.replace({
+            path: path.replace("feed", "draft")
           })
         } else {
           router.replace({

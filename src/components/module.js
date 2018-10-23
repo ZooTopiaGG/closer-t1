@@ -21,7 +21,9 @@ const state = {
   authSuccess: false,
   messagelist: {
     data: []
-  }
+  },
+  hotColletions0: [],
+  hotColletions1: []
 }
 
 const actions = {
@@ -29,12 +31,12 @@ const actions = {
   async get_focus_stat({
     commit
   }, {
-    payload, 
+    payload,
     after
   }) {
     let self = this
     try {
-      let {data} = await service.subscription(payload);
+      let { data } = await service.subscription(payload);
       if (data.code === 0 && data.result) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
@@ -42,12 +44,12 @@ const actions = {
           })
         } else {
           commit('SET_FOCUS_STAT', true, {
-            root: true
-          })
-          // Toast({
-          //   message: '关注成功',
-          //   position: 'top'
-          // })
+              root: true
+            })
+            // Toast({
+            //   message: '关注成功',
+            //   position: 'top'
+            // })
           return true
         }
       } else {
@@ -104,7 +106,7 @@ const actions = {
   async getWxAuth({
     commit,
     state
-  }, {payload, before}) {
+  }, { payload, before }) {
     console.log('getWxAuth', payload)
     let _params = {
       path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + addUrlParams(payload.path + payload.query))
@@ -114,13 +116,13 @@ const actions = {
       Toast('网络开小差啦~')
     })
     console.log(data.data.result)
-    if (typeof (data.data.code != undefined) && data.data.code == 0) {
+    if (typeof(data.data.code != undefined) && data.data.code == 0) {
       location.href = data.data.result
-      // commit('setAuthStatus')
-      // console.log('state.authSuccess---', state.authSuccess)
+        // commit('setAuthStatus')
+        // console.log('state.authSuccess---', state.authSuccess)
     } else {
       data.result && Toast(data.result)
-      // next()
+        // next()
     }
   },
   async getUserInfoWithWx({
@@ -142,7 +144,7 @@ const actions = {
         Toast('网络开小差啦~')
       })
       console.log('data:', data)
-      if (typeof (data.code != undefined) && data.code == 0) {
+      if (typeof(data.code != undefined) && data.code == 0) {
         user = data.result.user
         token = data.result.token
         console.log('user-from-server:', user)
@@ -176,7 +178,7 @@ const actions = {
       Toast('网络开小差啦~')
     })
     Indicator.close()
-    if (typeof (data.code) != undefined && data.code == 0) {
+    if (typeof(data.code) != undefined && data.code == 0) {
       commit({
         type: 'getSmsCode',
         data
@@ -219,7 +221,7 @@ const actions = {
       Toast('网络开小差啦~')
     })
     Indicator.close()
-    if (typeof (data.code) != undefined && data.code == 0) {
+    if (typeof(data.code) != undefined && data.code == 0) {
       if (data.result && data.result.token) {
         Cookies.set("token", data.result.token, {
           expires: 60
@@ -251,7 +253,7 @@ const actions = {
     } = await service.getComments(payload).catch(err => {
       Toast('网络开小差啦~')
     })
-    if (typeof (data.code) != undefined && data.code == 0) {
+    if (typeof(data.code) != undefined && data.code == 0) {
       commit({
         type: 'setCommentList',
         data
@@ -264,10 +266,96 @@ const actions = {
     let data = await service.isLike(payload).catch(err => {
       Toast('网络开小差啦~')
     })
-    if (typeof (data.code != undefined) && data.code == 0) {
+    if (typeof(data.code != undefined) && data.code == 0) {
 
     } else {
       data.result && Toast(data.result)
+    }
+  },
+  async getHotCollections({ commit }, payload) { //征稿精华、全部
+    console.log("hotCollections", payload)
+    if (typeof(payload.type) != "undefined") {
+      // let { result, code } = await service.getCollections(payload).catch(err => {
+      //     Toast('网络开小差啦~')
+      //   })
+      let { result, code } = {
+        "result": {
+          "data": [{
+            "double_longitude": 0,
+            "long_time_line": 0,
+            "int_post_limit": 4,
+            "int_use": 0,
+            "bool_delete": false,
+            "bool_tip": false,
+            "isOffical": true,
+            "title": "title",
+            "int_read": 0,
+            "userid": "9cvwbcsKxN",
+            "articleUrl": "https://t1-sandbox.tiejin.cn/feed/wwyeHYLpsp9y?type=0&category=5",
+            "content": '{"text":"直接发布_我是图片描述_凤凤测试栏目1_1539311591458","images":[{"link":"/public/9RARjdBbUY/%E9%95%BF%E5%9B%BE1.jpg","width":500,"height":2852,"size":254840},{"link":"/public/9BcXjHwltE/%E6%88%91%E6%98%AF+GIF1.gif","width":500,"height":236,"size":988541},{"link":"/public/9vrQ6U2QdK/%E5%85%A8%E6%99%AF%E5%9B%BE1.jpg","width":1056,"height":300,"size":23147},{"link":"/public/9I8HvFmGat/1532499467000.jpg","width":750,"height":414,"size":283898},{"link":"/public/9I8Jxe750G/1532499611000.jpg","width":750,"height":930,"size":995935}]}',
+            "view": 190,
+            "double_latitude": 0,
+            "release_subjectid": "0",
+            "int_verify": 1,
+            "int_release_type": 0,
+            "long_publish_time": 1539311592651,
+            "slogo": "http://file-sandbox.tiejin.cn/public/9Ayl8hpyrW/1531123167000.jpg",
+            "communityName": "凤凤测试栏目1",
+            "blogo": "http://file-sandbox.tiejin.cn/public/9cw0i80BHG/1526642448000.jpg",
+            "long_create_time": 1539311592651,
+            "bool_task": false,
+            "int_category": 5,
+            "authorsString": "",
+            "commentNumber": 1,
+            "long_like": 0,
+            "like": 2,
+            "int_type": 0,
+            "isTask": false,
+            "region_id": "wfXYXEpsBEyN",
+            "long_view": 100,
+            "subjectid": "wwyeHYLpsp9y",
+            "long_update_time": 1539311592651,
+            "tags": "0",
+            "long_share": 2,
+            "int_cover_mode": 0,
+            "verify_user": "",
+            "classid": "0",
+            "int_new_source": 0,
+            "shareUrl": "https://h5-sandbox.tiejin.cn/feed/wwyeHYLpsp9y?type=0&category=5",
+            "communityid": "9cvwbctrap",
+            "long_modify_time": 0,
+            "user": {
+              "gender": 2,
+              "attributes": {
+                "roster": {
+                  "uid": "9cvwbcsKxN",
+                  "gender": 0,
+                  "name": "我是001花名",
+                  "attributes": {
+                    "security_signal": "02810000107"
+                  },
+                  "id": "9s1LpQfvi7",
+                  "avatar": "/public/9s1LnfdCqZ/temp.jpg",
+                  "community": "9cvwbctrap"
+                }
+              },
+              "fullname": "凤凤栏目主名哈哈xx",
+              "avatar": "/avatar/u/9cvwbcsKxN?v=1529488290734",
+              "username": "12081040001"
+            }
+          }]
+        },
+        "code": 0
+      }
+      if (typeof(code) != undefined && code == 0) {
+        if (parseInt(payload.type) == 0) {
+          commit("SET_HOT_COLLECTIONS0", result.data) //全部
+        } else if (parseInt(payload.type) == 1) {
+          commit("SET_HOT_COLLECTIONS1", result.data) //精华
+        }
+      } else {
+        result && Toast(result)
+      }
     }
   }
 }
@@ -305,9 +393,17 @@ const mutations = {
   },
   setCommentList(state, payload) {
     state.messagelist = payload.data.result.data
+  },
+  SET_HOT_COLLECTIONS1(state, payload) {
+    console.log("tab1")
+    state.hotColletions1 = payload;
+  },
+  SET_HOT_COLLECTIONS0(state, payload) {
+    console.log("tab0")
+    state.hotColletions0 = payload
+
   }
 }
-
 
 export default {
   namespaced,
