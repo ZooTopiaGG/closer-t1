@@ -1,5 +1,6 @@
 import baseUrl from '../config/index';
 import Store from '../store'
+import { Toast } from 'mint-ui'
 
 export function redirectAddChance(isApp) {
   //console.log("addchance", isApp);
@@ -153,8 +154,6 @@ export function makeHtmlContent(html) {
     const regexWidth = /width=[\'\"]?([^\'\"]*)[\'\"]?/i;
     const regexHeight = /height=[\'\"]?([^\'\"]*)[\'\"]?/i;
     let size, flag;
-    Store.state.CONTENT_IMGS = [];
-    Store.state.IMG_INDEX = 0;
     pImg.forEach((x, i) => {
       let
         srcArray = x.match(regexSrc),
@@ -174,23 +173,24 @@ export function makeHtmlContent(html) {
             nH = heightArray[1] * 100 / widthArray[1] + "%";
           }
           minH = nH;
-          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
         } else {
           nW = '100%';
           nH = "auto";
           minH = '28.27vw';
-          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
         }
-        Store.state.CONTENT_IMGS.push(srcArray[0].replace("src=", "").substring(1, (srcArray[0].replace("src=", "").length - 1))) //计算全局图片
+        console.log("srcArray[i]", srcArray[i])
+        Store.state.CONTENT_IMGS.push(srcArray[i])
         Store.state.IMG_INDEX++;
       } else {
         newM = '';
       }
+
       // 正则替换富文本内的img标签
       // 替换不同文本
       html = html.replace(x, `<div class="img-box">${newM}</div>`);
     });
-    console.log(":xxxx", Store.state.CONTENT_IMGS)
   }
   const regexVideo = /<video.*?(?:>|\/>|<\/video>)/gi;
   let pVideo = html.match(regexVideo);
@@ -375,7 +375,6 @@ export function appPlayVideo(u, v) {
 }
 
 export function tabImg(i) {
-  console.log(Store.state.CONTENT_IMGS)
   let imgArray = Store.state.CONTENT_IMGS;
   let index = parseInt(i);
   let imgJson = {
@@ -493,6 +492,9 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     } else if (route.path.indexOf("/group") > -1) {
       _page = "group";
       url = `closer://group/${did}`;
+    } else if (route.path.indexOf("/draft") > -1) {
+      _page = "draft";
+      url = `closer://draft/${did}`;
     } else {
       _page = "inviter";
       url = `closer://jump/to/mine`;
@@ -531,7 +533,7 @@ export function addUrlParams(url = '', params = {}) {
   let _url = url[0];
   let str = [];
   if (url[1]) {
-    params = Object.assign(getQueryObject(url), params)
+    params = Object.assign(getQueryObject(url[1]), params)
   }
   for (let key in params) {
     if (params.hasOwnProperty(key)) {
@@ -632,14 +634,46 @@ export function wxShareConfig(wxConfig, shareConfig, jsApiList) {
 }
 
 
-export function dateFromNow(time) {
+export function countImgs() {
+  // 在浏览器可以点击图片预览
+  let preimg;
+  if (document.querySelectorAll("img[data-index]")) {
+    preimg = document.querySelectorAll("img[data-index]");
+    if (preimg) {
+      var imgList = [];
+      // 遍历查找出来的元素type HTMLCOLLECTION
+      Array.prototype.forEach.call(preimg, (x, i) => {
+        console.log("-----", x.dataset.src)
+        if (x.dataset.index && x.dataset.src) {
+          imgList.push({
+            current: {
+              src: x.dataset.src
+            },
+            index: i
+          });
+          // 监听点击图片事件 闭包
+          preimg[i].onclick = (function() {
+            return function() {
+              Store.state.preIndex = i;
+              Store.state.preShow = true;
+            };
+          })(i);
+        }
+      });
+      Store.state.preImgs = imgList;
+    }
+  }
+
+}
+
+export function dateFromNow(time, type = 'MM-dd') {
   let now = Date.now(),
     _time = +new Date(time),
     diff = now - _time,
     str = '';
   if (diff >= 6.048e8) {
     // 大于7天直接显示日期
-    str = new Date(time).Format('MM-dd')
+    str = new Date(time).Format(type)
   } else if (diff >= 8.64e7) {
     // 大于24小时显示“天”
     str = parseInt(diff / 8.64e7) + '天前';

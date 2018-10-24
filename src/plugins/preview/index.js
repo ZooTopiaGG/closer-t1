@@ -5,15 +5,11 @@ let $list = [];
 
 function bindEvent(el) {
   el && el.addEventListener('click', function(e) {
-    console.log('touch')
+    // console.log('touch')
     let target = e.target;
     if (target.tagName.toLowerCase() == 'img' && getSrc(target)) {
-      // let rect = target.getBoundingClientRect();
-      // let src = getSrc(target);
-      // $vm.rect = rect;
       $vm.current = target;
-      // $vm.display = true;
-      $vm.show();
+      $vm.display = true;
     }
   })
 }
@@ -30,10 +26,6 @@ function getSrc(img) {
   }
 }
 
-function getImgPosition(img) {
-  let rect = img.getBoundingClientRect();
-}
-
 export default {
   install(Vue, options) {
     if (!$vm) {
@@ -44,22 +36,11 @@ export default {
       document.body.appendChild($vm.$el)
     }
     let preview = {
-      show(current, list) {
-        // $vm.display = true;
-        $vm.current = current;
-        $vm.list = list;
-      },
       init(container) {
         $container = document.querySelector(container) || $container;
-        // let imgList = $container.querySelectorAll('img');
-        // imgList.forEach(img => {
-        //   let src = getSrc(img);
-        //   src && $list.push(src)
-        // })
         bindEvent($container);
         $list = Array.prototype.slice.call($container.querySelectorAll('img')).filter(img => getSrc(img))
         $vm.list = $list;
-        console.log('$list', $list.length, $list)
       }
     }
 

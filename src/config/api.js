@@ -38,8 +38,8 @@ export default {
     replys: 'closer_reply.replys',
     // 举报列表
     reportType: 'closer_report.get_report_types',
-    hot_subjects: 'closer_subject.hot_subjects'
-
+    hot_subjects: 'closer_subject.hot_subjects',
+    collectionsV2: 'closer_subject.collectionsV2'
   },
   community: {
     // 栏目实体

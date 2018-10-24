@@ -29,11 +29,14 @@ const Jssdk = () =>
 const Group = () =>
   import ('@/pages/group/index')
 
+const Draft = () =>
+  import ('@/pages/draft/index')
+
 // 视频
-const Video = () => 
+const Video = () =>
   import ('@/pages/video/index/index')
-  
-  
+
+
 Vue.use(Router)
 
 const router = new Router({
@@ -66,6 +69,10 @@ const router = new Router({
       component: Community,
     },
     {
+      path: '/draft/:id',
+      name: 'draft',
+      component: Draft
+    }, {
       path: "/video/:id",
       name: 'video',
       component: Video
@@ -104,6 +111,7 @@ router.beforeEach(({
    *       3 - 神议论(班长合成的)
    *       5 - 官方普通(栏目运营人员发出的)
    */
+  console.log(path)
   switch (pathName[0]) {
     case 'feed':
       if (type == '2') {
@@ -111,6 +119,10 @@ router.beforeEach(({
           // 神议论
           router.replace({
             path: path.replace("feed", "comment")
+          })
+        } else if (category == "1" || category == "2") { //征稿1  投稿2 
+          router.replace({
+            path: path.replace("feed", "draft")
           })
         } else {
           router.replace({
@@ -122,7 +134,7 @@ router.beforeEach(({
         router.replace({
           path: path.replace("feed", "video")
         })
-      } else if(type == '0') {
+      } else if (type == '0') {
         // 图集
         router.replace({
           path: path.replace("feed", "image")

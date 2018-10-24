@@ -21,7 +21,9 @@ const state = {
   authSuccess: false,
   messagelist: {
     data: []
-  }
+  },
+  hotColletions0: null,
+  hotColletions1: null
 }
 
 const actions = {
@@ -29,12 +31,12 @@ const actions = {
   async get_focus_stat({
     commit
   }, {
-    payload, 
+    payload,
     after
   }) {
     let self = this
     try {
-      let {data} = await service.subscription(payload);
+      let { data } = await service.subscription(payload);
       if (data.code === 0 && data.result) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
@@ -42,12 +44,12 @@ const actions = {
           })
         } else {
           commit('SET_FOCUS_STAT', true, {
-            root: true
-          })
-          // Toast({
-          //   message: '关注成功',
-          //   position: 'top'
-          // })
+              root: true
+            })
+            // Toast({
+            //   message: '关注成功',
+            //   position: 'top'
+            // })
           return true
         }
       } else {
@@ -104,23 +106,23 @@ const actions = {
   async getWxAuth({
     commit,
     state
-  }, {payload, before}) {
+  }, { payload, before }) {
     console.log('getWxAuth', payload)
     let _params = {
-      path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + addUrlParams(payload.path , payload.query))
+      path: baseUrl.wxAuthorization + encodeURIComponent(baseUrl.href + addUrlParams(payload.path, payload.query))
     }
     before && before();
     let data = await service.getAuthPath(_params).catch(err => {
       Toast('网络开小差啦~')
     })
     console.log(data.data.result)
-    if (typeof (data.data.code != undefined) && data.data.code == 0) {
+    if (typeof(data.data.code != undefined) && data.data.code == 0) {
       location.href = data.data.result
-      // commit('setAuthStatus')
-      // console.log('state.authSuccess---', state.authSuccess)
+        // commit('setAuthStatus')
+        // console.log('state.authSuccess---', state.authSuccess)
     } else {
       data.result && Toast(data.result)
-      // next()
+        // next()
     }
   },
   async getUserInfoWithWx({
@@ -142,7 +144,7 @@ const actions = {
         Toast('网络开小差啦~')
       })
       console.log('data:', data)
-      if (typeof (data.code != undefined) && data.code == 0) {
+      if (typeof(data.code != undefined) && data.code == 0) {
         user = data.result.user
         token = data.result.token
         console.log('user-from-server:', user)
@@ -176,7 +178,7 @@ const actions = {
       Toast('网络开小差啦~')
     })
     Indicator.close()
-    if (typeof (data.code) != undefined && data.code == 0) {
+    if (typeof(data.code) != undefined && data.code == 0) {
       commit({
         type: 'getSmsCode',
         data
@@ -219,7 +221,7 @@ const actions = {
       Toast('网络开小差啦~')
     })
     Indicator.close()
-    if (typeof (data.code) != undefined && data.code == 0) {
+    if (typeof(data.code) != undefined && data.code == 0) {
       if (data.result && data.result.token) {
         Cookies.set("token", data.result.token, {
           expires: 60
@@ -251,7 +253,7 @@ const actions = {
     } = await service.getComments(payload).catch(err => {
       Toast('网络开小差啦~')
     })
-    if (typeof (data.code) != undefined && data.code == 0) {
+    if (typeof(data.code) != undefined && data.code == 0) {
       commit({
         type: 'setCommentList',
         data
@@ -264,10 +266,26 @@ const actions = {
     let data = await service.isLike(payload).catch(err => {
       Toast('网络开小差啦~')
     })
-    if (typeof (data.code != undefined) && data.code == 0) {
+    if (typeof(data.code != undefined) && data.code == 0) {
 
     } else {
       data.result && Toast(data.result)
+    }
+  },
+  async getHotCollections({ commit }, payload) { //征稿精华、全部
+    if (typeof(payload.type) != "undefined") {
+      let { result, code } = await service.getCollections(payload).catch(err => {
+        Toast('网络开小差啦~')
+      })
+      if (typeof(code) != undefined && code == 0) {
+        if (parseInt(payload.type) == 0) {
+          commit("SET_HOT_COLLECTIONS0", result.data) //全部
+        } else if (parseInt(payload.type) == 1) {
+          commit("SET_HOT_COLLECTIONS1", result.data) //精华
+        }
+      } else {
+        result && Toast(result)
+      }
     }
   }
 }
@@ -305,9 +323,15 @@ const mutations = {
   },
   setCommentList(state, payload) {
     state.messagelist = payload.data.result.data
+  },
+  SET_HOT_COLLECTIONS1(state, payload) {
+    state.hotColletions1 = payload;
+  },
+  SET_HOT_COLLECTIONS0(state, payload) {
+    state.hotColletions0 = payload
+
   }
 }
-
 
 export default {
   namespaced,

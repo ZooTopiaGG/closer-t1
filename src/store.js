@@ -17,6 +17,7 @@ import community from './pages/community/index/module'
 import message from './pages/message/index/module'
 import service from './components/service'
 import group from './pages/group/module'
+import draft from './pages/draft/module'
 import video from './pages/video/index/module'
 
 
@@ -153,6 +154,7 @@ export default new Vuex.Store({
     community,
     message,
     group,
+    draft,
     video
   },
   actions: {
@@ -350,6 +352,16 @@ export default new Vuex.Store({
                 desc = "贴近一点 看身边";
               }
               imgUrl = makeFileUrl(group.avatar);
+            }
+          } else if (location.href.indexOf("/draft") > -1) {
+            console.log("征稿分享", state.res.int_category)
+            title = state.res.title;
+            imgUrl = makeFileUrl(state.res.cover) ?
+              makeFileUrl(state.res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
+            if (state.res.int_category == 1) {
+              desc = `贴近号： ${state.res.communityName} ${state.res.collectionTotalCount}参与`
+            } else if (state.res.int_category == 2) {
+              desc = content.summary ? content.summary : "分享文章";
             }
           } else {
             let content = state.content;
