@@ -1,6 +1,5 @@
 import {
-  fetchContent,
-  getCollections
+  fetchContent
 } from './service';
 
 import {
@@ -71,10 +70,6 @@ const actions = {
       commit("GET_EXIST_STATUS", false);
       return;
     }
-  },
-  getCollections({ commit, state }, payload) {
-    let { data } = getCollections(payload)
-
   }
 }
 

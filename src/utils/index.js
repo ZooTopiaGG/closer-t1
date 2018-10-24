@@ -1,5 +1,6 @@
 import baseUrl from '../config/index';
 import Store from '../store'
+import { Toast } from 'mint-ui'
 
 export function redirectAddChance(isApp) {
   //console.log("addchance", isApp);
