@@ -8,8 +8,8 @@
 
 export default {
   href: {
-    build: 'https://a.tiejin.cn',
-    dev: 'https://a-qa.tiejin.cn',
+    build: 'https://t1.tiejin.cn',
+    dev: 'https://t1-qa.tiejin.cn',
     sandbox: 'https://t1-sandbox.tiejin.cn',
     local: 'http://t1-sandbox.tiejin.cn:9999'
   },
@@ -33,7 +33,7 @@ export default {
   },
   wxAuthorization: {
     build: 'https://h5.tiejin.cn/redirect?redirectUrl=',
-    dev: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl=',
+    dev: 'https://h5-qa.tiejin.cn/redirect?redirectUrl=',
     sandbox: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl=',
     local: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl='
   }
