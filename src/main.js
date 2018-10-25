@@ -13,6 +13,7 @@ import MobileDetect from 'mobile-detect';
 import Wx from 'weixin-js-sdk';
 import VueLazyLoad from 'vue-lazyload';
 import Preview from './plugins/preview'
+import Player from './plugins/player'
 
 import ENV from './config/init'
 
@@ -50,6 +51,7 @@ Vue.use(VueLazyLoad, {
   attempt: 1,
 })
 Vue.use(Preview)
+Vue.use(Player)
 
 // 运行时动态设置
 pageResize()

@@ -1,6 +1,6 @@
 <template>
   <section class="download-bar" v-if="!ENV.app">
-    <div class="place"></div>
+    <div v-if="placeholder" class="place"></div>
     <div class="wrap">
       <div class="left">
         <div class="left-logo"></div>
@@ -47,6 +47,12 @@
   Vue.component(SwipeItem.name, SwipeItem);
   export default {
     name: 'downloadBar',
+    props: {
+      placeholder: {
+        type: Boolean,
+        default: true
+      }
+    },
     mounted() {  
     },
     methods: {
@@ -69,16 +75,16 @@
   .download-bar {
     position: relative;
     width: 100%;
-    height: @h;
     z-index: 999;
     .place {
-      height: 100%;
+      height: @h;
     }
     .wrap {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
+      height: @h;
       display: flex;
       padding: 0 24pr;
       justify-content: space-between;

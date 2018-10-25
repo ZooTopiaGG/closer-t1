@@ -666,13 +666,14 @@ export function countImgs() {
 
 }
 
+// 所传时间距离当前时间的时长
 export function dateFromNow(time, type = 'MM-dd') {
   let now = Date.now(),
     _time = +new Date(time),
     diff = now - _time,
     str = '';
   if (diff >= 6.048e8) {
-    // 大于7天直接显示日期
+    // 超过7天直接显示type格式的日期
     str = new Date(time).Format(type)
   } else if (diff >= 8.64e7) {
     // 大于24小时显示“天”
@@ -688,6 +689,19 @@ export function dateFromNow(time, type = 'MM-dd') {
     str = '刚刚'
   }
   return str;
+}
+
+// 时间戳转换为hh:mm:ss时间格式，所传参数time单位是秒
+export function secondsFormat(time) {
+  time = parseInt(time);
+  let hour = parseInt(time / 3600),
+    _hour = time % 3600,
+    min = parseInt(_hour / 60),
+    second = _hour % 60;
+  hour = (hour > 0 && hour < 10) ? `0${hour}` : hour;
+  min = (hour != 0 && min >= 0 && min < 10) ? `0${min}` : min;
+  second = (second >=0 && second < 10) ? `0${second}` : second;
+  return hour == 0 ? `${min}:${second}` : `${hour}:${min}:${second}`;
 }
 
 // 日期格式化(new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
@@ -709,4 +723,4 @@ Date.prototype.Format = function(fmt) {
     if (new RegExp("(" + k + ")").test(fmt))
       fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
   return fmt;
-};
+}
