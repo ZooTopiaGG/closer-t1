@@ -1,13 +1,13 @@
 <template>
   <mt-popup v-model="visible2" class="alert-pop">
     <div class="header">
-      <div class="close" @click="close"></div>
+      <div class="close" @click="closeAlert"></div>
     </div>
     <div class="content">
       <div class="text">您已成功关注了“{{communityName}}”贴近号，去快看看这个贴近号下的其他帖子吧~</div>
       <div class="desc-img"></div>
     </div>
-    <div class="footer">确认</div>
+    <div class="footer" @click="download">确认</div>
   </mt-popup>
 </template>
 
@@ -27,7 +27,9 @@
       communityName: {
         type: String,
         default: ''
-      }
+      },
+      downApp: Function,
+      close: Function
     },
     data() {
       return {
@@ -42,18 +44,14 @@
     computed: {
       ...mapState('community', {
         visible: state => state.visible
-      }),
-      ...mapMutations('community', [
-        'show',
-        'hide'
-      ])
+      })
     },
     methods: {
-      open() {
-        this.show()
+      download() {
+        this.$emit('downApp')
       },
-      close() {
-        this.hide()
+      closeAlert() {
+        this.$emit('close')
       }
     }
   }
@@ -92,10 +90,8 @@
       }
     }
     .footer {
-      // border: 1px solid red;
       height: 90pr;
       line-height: 90pr;
-      // padding: 28pr auto 30pr auto;
       text-align: center;
     }
   }
