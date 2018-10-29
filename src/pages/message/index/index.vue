@@ -48,7 +48,8 @@
     },
     computed: {
       ...mapState('article', [
-        'res'
+        'res',
+        'content'
       ]),
       ...mapState("message", {
         addReply: state => state.replyData
@@ -56,16 +57,16 @@
     },
     beforeMount() {
       if (window.sessionStorage.getItem("title")) {
-      this.title = window.sessionStorage.getItem("title");
-    } else {
-      this.title =
-        this.res.int_type === 2
-          ? this.res.title
-          : this.content.text;
-    }
+        this.title = window.sessionStorage.getItem("title");
+      } else {
+        this.title =
+          this.res.int_type === 2 ?
+          this.res.title :
+          this.content.text;
+      }
     },
     mounted() {
-      console.log('params---',this.$route.params)
+      console.log('params---', this.$route.params)
     },
     methods: {
       ...mapActions("message", [
@@ -73,7 +74,7 @@
         "getAdCookie"
       ]),
       toMessage() {
-        if(this.textarea) {
+        if (this.textarea) {
           window.sessionStorage.setItem("textarea", this.textarea)
         } else {
           Toast('内容不能为空！')

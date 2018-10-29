@@ -31,7 +31,7 @@
     </div>
     <feed-list ref="feedlist" class="feed-list" :subjectList="hotSubjects"></feed-list>
     <foot-bar></foot-bar>
-    <focus-alert :communityName="communityShow.name"></focus-alert>
+    <focus-alert :communityName="communityShow.name" @close="closeAlert" @downApp="downApp"></focus-alert>
   </div>
 </template>
 
@@ -68,7 +68,7 @@
       }
     },
     async mounted() {
-      console.log('query params:---', this.$route.params)
+    console.log('query params:---', this.$route.params)
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -106,6 +106,10 @@
       })
     },
     methods: {
+      ...mapMutations('community', [
+        'show',
+        'hide'
+      ]),
       ...mapActions('community', [
         'getCommunityShow',
         'getGroupList',
@@ -126,6 +130,9 @@
         this.$router.push({
           path: `/group/${id}`
         });
+      },
+      closeAlert() {
+        this.hide()
       }
     }
   }

@@ -101,11 +101,9 @@
     },
     computed: {
       ...mapState('article', [
-        'res'
+        'res',
+        'content'
       ]),
-      ...mapState('article', {
-        content: state => state.content
-      }),
       ...mapState("common", {
         messagelist: state => state.messagelist,
       })
@@ -134,17 +132,14 @@
         if (Cookies.get("user")) {
           this.gotoMessage(type, id);
         } else {
-          // this.$refs.login.open()
           // 前期 仅微信后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (window.ENV.wx) {
-
             console.log(this.$route.query.code)
-            // let path = '/article/' + this.$route.params.id
             let path;
-            if(type === 'comment') {
+            if (type === 'comment') {
               path = '/message/' + this.$route.params.id
             } else {
-              path = '/message/' + this.$route.params.id + '/' +id
+              path = '/message/' + this.$route.params.id + '/' + id
             }
             if (!this.$route.query.code) {
               this.getWxAuth({
