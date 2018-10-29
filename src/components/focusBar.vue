@@ -8,7 +8,7 @@
           <p v-if="showTime" class="community-time">{{dateFromNow}}</p>
         </div>
       </section>
-      <t-focus></t-focus>
+      <t-focus :communityid="res.communityid"></t-focus>
     </section>
   </section>
 </template>
@@ -43,12 +43,11 @@ export default {
   methods: {
     toCommunity() {
       this.$router.push({
-        path: `/community/${this.$store.state.res.communityid}`
+        path: `/community/${this.res.communityid}`
       });
     }
   },
   mounted() {
-    console.log('res--', this.$store.res)
     this.$nextTick(() => {
       // logo图片预加载
       let tjimg = document.querySelector(".access-not");

@@ -27,6 +27,22 @@ const state = {
 }
 
 const actions = {
+  async getFocusState({commit}, payload) {
+    let {data} = await service.getCommunityShow({
+      communityid: payload
+    });
+    if (data.code === 0) {
+      // 获取关注状态
+      if (data.result.isFollowed) {
+        commit(
+          "SET_FOCUS_STAT",
+          data.result.isFollowed, {
+            root: true
+          }
+        );
+      }
+    }
+  },
   // 关注，取消关注栏目
   async get_focus_stat({
     commit
@@ -37,6 +53,7 @@ const actions = {
     let self = this
     try {
       let { data } = await service.subscription(payload);
+      console.log('focus:',data)
       if (data.code === 0 && data.result) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {

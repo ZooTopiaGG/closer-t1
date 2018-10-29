@@ -24,7 +24,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { addUrlParams } from '../utils';
+import { addUrlParams, downloadApp } from '../utils';
   export default {
     props: {
       communityid: {
@@ -45,10 +45,15 @@ import { addUrlParams } from '../utils';
         if (newVal && sessionStorage.userAction == 'focus') {
           this.tjFocus()
         }
+      },
+      communityid: function(newVal) {
+        if (newVal) {
+          this.getFocusState(newVal)
+        }
       }
     },
     methods: {
-      ...mapActions('common', ['getWxAuth', 'get_focus_stat']),
+      ...mapActions('common', ['getFocusState', 'getWxAuth', 'get_focus_stat']),
       // 需要登录的操作 先判断后执行
       async tjFocus() {
         // self.$store.commit("SET_EXTENSION_TEXT", "follow", {root: true});
@@ -92,13 +97,13 @@ import { addUrlParams } from '../utils';
               }
             })
           } else {
-            // self.$store.commit("GET_LOGIN_TYPE", "toFocus", {root: true});
-            // self.$store.commit("SET_VISIBLE_LOGIN", true, {root: true});
+            downloadApp();
           }
         }
       }
     },
     mounted() {
+      
     }
   };
 </script>

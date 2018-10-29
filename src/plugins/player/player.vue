@@ -221,9 +221,8 @@
           currentTime,
           duration
         } = this.$refs.video
-        // this.currentTime = currentTime;
+        this.currentTime = currentTime;
         duration && (this.duration = duration);
-        console.log('Video:handleLoadedMetaData', duration)
       },
       handleLoadedData() {
         console.log('Video:handleLoadedData')
@@ -237,7 +236,6 @@
         } = this.$refs.video
         this.currentTime = currentTime;
         duration && (this.duration = duration);
-        console.log('Video:handleTimeUpdate', duration)
         if (buffered.length > 0) {
           this.buffered = buffered.end(buffered.length - 1)
         }
@@ -363,7 +361,7 @@
       position: relative;
       flex-grow: 1;
       height: 4pr;
-      margin: 0 20pr;
+      margin: 0 10pr;
     }
     .process-total {
       width: 100%;
@@ -385,10 +383,10 @@
     .process-dot {
       position: absolute;
       top: 50%;
-      left: -15pr;
-      width: 30pr;
-      height: 30pr;
-      margin-top: -15pr;
+      left: -10pr;
+      width: 20pr;
+      height: 20pr;
+      margin-top: -10pr;
       border-radius: 20pr;
       background: #fff;
     }

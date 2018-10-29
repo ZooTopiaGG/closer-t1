@@ -179,9 +179,9 @@
         color: @color;
         margin-top: 60pr;
       }
-      .focus {
-        background: #E9E9E9;
-      }
+      // .focus {
+      //   background: #E9E9E9;
+      // }
       .unfocus {
         background: #FDDB00;
       }

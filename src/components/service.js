@@ -7,6 +7,10 @@ export default {
   common(payload) {
     return Axios.post(api.share.common, payload).then(res => res.data);
   },
+  // 栏目实体
+  getCommunityShow(payload) {
+    return Axios.post(api.community.show, payload);
+  },
   subscription(payload) {
     return Axios.post(api.community.subscription, payload).then(res => res.data);
   },
