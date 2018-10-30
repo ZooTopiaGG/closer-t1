@@ -141,7 +141,7 @@
       padding: 5pr 20pr;
       border: 1px solid #fff;
       border-radius: 50pr;
-      background: rgba(0,0,0,1);
+      background: rgba(0,0,0,.5);
       color: #fff;
       z-index: 9;
     }

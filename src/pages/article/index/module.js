@@ -65,6 +65,9 @@ const actions = {
           commit("SET_CONTENT", content);
         }
         commit("SET_RES", data.result);
+        commit("SET_FOCUS_STAT", data.result.isFollowed, {
+          root: true
+        });
         rootState.res = data.result;
       }
     } catch (err) {

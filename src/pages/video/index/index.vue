@@ -3,20 +3,23 @@
   
     <section class="video" v-if="exist">
       <!-- 下载条 -->
-      <download-bar></download-bar>
+      <download-bar :placeholder="videoInfo.height/videoInfo.width < 1"></download-bar>
       <!-- 帖子内容 -->
       <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
       <section class="video-wrap">
         <div class="video-main">
           <video :src="videoInfo.src"
+            :data-duration="videoInfo.duration"
+            :width="videoInfo.width"
+            :height="videoInfo.height"
             :poster="videoInfo.img"
+            style="width: 100%"
             controls
           ></video>
         </div>
         <section class="video-container bg-f">
-
           <!-- 关注bar -->
-          <focus-bar class="focus-bar"></focus-bar>
+          <focus-bar showTime class="focus-bar"></focus-bar>
           <div class="content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
             <!-- 封面大图 -->
             <div class="video-cover-box" v-if="res.bigcover || res.cover">
@@ -99,9 +102,14 @@
       }),
       ...mapState(['CONTENT_IMGS']),
       videoInfo() {
+        let video = this.content.videos && this.content.videos[0] || {};
+        console.log('video.duration',video.duration)
         return {
-          src: this.content.videos && this.content.videos[0].src,
-          img: this.content.videos && this.content.videos[0].imageUrl
+          src: video.src,
+          img: video.imageUrl,
+          duration: video.duration,
+          width: video.width,
+          height: video.height
         }
       }
     },
@@ -116,8 +124,13 @@
       //   "getSubject"
       // ]),
       async fetch() {
-        console.log('fetch')
         await this.fetch_content(this.$route.params)
+        this.$player.init('.video', {
+          muted: false,
+          preload: true,
+          autoPlay: true,
+          loop: false
+        })
       },
       clickImg(e) {
         let target = e.target;
@@ -155,11 +168,6 @@
       },
     },
     async mounted() {
-      // this.GET_USER_AGENT({
-      //   nvg: navigator.userAgent,
-      //   ref: location.pathname
-      // });
-      console.log('video.mounted');
       if (this.$route.query.code) {
         let params = {
           plateform: 2,

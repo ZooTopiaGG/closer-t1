@@ -112,6 +112,12 @@
       async fetch() {
         console.log('fetch')
         await this.fetch_content(this.$route.params)
+        this.$player.init('.content', {
+          muted: false,
+          preload: true,
+          autoPlay: true,
+          loop: false
+        })
       },
       clickImg(e) {
         let target = e.target;
