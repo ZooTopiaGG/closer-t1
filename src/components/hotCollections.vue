@@ -11,7 +11,7 @@
           <div class="empty-icon"></div>
           <div class="empty-desc">暂时没有精选内容赶紧投稿吧</div>
         </div>
-        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="downloadApp($event, '', item.subjectid)">
+        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails( item.subjectid)">
           <div class="top">
             <img class="icon" :src="fileUrlParse(item.user.attributes.roster.avatar||item.user.avatar)" />
             <span class="column">{{item.user.attributes.roster.name||item.user.fullname}}</span>
@@ -45,7 +45,7 @@
           <div class="empty-icon"></div>
           <div class="empty-desc">暂时没有精选内容赶紧投稿吧</div>
         </div>
-        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="downloadApp($event, '', item.subjectid)">
+        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails(item.subjectid)">
           <div class="top">
             <img class="icon" :src="fileUrlParse(item.user.attributes.roster.avatar||item.user.avatar)" />
             <span class="column">{{item.user.attributes.roster.name||item.user.fullname}}</span>
@@ -115,6 +115,7 @@
     computed: {
       ...mapState("common", ["hotColletions1", "hotColletions0", "collectionActive"])
     },
+  
     methods: {
       ...mapActions("common", ["getHotCollections"]),
       dateFormate(t, f) {
@@ -124,15 +125,21 @@
         return makeFileUrl(url, type, size);
       },
       downloadApp(e, str, id) {
-        let redirectUrl = `closer://collections/${id}`;
+        let redirectUrl = `closer://feed/${id}`;
         down_statistics({
           "store": this.$store,
           "route": this.$route,
           "str": str,
-          "defaultStr": "hot_collections",
+          "defaultStr": "hot_feed",
           "redirectUrl": redirectUrl
         });
-      }
+      },
+      toFeedDetails(id) {
+        this.$router.push({
+          path: `/draft/${id}?fromid=${this.$route.params.id}&from=paper`
+        });
+      },
+  
     },
     mounted() {
       this.getHotCollections({
@@ -153,6 +160,9 @@
           pagesize: 5,
           type: parseInt(val)
         })
+      },
+      '$route' (to, from) {
+        this.$router.go(0);
       }
     },
   }
@@ -247,7 +257,7 @@
             -webkit-line-clamp: 3;
             overflow: hidden;
           }
-           .collections-title2 {
+          .collections-title2 {
             // width: 447pr;
             height: 135pr;
             color: #242424;

@@ -354,6 +354,7 @@ export default new Vuex.Store({
               imgUrl = makeFileUrl(group.avatar);
             }
           } else if (location.href.indexOf("/draft") > -1) {
+            let content = state.content;
             console.log("征稿分享", state.res.int_category)
             title = state.res.title;
             imgUrl = makeFileUrl(state.res.cover) ?

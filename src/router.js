@@ -111,7 +111,7 @@ router.beforeEach(({
    *       3 - 神议论(班长合成的)
    *       5 - 官方普通(栏目运营人员发出的)
    */
-  console.log(path)
+  console.log(pathName[0])
   switch (pathName[0]) {
     case 'feed':
       if (type == '2') {
@@ -122,7 +122,8 @@ router.beforeEach(({
           })
         } else if (category == "1" || category == "2") { //征稿1  投稿2 
           router.replace({
-            path: path.replace("feed", "draft")
+            path: path.replace("feed", "draft"),
+            query: query
           })
         } else {
           router.replace({
@@ -147,7 +148,6 @@ router.beforeEach(({
       next();
       break;
   }
-
 })
 
 export default router

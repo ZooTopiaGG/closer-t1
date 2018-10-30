@@ -700,7 +700,7 @@ export function secondsFormat(time) {
     second = _hour % 60;
   hour = (hour > 0 && hour < 10) ? `0${hour}` : hour;
   min = (hour != 0 && min >= 0 && min < 10) ? `0${min}` : min;
-  second = (second >=0 && second < 10) ? `0${second}` : second;
+  second = (second >= 0 && second < 10) ? `0${second}` : second;
   return hour == 0 ? `${min}:${second}` : `${hour}:${min}:${second}`;
 }
 
