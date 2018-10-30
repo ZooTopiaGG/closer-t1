@@ -22,16 +22,16 @@
             <span class="name">{{res.user.fullname}}</span>
             <span class="date">{{dateFormate(res.long_publish_time)}}</span>
           </div>
-          <section id="draftContent" class="content draft-content hidden-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <section id="draftContent" class="content draft-content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
-          <div v-if="res.int_category&&res.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
+          <!-- <div v-if="res.int_category&&res.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
             <div class="folder">
               <div class="more-container">
                 <span class="more">展开全文</span>
                 <img class="down-arrow" src="../../assets/images/arrow_down.png" />
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- 阅读 喜欢 -->
         <!-- <like-bar class="like-bar"></like-bar> -->

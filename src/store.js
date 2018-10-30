@@ -359,7 +359,7 @@ export default new Vuex.Store({
             imgUrl = makeFileUrl(state.res.cover) ?
               makeFileUrl(state.res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
             if (state.res.int_category == 1) {
-              desc = `贴近号： ${state.res.communityName} ${state.res.collectionTotalCount}参与`
+              desc = `贴近号： ${state.res.communityName}\n ${state.res.collectionTotalCount}参与`
             } else if (state.res.int_category == 2) {
               desc = content.summary ? content.summary : "分享文章";
             }

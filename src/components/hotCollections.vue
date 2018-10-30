@@ -233,20 +233,6 @@
           display: flex;
           flex-direction: row;
           margin: 0 0 16pr 0;
-          .collection-title2 {
-            width: 100%;
-            height: 135pr;
-            color: #242424;
-            margin-right: 24pr;
-            line-height: 45pr;
-            font-size: 34pr;
-            font-weight: 500;
-            display: -webkit-box;
-            // 超出省略号
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            overflow: hidden;
-          }
           .collections-title {
             width: 447pr;
             height: 135pr;
