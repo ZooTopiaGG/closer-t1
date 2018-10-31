@@ -89,7 +89,6 @@
       padding: 0 24pr;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 1px 5px #efefef;
       background: #fff;
       color: #4b4945;
     }
@@ -118,9 +117,8 @@
     .right-btn {
       font-size: 28pr;
       padding: 10pr 22pr;
-      border-radius: 60pr;
+      border-radius: 10pr;
       background: #fddb00;
-      box-shadow: 0 4pr 12pr 0 #ffbe20;
     }
   }
 </style>

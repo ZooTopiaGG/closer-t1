@@ -50,8 +50,6 @@
       },
       readCount() {
         // 数字处理
-        console.log('this.incr_view', this.incr_view)
-        // return getSingleCount(this.incr_view)
         return this.incr_view
       }
     },
@@ -86,8 +84,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // height: 100pr;
-    // border-top: 1px solid #eaeaea;
     border-bottom: 20pr solid #f1f1f1;
     font-size: 28pr;
     color: #94928e;
@@ -96,7 +92,7 @@
     .like {
       display: flex;
       align-items: center;
-      margin-top: 30pr;
+      margin-top: 20pr;
       .like-box {
         width: 100pr;
         height: 100pr;
@@ -116,10 +112,6 @@
       .author {
         border-bottom: 1px solid #f1f1f1
       }
-
-    }
-    .author-info {
-      // border-bottom: 1px solid #f1f1f1
     }
   }
 </style>
