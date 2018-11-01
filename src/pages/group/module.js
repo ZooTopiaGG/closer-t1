@@ -1,4 +1,4 @@
-import { getGroupInfo, getGroupList } from './service'
+import { getGroupInfo, getGroupList, joinGroup, applyToJoinGroup } from './service'
 import { Toast } from 'mint-ui'
 import { getCommunityList } from '../community/index/service';
 export default {
@@ -74,6 +74,32 @@ export default {
         }
       } catch (error) {
         console.error("getGroupList", error)
+      }
+    },
+    async joinGroup({ commit, state, rootState }, {
+      classid,
+      join_limit
+    }) {
+      let self = this,
+        para;
+      console.log('join_limit:',join_limit)
+      if (join_limit == 0) {
+        para = {
+          classid,
+        }
+        let {data} = await joinGroup(para)
+        return data.code == 0
+      } else if (join_limit == 1) {
+        para = {
+          id: classid || state.group.group_info.id,
+          type: 'group',
+          name: state.group.group_info.name || '',
+          communityId: state.group.group_info.communityid || ''
+        }
+        let {data} = await applyToJoinGroup(para)
+        return data.code == 0
+      } else {
+        return false
       }
     }
   }

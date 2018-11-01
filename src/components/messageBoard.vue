@@ -200,8 +200,6 @@
   .wrapper {
     width: 100%;
     height: 100%;
-    // background: #F8F8F8;
-    // border-top: 1px solid #F8F8F8;
     border-bottom: 20pr solid #f1f1f1;
     .message-board {
       color: #4b4945;
@@ -210,7 +208,6 @@
       line-height: 44pr;
       .board-top {
         padding: 20pr 40pr;
-        border-bottom: 1px solid #EAEAEA;
         .write-message {
           float: right;
           color: #507CAF;
@@ -306,7 +303,6 @@
     .no-draft {
       background: #fff;
       padding: 20pr 24pr;
-      // margin: 20pr 0;
       font-size: 32pr;
       line-height: 44pr;
       .write {

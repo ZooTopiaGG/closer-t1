@@ -34,7 +34,7 @@
   .footer {
     background: #fff;
     .footer-wrapper {
-      padding: 24pr;
+      padding: 15pr 24pr;
       .footer-btn {
         border-radius: 10pr;
         font-size: 32pr;
