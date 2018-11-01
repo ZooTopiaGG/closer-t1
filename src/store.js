@@ -366,6 +366,8 @@ export default new Vuex.Store({
             }
           } else {
             let content = state.content;
+            console.log("content", state.content)
+
             // 分享长图文
             if (state.res.int_type === 0) {
               // 图集

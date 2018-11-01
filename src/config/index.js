@@ -33,7 +33,7 @@ export default {
   },
   wxAuthorization: {
     build: 'https://h5.tiejin.cn/redirect?redirectUrl=',
-    dev: 'https://h5-qa.tiejin.cn/redirect?redirectUrl=',
+    dev: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl=',
     sandbox: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl=',
     local: 'https://h5-sandbox.tiejin.cn/redirect?redirectUrl='
   }

@@ -63,6 +63,8 @@ const actions = {
           }
           // 返回在渲染页面之前得结果
           commit("SET_CONTENT", content);
+          rootState.content = content;
+
         }
         commit("SET_RES", data.result);
         commit("SET_FOCUS_STAT", data.result.isFollowed, {

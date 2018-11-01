@@ -31,7 +31,6 @@
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
         <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
-  
       </section>
     </section>
     <Notfound v-else :isDelete="res.bool_delete"></Notfound>

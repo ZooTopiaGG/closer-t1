@@ -9,7 +9,7 @@
           <!-- 关注bar -->
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
-          <div class="draft-title" v-if="!ENV.app">
+          <div class="draft-title">
             <span class="topic-logo">话题</span> {{ res.title }}
           </div>
           <div class="join-in" v-if="res.int_category&&res.int_category==2">
@@ -40,11 +40,11 @@
         <!-- 热门文章 -->
         <feed-list v-if="res.int_category&&res.int_category==2" :subjectList="hotSubjects"></feed-list>
         <!-- 精华全部 -->
-        <hot-collections class="hot-collections" v-if="res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
+        <hot-collections class="hot-collections" v-if="!ENV.app&&res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
-        <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
+        <foot-bar  btnText='立即投稿赚取稿费'></foot-bar>
         <!-- 预览图片 -->
-        <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
+        <preview-list v-if="!ENV.app" :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
       </div>
     </div>
     <Notfound v-else :isDelete="res.bool_delete"></Notfound>
