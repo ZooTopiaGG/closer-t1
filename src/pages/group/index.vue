@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       loading: 2,
-      showDownload: false,
+      showDownload: true,
       msg: '恭喜，您已成功入群'
     }
   },
@@ -225,7 +225,6 @@ export default {
 
 <style lang="less" scoped>
 .group {
-  height: 100%;
   .member {
     padding: 40pr;
     .title {
@@ -384,7 +383,7 @@ export default {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    height: 100%;
+    min-height: 100vh;
   }
   .hd-succ {
     width: 156pr;
