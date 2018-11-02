@@ -28,6 +28,7 @@ function getSrc(img) {
 
 export default {
   install(Vue, options) {
+    console.log('preview:install');
     if (!$vm) {
       const PreviewPlugin = Vue.extend(Preview);
       $vm = new PreviewPlugin({

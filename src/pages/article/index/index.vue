@@ -121,7 +121,7 @@
       },
       clickImg(e) {
         let target = e.target;
-        if (ENV.app && target.dataset.index) {
+        if (this.ENV.app && target.dataset.index) {
           tabImg(target.dataset.index);
         } else if (target.dataset.src) {
           this.clickImgOuter(target.dataset.src)
@@ -135,14 +135,14 @@
       openClick(event) {
         const target = event.target,
           classList = target.classList;
-        if (ENV.app && target.dataset.vid && target.dataset.uid) {
+        if (this.ENV.app && target.dataset.vid && target.dataset.uid) {
           appPlayVideo(
             target.dataset.uid,
             target.dataset.vid
           );
-        } else if (target.dataset.index && ENV.app) { //app内部点击图片
+        } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
           this.clickImg(event);
-        // } else if (target.dataset.src && !ENV.app) {
+        // } else if (target.dataset.src && !this.ENV.app) {
         //   this.clickImgOuter(target.dataset.src)
         }
       },
