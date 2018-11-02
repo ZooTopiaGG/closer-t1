@@ -445,28 +445,28 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
 
 export async function downApp(url) {
   if (url) {
-    if (!isJumpOut()) {
-      if (url.indexOf('?from=group') > -1) {
-        let id = await this.getParam('groupid', url);
-        location.href = `closer://jump/to/group`;
-      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = url;
-      }
-      setTimeout(() => {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      }, 1500)
-      return;
+    // if (!isJumpOut()) {
+    if (url.indexOf('?from=group') > -1) {
+      let id = await this.getParam('groupid', url);
+      location.href = `closer://jump/to/group`;
+    } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+      location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
     } else {
-      if (url.indexOf('?from=group') > -1) {
-        location.href = url
-      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
-      }
+      location.href = baseUrl.download;
     }
+    // setTimeout(() => {
+    //   location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+    // }, 1500)
+    // return;
+    // } else {
+    //   if (url.indexOf('?from=group') > -1) {
+    //     location.href = url
+    //   } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+    //     location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+    //   } else {
+    //     location.href = `${location.protocol}//${location.host}?downurl=${url}`;
+    //   }
+    // }
   } else {
     location.href = `${location.protocol}//${location.host}`;
   }
