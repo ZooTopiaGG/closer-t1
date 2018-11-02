@@ -50,7 +50,10 @@ Vue.use(VueLazyLoad, {
   loading: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAAGmAQMAAAAZMJMVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURefn5ySG6Q8AAAA+SURBVHja7cExAQAAAMKg9U9tCj+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwGcmgABBZ8R+wAAAABJRU5ErkJggg==",
   attempt: 1,
 })
-Vue.use(Preview)
+Vue.use(Preview, {
+  isApp: ENV.app,
+  isIos: ENV.ios
+})
 Vue.use(Player)
 
 

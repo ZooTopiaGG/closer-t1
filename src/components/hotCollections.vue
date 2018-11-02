@@ -20,7 +20,15 @@
           <div class="wrap">
             <div class="middle">
               <div class="cover">
-                <div :class="(item.cover||JSON.parse(item.content).videos) ?  'collections-title' :'collections-title2'">{{JSON.parse(item.content).summary}}</div>
+                <div class="collections-title">
+                  <div :class="(item.cover||JSON.parse(item.content).videos) ?  'title-content1' :'title-content2'">{{JSON.parse(item.content).summary}}</div>
+                  <div class="message">
+                    <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
+                    <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
+                    <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
+                    <!-- <label class="date">{{dateFormate(item.long_publish_time)}}</label> -->
+                  </div>
+                </div>
                 <div v-if="item.int_type===2&&item.cover" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
                 </div>
                 <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
@@ -30,12 +38,6 @@
                   <div class="play-icon"></div>
                 </div>
               </div>
-            </div>
-            <div class="bottom">
-              <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
-              <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
-              <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
-              <!-- <label class="date">{{dateFormate(item.long_publish_time)}}</label> -->
             </div>
           </div>
         </div>
@@ -54,7 +56,15 @@
           <div class="wrap">
             <div class="middle">
               <div class="cover">
-                <div :class="(item.cover||JSON.parse(item.content).videos) ?  'collections-title' :'collections-title2'">{{JSON.parse(item.content).summary}}</div>
+                <div class="collections-title">
+                  <div :class="(item.cover||JSON.parse(item.content).videos) ?  'title-content1' :'title-content2'">{{JSON.parse(item.content).summary}}</div>
+                  <div class="message">
+                    <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
+                    <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
+                    <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
+                    <!-- <label class="date">{{dateFormate(item.long_publish_time)}}</label> -->
+                  </div>
+                </div>
                 <div v-if="item.int_type===2&&item.cover" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
                 </div>
                 <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="collections-cover" v-lazy:background-image="fileUrlParse(item.cover)">
@@ -65,12 +75,7 @@
                 </div>
               </div>
             </div>
-            <div class="bottom">
-              <label class="community-count" v-if="item.commentNumber!=0">{{item.commentNumber}}评论</label>
-              <label v-if="item.commentNumber!=0&&item.like!=0">·</label>
-              <label class="like-count" v-if="item.like!=0">{{item.like}}赞</label>
-              <!-- <label class="date">{{dateFormate(item.long_publish_time)}}</label> -->
-            </div>
+  
           </div>
         </div>
   
@@ -245,32 +250,45 @@
           flex-direction: row;
           margin: 0 0 16pr 0;
           .collections-title {
-            width: 447pr;
-            height: 135pr;
-            color: #242424;
-            margin-right: 24pr;
-            line-height: 45pr;
-            font-size: 34pr;
-            font-weight: 500;
-            display: -webkit-box;
-            // 超出省略号
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-          }
-          .collections-title2 {
-            // width: 447pr;
-            height: 135pr;
-            color: #242424;
-            margin-right: 24pr;
-            line-height: 45pr;
-            font-size: 34pr;
-            font-weight: 500;
-            display: -webkit-box;
-            // 超出省略号
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            overflow: hidden;
+            .title-content1 {
+              width: 447pr;
+              height: auto;
+              color: #242424;
+              margin-right: 24pr;
+              line-height: 45pr;
+              font-size: 34pr;
+              font-weight: 500;
+              display: -webkit-box;
+              // 超出省略号
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              overflow: hidden;
+            }
+            .title-content2 {
+              // width: 447pr;
+              height: auto;
+              color: #242424;
+              margin-right: 24pr;
+              line-height: 45pr;
+              font-size: 34pr;
+              font-weight: 500;
+              display: -webkit-box;
+              // 超出省略号
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 3;
+              overflow: hidden;
+            }
+            .message {
+              margin-top:10pr;
+              color: #94928E;
+              font-size: 24pr;
+              .name {
+                margin-right: 16pr;
+              }
+              .date {
+                float: right;
+              }
+            }
           }
           .collections-cover {
             float: right;
@@ -295,16 +313,6 @@
               height: 60pr;
             }
           }
-        }
-      }
-      .bottom {
-        color: #94928E;
-        font-size: 24pr;
-        .name {
-          margin-right: 16pr;
-        }
-        .date {
-          float: right;
         }
       }
     }

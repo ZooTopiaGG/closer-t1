@@ -126,7 +126,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 1000pr;
+    height: 100vh;
     z-index: 999;
     background:#000;
     transition: all .2s ease;
