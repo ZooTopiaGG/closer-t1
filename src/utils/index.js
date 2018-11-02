@@ -353,6 +353,7 @@ export function appPlayVideo(u, v) {
   let vid = v ? v : null,
     uid = u ? u : null;
   let isIos = window.ENV.app && window.ENV.ios ? true : false;
+  console.log('appPlayVideo', u,v);
   if (window.ENV.v120) {
     if (isIos) {
       if (window.WebViewJavascriptBridge) {

@@ -7,9 +7,9 @@ let $src = [];
 
 function bindEvent(el) {
   el && el.addEventListener('click', function(e) {
-    console.log('touch')
     let target = e.target;
     if (target.tagName.toLowerCase() == 'img' && target.dataset.type == 'preview') {
+      console.log('touch')
       showPreview(target);
     }
   })
