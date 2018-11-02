@@ -16,7 +16,7 @@
         <section class="feeder-images" v-if="!ENV.app">
           <section class="feeder-img flex flex-pack-justify" v-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 1">
             <section class="feeder-img-list feeder-img-list-cell-1" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -24,7 +24,7 @@
           </section>
           <section class="feeder-img flex flex-pack-justify" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 2">
             <section class="feeder-img-list feeder-img-list-cell-2" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -32,7 +32,7 @@
           </section>
           <section class="feeder-img flex" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 3 || stringToJson(res.content).images && stringToJson(res.content).images.length > 4">
             <section class="feeder-img-list feeder-img-list-cell-3" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -40,7 +40,7 @@
           </section>
           <section class="feeder-img flex flex-pack-justify" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 4">
             <section class="feeder-img-list feeder-img-list-cell-4" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" :data-index="index">
+              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
               <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
               <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
               <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
@@ -59,8 +59,6 @@
     <feed-list :subjectList="hotSubjects"></feed-list>
     <!-- footer -->
     <foot-bar></foot-bar>
-    <!-- 图片预览 -->
-    <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
   </div>
 </template>
 
@@ -82,7 +80,6 @@
   import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
   import FootBar from '../../../components/footBar'
-  import PreviewList from '../../../components/previewList'
   
   export default {
     name: 'feed-img',
@@ -96,7 +93,6 @@
       MessageBoard,
       FeedList,
       FootBar,
-      PreviewList
     },
     data() {
       return {
@@ -116,7 +112,7 @@
       await this.fetch();
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
-      !this.ENV.app && this.$preview.init('.feed-images');
+      this.$preview.init('.feed-images');
     },
     methods: {
       ...mapActions("article", ['fetch_content']),

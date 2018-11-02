@@ -173,12 +173,12 @@ export function makeHtmlContent(html) {
             nH = heightArray[1] * 100 / widthArray[1] + "%";
           }
           minH = nH;
-          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-type="preview" data-src=`);
         } else {
           nW = '100%';
           nH = "auto";
           minH = '28.27vw';
-          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-type="preview" data-src=`);
         }
         console.log("srcArray[i]", srcArray[i])
         Store.state.CONTENT_IMGS.push(srcArray[i])

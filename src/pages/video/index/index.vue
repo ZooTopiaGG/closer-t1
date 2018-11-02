@@ -38,7 +38,6 @@
         <feed-list :subjectList="hotSubjects"></feed-list>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
-        <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
   
       </section>
     </section>
@@ -67,7 +66,6 @@
   import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
   import AuthorBar from '../../../components/authorBar'
-  import PreviewList from '../../../components/previewList'
   
   export default {
     components: {
@@ -79,7 +77,6 @@
       MessageBoard,
       FeedList,
       AuthorBar,
-      PreviewList
     },
     data() {
       return {

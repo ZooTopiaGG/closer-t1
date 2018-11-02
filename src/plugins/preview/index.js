@@ -9,7 +9,7 @@ function bindEvent(el) {
   el && el.addEventListener('click', function(e) {
     console.log('touch')
     let target = e.target;
-    if (target.tagName.toLowerCase() == 'img') {
+    if (target.tagName.toLowerCase() == 'img' && target.dataset.type == 'preview') {
       showPreview(target);
     }
   })
@@ -74,12 +74,14 @@ export default {
         bindEvent($container);
         $list.push(...Array.from($container.querySelectorAll('img')).filter(img => {
           let src = getSrc(img);
-          if (src) {
+          let type = img.dataset.type;
+          if (src && type == 'preview') {
             $src.push(src);
             return true;
           }
           return false;
         }))
+        console.log('preview imgs.length', $list.length, $src.length)
       }
     }
 

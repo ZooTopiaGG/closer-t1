@@ -15,7 +15,7 @@
           <div class="article-content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
             <!-- 封面大图 -->
             <div class="article-cover-box" v-if="cover">
-              <img :data-src="makeFileUrl(cover)" class="article-cover-img">
+              <img :data-src="makeFileUrl(cover)" data-type="preview" class="article-cover-img">
             </div>
             <!-- 主内容 -->
             <div class="content" v-html="content.html"></div>
@@ -30,7 +30,6 @@
         <message-board></message-board>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
-        <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
       </section>
     </section>
     <Notfound v-else :isDelete="res.bool_delete"></Notfound>
@@ -58,7 +57,6 @@
   import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
   import AuthorBar from '../../../components/authorBar'
-  import PreviewList from '../../../components/previewList'
   
   export default {
     name: "Feed",
@@ -71,7 +69,6 @@
       MessageBoard,
       FeedList,
       AuthorBar,
-      PreviewList
     },
     data() {
       return {
