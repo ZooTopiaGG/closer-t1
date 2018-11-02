@@ -9,7 +9,7 @@
           <!-- 关注bar -->
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
-          <div class="draft-title">
+          <div class="draft-title" v-if="!(ENV.app&&res.int_category&&res.int_category==2)">
             <span class="topic-logo">话题</span> {{ res.title }}
           </div>
           <div class="join-in" v-if="res.int_category&&res.int_category==2">
