@@ -4,10 +4,11 @@ let UA = navigator.userAgent.toLowerCase() || navigator.userAgent.toLowerCase(),
   HREF = location.href,
   ENV = {},
   href = config.href;
+
 function initENV() {
   // 根据href值设置当前开发环境（build,dev,local）
   for (let key in href) {
-    let host = new (URL || webkitURL)(href[key]).hostname;
+    let host = new(URL || webkitURL)(href[key]).hostname;
     let index = HREF.indexOf(host);
     index > -1 && index <= 8 && (ENV.env = key)
   }
