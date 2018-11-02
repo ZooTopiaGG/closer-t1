@@ -314,7 +314,7 @@ export default new Vuex.Store({
             }
             return;
           }
-          let title, imgUrl, desc;
+          let title, imgUrl, desc, author;
           if (location.href.indexOf("/community") > -1) {
             // 分享栏目主页
             title = state.res.name ?
@@ -360,9 +360,17 @@ export default new Vuex.Store({
             imgUrl = makeFileUrl(state.res.cover) ?
               makeFileUrl(state.res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
             if (state.res.int_category == 1) {
-              desc = `贴近号： ${state.res.communityName}\n ${state.res.collectionTotalCount}参与`
+              desc = `贴近号： ${state.res.communityName.substring(0,10)}`
+              if (state.res.collectionTotalCount > 0) {
+                desc += `\n ${state.res.collectionTotalCount}参与`;
+              }
             } else if (state.res.int_category == 2) {
-              desc = content.summary ? content.summary : "分享文章";
+              desc = content.summary ? content.summary.substring(0, 24) : "分享文章";
+            }
+            if (state.res.user.attributes.roster.name || state.res.user.fullname) {
+              author = `贴近 @${state.res.user.attributes.roster.name ||
+              state.res.user.fullname.substring(0, 6)} 出品`;
+              desc = `${desc}\n${author}`;
             }
           } else {
             let content = state.content;
@@ -413,7 +421,12 @@ export default new Vuex.Store({
               } else {
                 title = content.summary;
               }
-              desc = content.summary ? content.summary : "分享文章";
+              desc = content.summary ? content.summary.substring(0, 24) : "分享文章";
+              if (state.res.user.attributes.roster.name || state.res.user.fullname) {
+                author = `贴近 @${state.res.user.attributes.roster.name ||
+                state.res.user.fullname.substring(0, 6)} 出品`;
+                desc = `${desc}\n${author}`;
+              }
               imgUrl = makeFileUrl(state.res.cover) ?
                 makeFileUrl(state.res.cover) :
                 makeFileUrl(state.res.bigcover);
