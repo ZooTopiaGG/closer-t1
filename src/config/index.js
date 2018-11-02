@@ -21,7 +21,7 @@ export default {
   },
   server: {
     build: 'https://api.tiejin.cn/command/',
-    dev: 'https://api-qa.tiejin.cn/command/',
+    dev: 'https://api-sandbox.tiejin.cn/command/',
     sandbox: 'https://api-sandbox.tiejin.cn/command/',
     local: 'https://api-sandbox.tiejin.cn/command/'
   },

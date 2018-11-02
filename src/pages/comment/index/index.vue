@@ -39,13 +39,14 @@
                 <div v-if="ENV.app" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                   <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
-                <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill"  controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="false" x5-video-orientation="portraint">
-                </video>
+                <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill" controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="false"
+                  x5-video-orientation="portraint">
+                  </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
                 <div class="feed" @click="tofeed(item.feed.feedId)">
-                  <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
+                  <img class="feed-img" v-lazy:background-image="fileUrlParse(item.feed.imageUrl)">
                   <div class="feed-info">
                     <div class="feed-title">{{ item.feed.title }}</div>
                     <div class="feed-summary">{{ item.feed.summary }}</div>
@@ -281,7 +282,9 @@
               margin: 20pr 0 20pr 20pr;
               width: 86pr;
               height: 86pr;
-              border-radius: 10pr
+              border-radius: 10pr ;
+               background-size: cover;
+              background-position: 50%;
             }
             .feed-info {
               margin: 22pr 10pr 0 28pr;
