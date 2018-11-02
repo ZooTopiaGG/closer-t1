@@ -115,7 +115,7 @@
     async mounted() {
       await this.fetch();
       this.getHotSubjects();
-      this.$preview.init('.feed-images');
+      !this.ENV.app && this.$preview.init('.feed-images');
     },
     methods: {
       ...mapActions("article", ['fetch_content']),
@@ -155,52 +155,13 @@
         console.log('fdfadfdfd123131312;')
         const target = event.target,
           classList = target.classList;
-        // if (classList.contains('video-play-icon')) {
-        //   if (window.ENV.app) {
-        //     if (!(target.dataset.vid || target.dataset.uid)) {
-        //       return;
-        //     }
-        //     appPlayVideo(
-        //       target.dataset.uid,
-        //       target.dataset.vid
-        //     );
-        //   } else {
-        //     let parentNode = target.parentNode,
-        //       video = parentNode.querySelector('video');
-        //     if (video.paused) {
-        //       video.play();
-        //       target.style.display = 'none';
-        //       target.classList.add('pause');
-        //     } else {
-        //       video.pause();
-        //       clearTimeout(this.playIconTimer);
-        //       target.classList.remove('pause');
-        //     }
-        //   }
-        // } else if (classList.contains('video-wrap') || classList.contains('video-tag')) {
-        //   let parentNode = target;
-        //   if (classList.contains('video-tag')) {
-        //     parentNode = target.parentNode;
-        //   }
-        //   const playIcon = parentNode.querySelector('.video-play-icon'),
-        //     video = parentNode.querySelector('video');
-        //     console.log(video.paused,playIcon.style.display);
-        //   if (!video.paused && playIcon.style.display == 'none') {
-        //     playIcon.style.display = 'block';
-        //     this.playIconTimer = setTimeout(() => {
-        //       this.playIconTimer = null;
-        //       playIcon.style.display = 'none';
-        //     }, 2e3)
-        //   }
-  
-        // }
         if (ENV.app && target.dataset.vid && target.dataset.uid) {
           appPlayVideo(
             target.dataset.uid,
             target.dataset.vid
           );
-        // } else if (target.dataset.index) { //app内部点击图片
-        //   this.clickImg(event);
+        } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
+          this.clickImg(event);
         // } else if (target.dataset.src && !ENV.app) {
         //   this.clickImgOuter(target.dataset.src)
         }
