@@ -18,7 +18,6 @@
             </li>
           </ul>
           <div class="more-member" v-if="group.group_user_count>5" @click="moreMember">查看更多群成员<i class="arrow"></i></div>
-          <div class="split-line"></div>
         </div>
       <div class="description" v-if="group.group_info && description()">
         <div class="desc">群简介</div>
@@ -81,7 +80,7 @@ export default {
   data() {
     return {
       loading: 2,
-      showDownload: true,
+      showDownload: false,
       msg: '恭喜，您已成功入群'
     }
   },
@@ -228,9 +227,7 @@ export default {
   .member {
     padding: 40pr;
     .title {
-      text-align: center;
       font-weight: 600;
-      text-align: center;
       line-height: 1.7;
       font-size: 16px;
       margin-bottom: 40pr;
@@ -293,11 +290,6 @@ export default {
         margin-left: 6pr;
       }
     }
-    .split-line {
-      width: 100%;
-      height: 1px;
-      background: #e6e6e6;
-    }
   }
   .arrow-right {
     margin-top: 14pr;
@@ -320,6 +312,12 @@ export default {
       margin-bottom: 40pr;
       font-size: 28pr;
       color: #94928e;
+      max-height: 120pr;
+      // 超出省略号
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
     }
   }
   .topic {
