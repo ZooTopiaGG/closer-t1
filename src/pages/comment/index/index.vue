@@ -41,7 +41,7 @@
                 </div>
                 <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill" controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="false"
                   x5-video-orientation="portraint">
-                  </video>
+                      </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
@@ -248,6 +248,7 @@
         .info {
           display: flex;
           flex-direction: column;
+          max-width: 18.125rem;
           .info-up {
             color: #94928E;
             font-size: 24pr;
@@ -282,8 +283,8 @@
               margin: 20pr 0 20pr 20pr;
               width: 86pr;
               height: 86pr;
-              border-radius: 10pr ;
-               background-size: cover;
+              border-radius: 10pr;
+              background-size: cover;
               background-position: 50%;
             }
             .feed-info {
