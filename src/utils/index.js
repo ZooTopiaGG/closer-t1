@@ -481,11 +481,13 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
       url = `closer://community/${did}`;
-    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1) {
+    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1 || route.path.indexOf("/video") > -1 || route.path.indexOf("/image") > -1) {
       _page = "article";
       url = `closer://feed/${did}`;
       if (store.state.res.int_type === 1) {
         _page = "video";
+      } else if (store.state.res.int_type === 0) {
+        _page = "images";
       } else {
         _page = "article";
       }
