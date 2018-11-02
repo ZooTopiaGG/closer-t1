@@ -42,7 +42,7 @@
         <!-- 精华全部 -->
         <hot-collections class="hot-collections" v-if="!ENV.app&&res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
-        <foot-bar  btnText='立即投稿赚取稿费'></foot-bar>
+        <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
         <!-- 预览图片 -->
         <preview-list v-if="!ENV.app" :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
       </div>

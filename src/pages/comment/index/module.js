@@ -85,21 +85,6 @@ export default {
                 let end_html = makeHtmlContent(
                   content.end_html
                 );
-                const regexImg = /<img.*?(?:>|\/>)/gi;
-                const regexSrc = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
-                const regexDatasrc = /data-index=[\'\"]?([^\'\"]*)[\'\"]?/i;
-                let pImg = end_html.match(regexImg);
-                pImg.forEach((x, i) => {
-                  end_html = end_html.replace(x, x.replace(regexDatasrc, `data-index='${imgIndex}'`)); //改data-index
-                  let srcArray = x.match(regexSrc);
-                  console.log("xxxxxx", srcArray[i])
-                  if (srcArray[i]) {
-                    let imgStr = srcArray[i].replace("src=", "");
-                    contentImgs.push(imgStr.substring(1, (srcArray[i].replace("src=", "").length - 1))) //计算全局图片
-                    imgIndex++;
-                  }
-                })
-                return;
                 if (end_html) {
                   content.end_html = end_html;
                 }
