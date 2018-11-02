@@ -140,8 +140,8 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
-          this.clickImg(event);
+        // } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
+        //   this.clickImg(event);
         // } else if (target.dataset.src && !this.ENV.app) {
         //   this.clickImgOuter(target.dataset.src)
         }
@@ -166,7 +166,7 @@
       await this.fetch();
       this.$store.dispatch('wx_config');
       this.getHotSubjects()
-      !this.ENV.app && this.$preview.init('.article-content');
+      this.$preview.init('.article-content');
     }
   };
 </script>

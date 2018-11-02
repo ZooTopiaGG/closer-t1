@@ -53,6 +53,24 @@ Vue.use(VueLazyLoad, {
 Vue.use(Preview)
 Vue.use(Player)
 
+
+//监听dom ready
+document.onreadystatechange = function() {
+  if (document.readyState === "complete") {
+    canShowContent()
+    try {
+      if (window.WebViewJavascriptBridge) {
+        window.webkit.messageHandlers.canShowContent.postMessage(null);
+      }
+      if (typeof window.bridge != "undefined") {
+        window.bridge.canShowContent(null);
+      }
+    } catch (e) {}
+  }
+}
+
+function canShowContent() {}
+
 // 运行时动态设置
 pageResize()
 window.onresize = pageResize;

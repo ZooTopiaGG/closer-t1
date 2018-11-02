@@ -102,6 +102,7 @@
     down_statistics,
     dateFromNow
   } from '../utils'
+  import baseUrl from '../config'
   
   export default {
     data() {
@@ -125,7 +126,7 @@
         return makeFileUrl(url, type, size);
       },
       downloadApp(e, str, id) {
-        let redirectUrl = `closer://feed/${id}`;
+        let redirectUrl = `${baseUrl.download}&link=closer://feed/${id}`;
         down_statistics({
           "store": this.$store,
           "route": this.$route,
@@ -254,7 +255,7 @@
             display: -webkit-box;
             // 超出省略号
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             overflow: hidden;
           }
           .collections-title2 {
