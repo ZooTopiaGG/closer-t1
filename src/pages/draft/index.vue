@@ -22,7 +22,7 @@
             <span class="name">{{res.user.fullname}}</span>
             <span class="date">{{dateFormate(res.long_publish_time)}}</span>
           </div>
-          <section id="draftContent" :class="ENV.app ? 'content draft-content':'content draft-content hidden-content '" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <section id="draftContent" class="content draft-content" :class="{'hidden-content':ENV.app}" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
           <div v-if="!ENV.app&&res.int_category&&res.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
             <div class="folder">
@@ -43,8 +43,6 @@
         <hot-collections class="hot-collections" v-if="!ENV.app&&res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
         <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
-        <!-- 预览图片 -->
-        <preview-list v-if="!ENV.app" :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
       </div>
     </div>
     <Notfound v-else :isDelete="res.bool_delete"></Notfound>
@@ -73,7 +71,6 @@
   import MessageBoard from "../../components/messageBoard";
   import FeedList from "../../components/feedList";
   import AuthorBar from "../../components/authorBar";
-  import PreviewList from "../../components/previewList";
   import HotCollections from "../../components/hotCollections";
   
   export default {
@@ -87,7 +84,6 @@
       MessageBoard,
       FeedList,
       AuthorBar,
-      PreviewList,
       HotCollections
     },
     data() {
@@ -139,11 +135,6 @@
   
         if (ENV.app && target.dataset.vid && target.dataset.uid) {
           appPlayVideo(target.dataset.uid, target.dataset.vid);
-        } else if (target.dataset.index) {
-          //app内部点击图片
-          this.clickImg(event);
-        } else if (target.dataset.src && !ENV.app) {
-          this.clickImgOuter(target.dataset.src);
         }
       },
       dateFormate(t) {
@@ -176,6 +167,7 @@
       await this.fetch();
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
+      this.$preview.init('.content');
     }
   };
 </script>

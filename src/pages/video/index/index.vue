@@ -32,13 +32,12 @@
         </section>
         <!-- 阅读 喜欢 -->
         <like-bar class="like-bar" :author="true"></like-bar>
+         <!-- 留言板 -->
+        <message-board></message-board>
         <!-- 热门文章 -->
         <feed-list :subjectList="hotSubjects"></feed-list>
-        <!-- 留言板 -->
-        <message-board></message-board>
         <!-- 底部Bar -->
         <foot-bar></foot-bar>
-        <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
   
       </section>
     </section>
@@ -67,7 +66,6 @@
   import MessageBoard from '../../../components/messageBoard'
   import FeedList from '../../../components/feedList'
   import AuthorBar from '../../../components/authorBar'
-  import PreviewList from '../../../components/previewList'
   
   export default {
     components: {
@@ -79,7 +77,6 @@
       MessageBoard,
       FeedList,
       AuthorBar,
-      PreviewList
     },
     data() {
       return {

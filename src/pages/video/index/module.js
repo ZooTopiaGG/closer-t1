@@ -22,7 +22,7 @@ const actions = {
   }) {
     try {
       // 获取贴子详情
-      let {data} = await fetchContent({
+      let { data } = await fetchContent({
         subjectid: id
       })
       if (data.code != 0) {
@@ -58,6 +58,7 @@ const actions = {
           // 返回在渲染页面之前得结果
           console.log('content:', content)
           commit("SET_CONTENT", content);
+          rootState.content = content;
         }
         commit("SET_RES", data.result);
         rootState.res = data.result;

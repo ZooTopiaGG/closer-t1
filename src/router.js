@@ -20,7 +20,7 @@ const Community = () =>
 
 // 图集
 const Image = () =>
-  import ('@/pages/images/index/index')
+  import ('@/pages/image/index/index')
 
 // jssdk DEMO
 const Jssdk = () =>

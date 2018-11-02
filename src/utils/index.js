@@ -173,12 +173,12 @@ export function makeHtmlContent(html) {
             nH = heightArray[1] * 100 / widthArray[1] + "%";
           }
           minH = nH;
-          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-index="${i+1}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; height: ${nH}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy" data-type="preview" data-src=`);
         } else {
           nW = '100%';
           nH = "auto";
           minH = '28.27vw';
-          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-index="${i+1}" data-src=`);
+          newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-type="preview" data-src=`);
         }
         console.log("srcArray[i]", srcArray[i])
         Store.state.CONTENT_IMGS.push(srcArray[i])
@@ -445,28 +445,28 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
 
 export async function downApp(url) {
   if (url) {
-    if (!isJumpOut()) {
-      if (url.indexOf('?from=group') > -1) {
-        let id = await this.getParam('groupid', url);
-        location.href = `closer://jump/to/group`;
-      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = url;
-      }
-      setTimeout(() => {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      }, 1500)
-      return;
+    // if (!isJumpOut()) {
+    if (url.indexOf('?from=group') > -1) {
+      let id = await this.getParam('groupid', url);
+      location.href = `closer://jump/to/group`;
+    } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+      location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
     } else {
-      if (url.indexOf('?from=group') > -1) {
-        location.href = url
-      } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-      } else {
-        location.href = `${location.protocol}//${location.host}?downurl=${url}`;
-      }
+      location.href = baseUrl.download;
     }
+    // setTimeout(() => {
+    //   location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+    // }, 1500)
+    // return;
+    // } else {
+    //   if (url.indexOf('?from=group') > -1) {
+    //     location.href = url
+    //   } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+    //     location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+    //   } else {
+    //     location.href = `${location.protocol}//${location.host}?downurl=${url}`;
+    //   }
+    // }
   } else {
     location.href = `${location.protocol}//${location.host}`;
   }
@@ -481,11 +481,13 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
       url = `closer://community/${did}`;
-    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1) {
+    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1 || route.path.indexOf("/video") > -1 || route.path.indexOf("/image") > -1) {
       _page = "article";
       url = `closer://feed/${did}`;
       if (store.state.res.int_type === 1) {
         _page = "video";
+      } else if (store.state.res.int_type === 0) {
+        _page = "images";
       } else {
         _page = "article";
       }
