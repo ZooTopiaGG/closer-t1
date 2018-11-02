@@ -22,7 +22,7 @@
             <span class="name">{{res.user.fullname}}</span>
             <span class="date">{{dateFormate(res.long_publish_time)}}</span>
           </div>
-          <section id="draftContent" class="content draft-content" :class="{'hidden-content':ENV.app}" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <section id="draftContent" :class="ENV.app ? 'content draft-content':'content draft-content hidden-content'" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
           <div v-if="!ENV.app&&res.int_category&&res.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
             <div class="folder">
