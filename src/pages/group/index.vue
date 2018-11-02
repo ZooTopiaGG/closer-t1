@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       loading: 2,
-      showDownload: true,
+      showDownload: false,
       msg: '恭喜，您已成功入群'
     }
   },
