@@ -9,14 +9,14 @@
           <!-- 关注bar -->
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
-          <div class="draft-title" v-if="!(ENV.app&&res.int_category&&res.int_category==2)">
+          <div class="draft-title" v-if="ENV.app&&res.int_category&&res.int_category==1||!ENV.app">
             <span class="topic-logo">话题</span> {{ res.title }}
           </div>
-          <div class="join-in" v-if="res.int_category&&res.int_category==2">
+          <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
             <span class="join"><img class="draft-icon"/>参与</span>
             <span class="get-all">查看话题全部内容 ></span>
           </div>
-          <div class="line"></div>
+          <div class="line" v-if="!ENV.app"></div>
           <div class="draft-author" v-if="res.int_category&&res.int_category==2">
             <img class="icon" :src="makeFileUrl(res.user.avatar)" />
             <span class="name">{{res.user.fullname}}</span>
@@ -42,7 +42,7 @@
         <!-- 精华全部 -->
         <hot-collections class="hot-collections" v-if="!ENV.app&&res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
-        <foot-bar  btnText='立即投稿赚取稿费'></foot-bar>
+        <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
         <!-- 预览图片 -->
         <preview-list v-if="!ENV.app" :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
       </div>

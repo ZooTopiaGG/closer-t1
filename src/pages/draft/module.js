@@ -61,7 +61,7 @@ const actions = {
           }
           // 返回在渲染页面之前得结果
           commit("SET_CONTENT", content);
-          rootState.content = res.result;
+          rootState.content = content;
         }
         commit("SET_RES", res.result);
         rootState.res = res.result;
