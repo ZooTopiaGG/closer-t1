@@ -33,7 +33,7 @@
         <span class="title">所属贴近号</span>
         <img class="icon" v-lazy="groupFeedList[0].blogo" />
         <span class="name">{{groupFeedList[0].communityName}}</span>
-        <i class="arrow-right"></i>
+        <i class="arrow-right right"></i>
       </div>
       <div class="split-box"></div>
       <feedlist :subjectList="groupFeedList" :title="groupFeedTitle"></feedlist>
@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       loading: 2,
-      showDownload: false,
+      showDownload: true,
       msg: '恭喜，您已成功入群'
     }
   },
@@ -235,6 +235,7 @@ export default {
     .member-icons {
       display: flex;
       width: 670pr;
+      flex-direction: row;
       .head {
         margin-right: 16pr;
         position: relative;
@@ -268,7 +269,7 @@ export default {
           font-size: 28pr;
           color: #4b4945;
           text-align: center;
-          width: 100%;
+          width: 96%;
           height: 40pr;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -340,8 +341,12 @@ export default {
     background: #f4f4f4;
   }
   .group-info {
+    position: relative;
     margin: 48pr 40pr 48pr 40pr;
     color: #4b4945;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     .title {
       font-weight: 600;
       margin-right: 150pr;
@@ -353,7 +358,19 @@ export default {
       margin-right: 20pr;
     }
     .name {
+      display: inline-block;
       font-size: 28pr;
+      max-width: 180pr;
+      max-height: 40pr;
+      margin-right: 10pr;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .right {
+      position: absolute;
+      top: 4pr;
+      right: 0;
     }
   }
   &-ft {
