@@ -66,6 +66,7 @@
     down_statistics,
     dateFromNow
   } from '../utils'
+  import baseUrl from '../config'
   export default {
     name: "feedList",
     data() {
@@ -95,7 +96,7 @@
         return makeFileUrl(url, type, size);
       },
       downloadApp(e, str, id) {
-        let redirectUrl = `closer://feed/${id}`;
+        let redirectUrl = `${baseUrl.download}&link=closer://feed/${id}`;
         down_statistics({
           "store": this.$store,
           "route": this.$route,
