@@ -95,7 +95,8 @@
       }),
       ...mapState(['CONTENT_IMGS']),
       cover() {
-        return (this.res.bigcover || this.res.cover)
+        if (this.ENV.app && !this.res.bigcover) return false;
+        return (this.res.bigcover || this.res.cover);
       }
     },
     methods: {
@@ -139,8 +140,8 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        // } else if (target.dataset.index ) { //app内部点击图片
-        //   this.clickImg(event);
+        } else if (target.dataset.index && ENV.app) { //app内部点击图片
+          this.clickImg(event);
         // } else if (target.dataset.src && !ENV.app) {
         //   this.clickImgOuter(target.dataset.src)
         }
@@ -165,7 +166,7 @@
       await this.fetch();
       this.$store.dispatch('wx_config');
       this.getHotSubjects()
-      this.$preview.init('.article-content');
+      !this.ENV.app && this.$preview.init('.article-content');
     }
   };
 </script>
