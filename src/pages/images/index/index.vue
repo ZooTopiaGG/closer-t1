@@ -125,7 +125,6 @@
         'getUserInfoWithWx'
       ]),
       async fetch() {
-        console.log('fetch')
         await this.fetch_content(this.$route.params)
       },
       stringToJson(str) {
