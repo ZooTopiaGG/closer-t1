@@ -255,7 +255,7 @@
             display: -webkit-box;
             // 超出省略号
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             overflow: hidden;
           }
           .collections-title2 {
