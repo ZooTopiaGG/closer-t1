@@ -45,14 +45,12 @@ export default {
           if (data.result.content) {
             let content = JSON.parse(data.result.content);
             if (data.result.int_type === 2) {
-
               let _html = makeHtmlContent(
                 content.html
               );
               if (_html) {
                 content.html = _html;
               }
-
               let contentImgs = [];
               let imgIndex = 0;
               if (content.discuss) {

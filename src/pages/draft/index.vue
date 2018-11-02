@@ -16,7 +16,7 @@
             <span class="join"><img class="draft-icon"/>参与</span>
             <span class="get-all">查看话题全部内容 ></span>
           </div>
-          <div class="line" v-if="!(ENV.app&&res.int_category&&res.int_category==2)"></div>
+          <div class="line" v-if="!ENV.app"></div>
           <div class="draft-author" v-if="res.int_category&&res.int_category==2">
             <img class="icon" :src="makeFileUrl(res.user.avatar)" />
             <span class="name">{{res.user.fullname}}</span>

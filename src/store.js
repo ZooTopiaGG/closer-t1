@@ -355,7 +355,7 @@ export default new Vuex.Store({
             }
           } else if (location.href.indexOf("/draft") > -1) {
             let content = state.content;
-            console.log("征稿分享", state.res.int_category)
+            console.log("征稿分享", content.summary)
             title = state.res.title;
             imgUrl = makeFileUrl(state.res.cover) ?
               makeFileUrl(state.res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
@@ -367,8 +367,7 @@ export default new Vuex.Store({
           } else {
             let content = state.content;
             console.log("content", state.content)
-
-            // 分享长图文
+              // 分享长图文
             if (state.res.int_type === 0) {
               // 图集
               if (content.text) {
