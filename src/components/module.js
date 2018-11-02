@@ -54,7 +54,7 @@ const actions = {
     try {
       let { data } = await service.subscription(payload);
       console.log('focus:',data)
-      if (data.code === 0 && data.result) {
+      if (data.code === 0) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
             root: true
