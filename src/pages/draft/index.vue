@@ -12,7 +12,7 @@
           <div class="draft-title" v-if="!(ENV.app&&res.int_category&&res.int_category==2)">
             <span class="topic-logo">话题</span> {{ res.title }}
           </div>
-          <div class="join-in" v-if="res.int_category&&res.int_category==2">
+          <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
             <span class="join"><img class="draft-icon"/>参与</span>
             <span class="get-all">查看话题全部内容 ></span>
           </div>
