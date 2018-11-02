@@ -427,9 +427,9 @@ export default new Vuex.Store({
                 state.res.user.fullname.substring(0, 6)} 出品`;
                 desc = `${desc}\n${author}`;
               }
-              imgUrl = makeFileUrl(state.res.cover) ?
-                makeFileUrl(state.res.cover) :
-                makeFileUrl(state.res.bigcover);
+              imgUrl = makeFileUrl(state.res.bigcover) ?
+                makeFileUrl(state.res.bigcover) :
+                makeFileUrl(state.res.cover);
             }
           }
           let shareConfig = {
