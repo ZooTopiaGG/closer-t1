@@ -10,7 +10,7 @@
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
           <div class="draft-title" v-if="ENV.app&&res.int_category&&res.int_category==1||!ENV.app">
-            <span class="topic-logo">话题</span> {{ res.title }}
+            <span class="topic-logo">话题</span> {{ res.releaseSubjectTitle }}
           </div>
           <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
             <span class="join" @click="join"><img class="draft-icon"/>参与</span>

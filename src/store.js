@@ -373,7 +373,8 @@ export default new Vuex.Store({
               desc = `${desc}\n${author}`;
             }
           } else {
-            let content = state.content;
+            let {content} = state;
+            let {authors} = state.res;
             console.log("content", state.content)
               // 分享长图文
             if (state.res.int_type === 0) {
@@ -403,13 +404,13 @@ export default new Vuex.Store({
               }
               if (content.videos && content.videos.length > 0) {
                 let d = content.videos.map(x => {
-                  x = "[视频]";
+                  x = `[视频]\t贴近 @${authors} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.videos[0].imageUrl);
               } else {
-                desc = "[视频]";
+                desc = `[视频]\t贴近 @${authors} 出品`;
                 imgUrl = "";
               }
             } else {

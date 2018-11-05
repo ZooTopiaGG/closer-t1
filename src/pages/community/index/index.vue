@@ -3,7 +3,7 @@
     <download-bar ref="downloadbar"></download-bar>
     <div class="column-wrap box box-tb box-center-center">
       <div class="cln-icon">
-        <img :src="defaultImg" v-lazy="communityShow.blogo">
+        <img :src="defaultImg" v-lazy="communityLogo">
       </div>
       <div class="cln-name">{{communityShow.name}}</div>
       <div class="cln-text" v-if="communityShow.description">{{communityShow.description}}</div>
@@ -88,7 +88,9 @@
       }
       this.$store.dispatch('wx_config');
       this.getGroupList(groupPrm)
-      this.getHotSubjects()
+      this.getCommunitySubjects({
+        communityid: this.communityid
+      })
       console.log(this.communityShow)
     },
     computed: {
@@ -103,7 +105,10 @@
       ...mapState('common', {
         authSuccess: state => state.authSuccess,
         hotSubjects: state => state.hotSubjects,
-      })
+      }),
+      communityLogo() {
+        return this.communityShow.slogo || this.communityShow.blogo
+      }
     },
     methods: {
       ...mapMutations('community', [
@@ -117,7 +122,7 @@
       ]),
       ...mapActions('common', [
         'getUserInfoWithWx',
-        'getHotSubjects'
+        'getCommunitySubjects'
       ]),
       downApp() {
         downloadApp()
@@ -148,12 +153,13 @@
       padding-bottom: 60pr;
       background: @bgColor;
       .cln-icon {
-        width: 142pr;
-        height: 60pr;
+        width: 120pr;
+        height: 120pr;
         border-radius: 10pr;
         margin-top: 60pr;
         >img {
           width: 100%;
+          height: 100%;
           overflow: hidden;
           border-radius: 10pr;
         }
@@ -222,6 +228,8 @@
           border-radius: 10pr;
           >img {
             width: 100%;
+            height: 100%;
+            border-radius: 10pr;
             overflow: hidden;
           }
         }

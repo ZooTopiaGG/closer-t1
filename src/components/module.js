@@ -120,6 +120,26 @@ const actions = {
       console.log(e);
     }
   },
+  async getCommunitySubjects({
+    commit
+  }, params) {
+    try {
+      let data = await service.get_community_subjects(params)
+      if (data.code === 0) {
+        data.result.data.map(x => {
+          if (x.content) {
+            x.content = JSON.parse(x.content);
+          }
+          return x;
+        })
+        if (data.result.data) {
+          commit("SET_HOT_SUBJECTS", data.result.data);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  },
   async getWxAuth({
     commit,
     state

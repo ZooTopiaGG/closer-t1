@@ -20,6 +20,9 @@ export default {
   get_hot_subjects(payload) {
     return Axios.post(api.command.hot_subjects, payload).then(res => res.data);
   },
+  get_community_subjects(payload) {
+    return Axios.post(api.community.community_subject_list_index, payload).then(res => res.data);
+  },
   getCode(payload) {
     return Axios.post(api.admin.get_code_by_phone, payload);
   },
