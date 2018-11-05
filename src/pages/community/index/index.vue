@@ -88,7 +88,9 @@
       }
       this.$store.dispatch('wx_config');
       this.getGroupList(groupPrm)
-      this.getHotSubjects()
+      this.getCommunitySubjects({
+        communityid: this.communityid
+      })
       console.log(this.communityShow)
     },
     computed: {
@@ -117,7 +119,7 @@
       ]),
       ...mapActions('common', [
         'getUserInfoWithWx',
-        'getHotSubjects'
+        'getCommunitySubjects'
       ]),
       downApp() {
         downloadApp()
@@ -148,12 +150,13 @@
       padding-bottom: 60pr;
       background: @bgColor;
       .cln-icon {
-        width: 142pr;
-        height: 60pr;
+        width: 120pr;
+        height: 120pr;
         border-radius: 10pr;
         margin-top: 60pr;
         >img {
           width: 100%;
+          height: 100%;
           overflow: hidden;
           border-radius: 10pr;
         }
@@ -222,6 +225,8 @@
           border-radius: 10pr;
           >img {
             width: 100%;
+            height: 100%;
+            border-radius: 10pr;
             overflow: hidden;
           }
         }

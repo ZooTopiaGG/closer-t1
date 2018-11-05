@@ -37,7 +37,7 @@
             <div class="feed-title" v-else>{{item.content.text}}</div>
             <div v-if="item.int_type===2&&item.cover" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover)">
             </div>
-            <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover)">
+            <div v-else-if="item.int_type===0&&item.content.images&&item.content.images.length>0" class="feed-cover" v-lazy:background-image="fileUrlParse(item.cover || item.content.images[0].link)">
               <div class="image-num">{{item.content.images.length}}图</div>
             </div>
             <div v-else-if="item.int_type===1" class="feed-cover" v-lazy:background-image="item.content.videos[0].imageUrl">
@@ -85,7 +85,6 @@
       }
     },
     computed: {
-  
     },
   
     methods: {
@@ -233,6 +232,9 @@
               position: absolute;
               color: #FFFFFF;
               font-size: 20pr;
+              padding: 4pr 12pr;
+              border-radius: 10pr;
+              background: rgba(0,0,0,.5);
               bottom: 8pr;
               right: 8pr;
             }
