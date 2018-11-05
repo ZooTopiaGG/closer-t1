@@ -373,7 +373,7 @@ export default new Vuex.Store({
               desc = `${desc}\n${author}`;
             }
           } else {
-            let {content, authors} = state.content;
+            let {content, authors} = state;
             console.log("content", state.content)
               // 分享长图文
             if (state.res.int_type === 0) {
