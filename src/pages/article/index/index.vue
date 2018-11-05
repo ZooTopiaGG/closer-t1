@@ -92,7 +92,7 @@
       }),
       ...mapState(['CONTENT_IMGS']),
       cover() {
-        if (this.ENV.app && !this.res.bigcover) return false;
+        if (!this.res.bigcover) return false;
         return (this.res.bigcover || this.res.cover);
       }
     },
