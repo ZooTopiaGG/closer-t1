@@ -3,7 +3,7 @@
     <download-bar ref="downloadbar"></download-bar>
     <div class="column-wrap box box-tb box-center-center">
       <div class="cln-icon">
-        <img :src="defaultImg" v-lazy="communityShow.blogo">
+        <img :src="defaultImg" v-lazy="communityLogo">
       </div>
       <div class="cln-name">{{communityShow.name}}</div>
       <div class="cln-text" v-if="communityShow.description">{{communityShow.description}}</div>
@@ -105,7 +105,10 @@
       ...mapState('common', {
         authSuccess: state => state.authSuccess,
         hotSubjects: state => state.hotSubjects,
-      })
+      }),
+      communityLogo() {
+        return this.communityShow.slogo || this.communityShow.blogo
+      }
     },
     methods: {
       ...mapMutations('community', [
