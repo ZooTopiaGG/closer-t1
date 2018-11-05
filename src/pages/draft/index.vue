@@ -14,7 +14,7 @@
           </div>
           <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
             <span class="join"><img class="draft-icon"/>参与</span>
-            <span class="get-all">查看话题全部内容 ></span>
+            <span class="get-all" @click="toAll">查看话题全部内容 ></span>
           </div>
           <div class="line" v-if="!ENV.app"></div>
           <div class="draft-author" v-if="res.int_category&&res.int_category==2">
@@ -22,7 +22,7 @@
             <span class="name">{{res.user.fullname}}</span>
             <span class="date">{{dateFormate(res.long_publish_time)}}</span>
           </div>
-          <section id="draftContent" :class="ENV.app ? 'content draft-content':'content draft-content hidden-content'" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <section id="draftContent" :class="!ENV.app&&res.int_category&&res.int_category==1 ? 'content draft-content hidden-content':'content draft-content'" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
           <div v-if="!ENV.app&&res.int_category&&res.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
             <div class="folder">
@@ -151,6 +151,13 @@
         document.getElementById("clickMore").style.display = "none";
         document.getElementById("draftContent").className =
           "content draft-content";
+      },
+      toAll() {
+        if (this.$route.query.fromid) {
+          this.$router.push({
+            path: `/draft/${this.$route.query.fromid}`
+          })
+        }
       }
     },
     async mounted() {
@@ -168,6 +175,11 @@
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
       this.$preview.init('.content');
+    },
+    watch: {
+      '$route' (to, from) {
+        this.$router.go(0);
+      }
     }
   };
 </script>
