@@ -7,7 +7,7 @@
     <div class="btn-box">
       <div type="primary" @click="toMessage">留 言</div>
     </div>
-    <login-pop ref="login"></login-pop>
+    <login-pop ref="login" v-if="showLogin"></login-pop>
     <message-success ref="messageSuccess"></message-success>
   </div>
 </template>
@@ -101,11 +101,13 @@
             }
             this.addReplyData(params)
           } else {
-            this.$refs.login.open()
+            this.showLogin = true
+            // this.$refs.login.open()
           }
         } else {
           console.log('not login')
-          this.$refs.login.open()
+          this.showLogin = true
+          // this.$refs.login.open()
         }
       }
     }
