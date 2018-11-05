@@ -2,7 +2,7 @@
   <section class="focus-bar" v-if="!ENV.app">
     <section class="focus-wrap">
       <section class="community" :class="showStyle" @click="toCommunity">
-        <img class="community-logo" :src="defaultImg" v-lazy="this.$store.state.res.blogo">
+        <img class="community-logo" :src="defaultImg" v-lazy="communityLogo">
         <div class="community-info">
           <p class="community-name ellipsis">{{ this.$store.state.res.communityName || this.$store.state.res.name }}</p>
           <p v-if="showTime" class="community-time">{{dateFromNow}}</p>
@@ -33,6 +33,9 @@ export default {
   },
   computed: {
     ...mapState(['res']),
+    communityLogo() {
+      return this.res.slogo || this.res.blogo
+    },
     showStyle() {
       return `community-${this.showType}`
     },
