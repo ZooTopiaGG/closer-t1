@@ -446,15 +446,16 @@ export function mergeJsonObject(jsonbject1, jsonbject2) {
 
 export async function downApp(url) {
   if (url) {
+    location.href = url;
     // if (!isJumpOut()) {
-    if (url.indexOf('?from=group') > -1) {
-      let id = await this.getParam('groupid', url);
-      location.href = `closer://jump/to/group`;
-    } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
-      location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
-    } else {
-      location.href = baseUrl.download;
-    }
+    // if (url.indexOf('?from=group') > -1) {
+    //   let id = await this.getParam('groupid', url);
+    //   location.href = `closer://jump/to/group`;
+    // } else if (url.indexOf('pkgname=com.ums.closer') > -1) {
+    //   location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
+    // } else {
+    //   location.href = baseUrl.download;
+    // }
     // setTimeout(() => {
     //   location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.ums.closer';
     // }, 1500)
@@ -469,7 +470,7 @@ export async function downApp(url) {
     //   }
     // }
   } else {
-    location.href = `${location.protocol}//${location.host}`;
+    location.href = baseUrl.download;
   }
 }
 
