@@ -97,6 +97,7 @@
       },
       downloadApp(e, str, id) {
         let redirectUrl = `${baseUrl.download}&link=closer://feed/${id}`;
+        console.log('redirectUrl',redirectUrl);
         down_statistics({
           "store": this.$store,
           "route": this.$route,

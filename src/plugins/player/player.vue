@@ -162,7 +162,7 @@
   
       handleEnded() {
         console.log('Video:handleEnded')
-        this.controlsDisplay = true
+        this.showControls();
         clearTimeout(this.controlsTimer)
       },
   
@@ -178,14 +178,14 @@
         console.log('Video:handlePlay')
         this.hasPlay = true;
         this.playing = true;
-        this.controlsDisplay = false
+        this.hideControls(500);
       },
   
       handlePause() {
         console.log('Video:handlePause')
         this.loading = false;
         this.playing = false;
-        this.controlsDisplay = true
+        this.showControls();
         clearTimeout(this.controlsTimer)
       },
       handleProgress() {
@@ -249,14 +249,16 @@
   
       togglePlay() {
         console.log('Video:togglePlay')
+        let video = this.$refs.video;
         if (this.$refs.video.paused) {
-          this.$refs.video.play();
+          video.play();
         } else {
-          this.$refs.video.pause();
+          video.pause();
         }
       },
   
       toggleMute(e) {
+        console.log('Video:toggleMute')
         if (this.muted) {
           this.$refs.video.muted = false;
         } else {
@@ -265,26 +267,31 @@
         this.muted = !this.muted;
       },
       handleControlsClick(e) {
+        console.log('Video:handleControlsClick')
         if (!this.controlsDisplay) {
-          this.controlsDisplay = true
-          this.controlsTimer = setTimeout(() => {
-            this.controlsDisplay = false
-          }, 2000)
+          this.showControls();
+          this.hideControls();
         } else if (this.playing) {
           clearTimeout(this.controlsTimer)
-          this.controlsTimer = setTimeout(() => {
-            this.controlsDisplay = false
-          }, 2000)
+          this.hideControls();
         }
       },
       handleFullScreen(e) {
         console.log('Video:handleFullScreen')
         let video = this.$refs.video;
-        let fullScreenFun = video.webkitRequestFullScreen || video.webkitRequestFullScreen;
+        let fullScreenFun = video.webkitEnterFullscreen || video.webkitRequestFullScreen;
         fullScreenFun && fullScreenFun.call(video)
       },
       secondsFormat(time) {
         return secondsFormat(time)
+      },
+      showControls() {
+        this.controlsDisplay = true
+      },
+      hideControls(time = 2e3) {
+        this.controlsTimer = setTimeout(() => {
+          this.controlsDisplay = false
+        }, time)
       }
     },
     mounted() {
