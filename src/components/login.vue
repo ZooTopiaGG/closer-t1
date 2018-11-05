@@ -1,6 +1,6 @@
 <template>
-<mt-popup v-model="visible2" class="appuse-pop" :closeOnClickModal="closeOnClickModal">
-    <div class="box box-tb box-center-center">
+  <div v-if="visible2" class="appuse-pop box box-tb box-center-center" :closeOnClickModal="closeOnClickModal">
+    <div class="wrapper box box-tb box-center-center">
       <div class="close-icon" @click="close"></div>
       <div class="pop-header">
         <div class="text" v-if="isFrom == 'messagelist'">登录后继续操作</div>
@@ -23,8 +23,7 @@
         <div class="confirm-btn" @click="userLogin({phone: phoneNum, token: code})">登录/注册</div>
       </div>
     </div>
-  </mt-popup>
-  
+  </div>
 </template>
 
 <script>
@@ -75,7 +74,7 @@
       }
     },
     mounted() {
-      
+  
     },
     computed: {
       ...mapState("common", {
@@ -106,7 +105,7 @@
       userLogin() {
         let phoneReg = /^(0|86|17951)?(1[23456789][0-9])[0-9]{8}$/
         let codeReg = /^\d{6}$/
-        if(!this.phoneNum || !phoneReg.test(this.phoneNum)) {
+        if (!this.phoneNum || !phoneReg.test(this.phoneNum)) {
           Toast({
             message: '请输入正确的手机号',
             className: 'toast'
@@ -115,7 +114,7 @@
         }
         console.log(this.code)
         console.log(codeReg.test(this.code))
-        if(!this.code || !codeReg.test(this.code)) {
+        if (!this.code || !codeReg.test(this.code)) {
           Toast({
             message: '请输入正确的验证码',
             className: 'toast'
@@ -174,87 +173,95 @@
 
 <style lang="less" scoped>
   .appuse-pop {
-    width: 654pr;
-    border-radius: 10pr;
-    background: #fff;
-    text-align: center;
-    padding: 40pr;
-    color: #4b4945;
-    .close-icon {
-      position: absolute;
-      right: 20pr;
-      top: 20pr;
-      width: 28pr;
-      height: 28pr;
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 2px;
-        height: 28pr;
-        background-color: #9b9b9b;
-      }
-      &::before {
-        transform: translate(-50%, -50%) rotate(-45deg);
-      }
-      &::after {
-        transform: translate(-50%, -50%) rotate(45deg);
-      }
-    }
-    .pop-header {
-      margin-top: 20pr;
-      font-size: 36pr;
-      line-height: 40pr;
-    }
-    .pop-content {
-      margin-top: 40pr;
-      width: 100%;
-      >div {
-        border-bottom: 1px solid #F3F3F3;
-        height: 80pr;
-        line-height: 90pr;
-        >input {
-          outline: none;
-          font-size: 32pr;
-        }
-        .phone {
-          width: 100%;
-        }
-      }
-      .sms-code {
-        position: relative;
-        margin-top: 20pr;
-        >span {
-          position: absolute;
-          right: 0;
-          display: inline-block;
-          font-size: 24pr;
-          height: 52pr;
-          line-height: 52pr;
-          padding: 0 16pr;
-          margin-top: 15pr;
-          border: 1px solid #D8D8D8;
-          border-radius: 10pr;
-        }
-      }
-      .code {
-        width: 60%;
-        margin-left: -204pr;
-      }
-    }
-    .pop-footer {
-      margin-top: 60pr;
-      font-size: 28pr;
-      line-height: 40pr;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .3);
+    .wrapper {
+      width: 654pr;
+      border-radius: 10pr;
+      background: #fff;
+      text-align: center;
+      padding: 40pr;
       color: #4b4945;
-      width: 100%;
-      .confirm-btn {
+      .close-icon {
+        position: absolute;
+        right: 20pr;
+        top: 20pr;
+        width: 28pr;
+        height: 28pr;
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 2px;
+          height: 28pr;
+          background-color: #9b9b9b;
+        }
+        &::before {
+          transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        &::after {
+          transform: translate(-50%, -50%) rotate(45deg);
+        }
+      }
+      .pop-header {
+        margin-top: 20pr;
+        font-size: 36pr;
+        line-height: 40pr;
+      }
+      .pop-content {
+        margin-top: 40pr;
         width: 100%;
-        background: #fddb00;
-        border-radius: 10pr;
-        padding: 18pr 0;
+        >div {
+          border-bottom: 1px solid #F3F3F3;
+          height: 80pr;
+          line-height: 90pr;
+          >input {
+            outline: none;
+            font-size: 32pr;
+          }
+          .phone {
+            width: 100%;
+          }
+        }
+        .sms-code {
+          position: relative;
+          margin-top: 20pr;
+          >span {
+            position: absolute;
+            right: 0;
+            display: inline-block;
+            font-size: 24pr;
+            height: 52pr;
+            line-height: 52pr;
+            padding: 0 16pr;
+            margin-top: 15pr;
+            border: 1px solid #D8D8D8;
+            border-radius: 10pr;
+          }
+        }
+        .code {
+          width: 60%;
+          margin-left: -204pr;
+        }
+      }
+      .pop-footer {
+        margin-top: 60pr;
+        font-size: 28pr;
+        line-height: 40pr;
+        color: #4b4945;
+        width: 100%;
+        .confirm-btn {
+          width: 100%;
+          background: #fddb00;
+          border-radius: 10pr;
+          padding: 18pr 0;
+        }
       }
     }
   }
