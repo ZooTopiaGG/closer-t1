@@ -40,7 +40,7 @@
       }
     },
     computed: {
-      ...mapState('article', [
+      ...mapState( [
         'res'
       ]),
       ...mapState('common', ['incr_view']),
@@ -62,6 +62,7 @@
         if (this.$refs["like"].getAttribute("status") === "false") {
           this.$refs["like"].innerText = parseInt(t) + 1;
         }
+        console.log('2', this.$refs["like"].innerText)
         this.$refs["like"].setAttribute("status", "true");
         if (e.target.nodeName === "IMG" || e.target.nodeName === "SPAN" || e.target.nodeName === "DIV") {
           this.$refs["sup"].src =
