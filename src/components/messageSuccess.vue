@@ -9,7 +9,7 @@
         </div>
         <div class="pop-footer box box-lr">
           <div class="wait-btn" @click="goBack">再等等</div>
-          <div class="confirm-btn" @click="downApp">好的</div>
+          <div class="confirm-btn" @click="downloadApp($event, '')">好的</div>
         </div>
       </div>
     </div>
@@ -28,8 +28,9 @@
     Toast
   } from "mint-ui";
   import {
-    downloadApp
+    down_statistics
   } from '../utils'
+  import baseUrl from '../config'
   Vue.component(Popup.name, Popup);
   
   export default {
@@ -73,8 +74,27 @@
       close() {
         this.hide()
       },
-      downApp() {
-        downloadApp()
+      downloadApp(e, str) {
+        let sid = this.$route.params.sid
+        let id = this.$route.params.id
+        let redirectUrl
+        if (sid && typeof(id) == 'undefined') {
+          console.log(123)
+          redirectUrl = `${baseUrl.download}&link=closer://feed/${sid}`;
+        }
+        if (sid && id) {
+          redirectUrl = `${baseUrl.download}&link=closer://feed/${sid}/${id}`;
+        }
+        console.log('sid===', sid)
+        console.log('id====', id)
+        console.log('redirectUrl', redirectUrl);
+        down_statistics({
+          "store": this.$store,
+          "route": this.$route,
+          "str": str,
+          "defaultStr": "message_success",
+          "redirectUrl": redirectUrl
+        });
       },
       goBack() {
         let subjectid = this.$route.params.sid
