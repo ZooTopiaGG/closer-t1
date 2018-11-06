@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="draft" v-if="exist">
+    <div class="draft" v-if="this.$store.state.exist">
       <!-- 下载条 -->
       <download-bar></download-bar>
       <!-- 帖子内容 -->
