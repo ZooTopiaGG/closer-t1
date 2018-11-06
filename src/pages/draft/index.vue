@@ -65,7 +65,7 @@
     dateFromNow,
     downloadApp
   } from "../../utils";
-  import Notfound from "../../components/error/notfound";
+  import Notfound from "../../components/notfound";
   import DownloadBar from "../../components/downloadBar";
   import FootBar from "../../components/footBar";
   import FocusBar from "../../components/focusBar";

@@ -366,16 +366,16 @@ export default new Vuex.Store({
               }
             } else if (state.res.int_category == 2) {
               title = state.res.releaseSubjectTitle;
-              desc = content.summary ? content.summary.substring(0, 24) : "分享文章";
+              desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
             }
             if (state.res.user.attributes.roster.name || state.res.user.fullname) {
-              author = `贴近 @${state.res.user.attributes.roster.name ||
+              author = `贴近 @${state.res.user.attributes.roster.name.substring(0, 6) ||
               state.res.user.fullname.substring(0, 6)} 出品`;
               desc = `${desc}\n${author}`;
             }
           } else {
-            let {content} = state;
-            let {authors} = state.res;
+            let content = state.content;
+            let { authors } = state.res;
             console.log("content", state.content)
               // 分享长图文
             if (state.res.int_type === 0) {
@@ -387,13 +387,13 @@ export default new Vuex.Store({
               }
               if (content.images && content.images.length > 0) {
                 let d = content.images.map(x => {
-                  x = "[图片]";
+                  x = `[图片]\n贴近 @${authors} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.images[0].link);
               } else {
-                desc = "[图片]";
+                desc = `[图片]\n贴近 @${authors} 出品`;
                 imgUrl = "";
               }
             } else if (state.res.int_type === 1) {
@@ -405,13 +405,13 @@ export default new Vuex.Store({
               }
               if (content.videos && content.videos.length > 0) {
                 let d = content.videos.map(x => {
-                  x = `[视频]</br>\n贴近 @${authors} 出品`;
+                  x = `[视频]\n贴近 @${authors} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.videos[0].imageUrl);
               } else {
-                desc = `[视频]</br>\n贴近 @${authors} 出品`;
+                desc = `[视频]\n贴近 @${authors} 出品`;
                 imgUrl = "";
               }
             } else {
@@ -423,9 +423,9 @@ export default new Vuex.Store({
               } else {
                 title = content.summary;
               }
-              desc = content.summary ? content.summary.substring(0, 24) : "分享文章";
+              desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
               if (state.res.user.attributes.roster.name || state.res.user.fullname) {
-                author = `贴近 @${state.res.user.attributes.roster.name ||
+                author = `贴近 @${state.res.user.attributes.roster.name.substring(0, 6) ||
                 state.res.user.fullname.substring(0, 6)} 出品`;
                 desc = `${desc}\n${author}`;
               }
