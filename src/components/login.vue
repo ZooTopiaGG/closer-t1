@@ -57,7 +57,7 @@
     },
     data() {
       return {
-        phoneNum: '12000000012',
+        phoneNum: '',
         code: '',
         captchaIns: '',
         visible2: false
