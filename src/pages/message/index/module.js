@@ -16,7 +16,7 @@ export default {
       state.visible = false
     },
     updateData(state, payload) {
-      console.log(1,payload)
+      console.log(1, payload)
       state.replyData = payload
     }
   },
@@ -34,7 +34,7 @@ export default {
         Toast('网络开小差啦~')
       })
       Indicator.close()
-      if(typeof(data.code) != undefined && data.code == 0) {
+      if (typeof(data.code) != undefined && data.code == 0) {
         commit({
           type: 'updateData',
           data
@@ -43,24 +43,6 @@ export default {
           type: 'show'
         })
         console.log('state.show:', state.visible)
-      } else {
-        data.result && Toast(data.result)
-      }
-    },
-
-    async getAdCookie({ rootState }, payload) {
-      let { data } =    await getAdcookie(payload).catch(err => {
-        Toast('网络开小差啦~')
-      })
-      if(typeof(data.code) != undefined && data.code == 0) {
-        console.log(1, data)
-        if (data.result) {
-          let result = data.result;
-          if (result.udid) {
-              Cookies.set("uid", result.udid, { expires: 30 })
-          }
-      }
-      return null;
       } else {
         data.result && Toast(data.result)
       }

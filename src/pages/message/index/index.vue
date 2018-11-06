@@ -38,13 +38,6 @@
     },
     created() {
       document.title = '贴近 - TieJin.cn'
-      if (Cookies.get("udid")) {
-  
-      } else {
-        this.getAdCookie({
-          webUdid: true
-        })
-      }
     },
     computed: {
       ...mapState('article', [
@@ -71,8 +64,7 @@
     },
     methods: {
       ...mapActions("message", [
-        "addReplyData",
-        "getAdCookie"
+        "addReplyData"
       ]),
       toMessage() {
         if (this.textarea) {

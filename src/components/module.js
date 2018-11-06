@@ -58,7 +58,7 @@ const actions = {
     let self = this
     try {
       let data = await service.subscription(payload);
-      console.log('focus:',data)
+      console.log('focus:', data)
       if (data.code === 0) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
@@ -245,12 +245,10 @@ const actions = {
       Toast("请输入验证码")
       return;
     }
-    if (Cookies.get("uid")) {
-      payload['udid'] = Cookies.get("uid");
+    if (Cookies.get("h5cookies")) {
+      payload['udid'] = Cookies.get("h5cookies");
     }
-    if (Cookies.get("aid")) {
-      payload['adid'] = Cookies.get("aid");
-    }
+    adid: Cookie.get('h5Adid') || 'closer-share'
     payload['protocol'] = 'WEB_SOCKET';
     Indicator.open({
       text: '加载中...',
