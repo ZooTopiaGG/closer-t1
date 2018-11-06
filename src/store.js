@@ -355,16 +355,17 @@ export default new Vuex.Store({
             }
           } else if (location.href.indexOf("/draft") > -1) {
             let content = state.content;
-            console.log("征稿分享", content.summary)
-            title = state.res.title;
+            console.log("征稿分享", state.res)
             imgUrl = makeFileUrl(state.res.cover) ?
               makeFileUrl(state.res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
             if (state.res.int_category == 1) {
+              title = state.res.title;
               desc = `贴近号： ${state.res.communityName.substring(0,10)}`
               if (state.res.collectionTotalCount > 0) {
                 desc += `\n ${state.res.collectionTotalCount}参与`;
               }
             } else if (state.res.int_category == 2) {
+              title = state.res.releaseSubjectTitle;
               desc = content.summary ? content.summary.substring(0, 24) : "分享文章";
             }
             if (state.res.user.attributes.roster.name || state.res.user.fullname) {
