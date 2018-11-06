@@ -8,8 +8,8 @@
     </div>
     <div class="todown" v-else>
       <div class="todown-top">
-        <img class="todown-top-left" src="../../assets/images/tiejin.png">
-        <img class="todown-top-right" src="../../assets/images/open_browser.png" >
+        <img class="todown-top-left" src="../assets/images/tiejin.png">
+        <img class="todown-top-right" src="../assets/images/open_browser.png" >
       </div>
       <div class="todown-body">
         <div>根据国家法律规定</div>
@@ -19,7 +19,7 @@
         <span>立即下载</span>
       </div>
       <div >
-        <img src="../../assets/images/illustrations.png" class="todown-bottom" />
+        <img src="../assets/images/illustrations.png" class="todown-bottom" />
       </div>
     </div>
   </div>
@@ -107,7 +107,7 @@
   .not-found {
     text-align: center;
     .delete-icon {
-      background: url("../../assets/images/not_found_icon.png");
+      background: url("../assets/images/not_found_icon.png");
       background-size: cover;
       width: 100pr;
       height: 100pr;

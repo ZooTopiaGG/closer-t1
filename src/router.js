@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+// Feed
+const Feed = () => 
+  import ('@/pages/feed/index')
 
 //神议论
 const Comment = () =>
@@ -42,13 +45,9 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [{
-      path: '/article/:id',
-      name: 'article',
-      component: Article,
-    }, {
-      path: '/comment/:id',
-      name: 'comment',
-      component: Comment,
+      path: '/feed/:id',
+      name: 'feed',
+      component: Feed,
     }, {
       path: "/jssdk",
       name: 'jssdk',
@@ -67,20 +66,6 @@ const router = new Router({
       path: "/community/:id",
       name: 'community',
       component: Community,
-    },
-    {
-      path: '/draft/:id',
-      name: 'draft',
-      component: Draft
-    }, {
-      path: "/video/:id",
-      name: 'video',
-      component: Video
-    },
-    {
-      path: "/image/:id",
-      name: 'image',
-      component: Image,
     }
   ]
 })
@@ -112,42 +97,44 @@ router.beforeEach(({
    *       5 - 官方普通(栏目运营人员发出的)
    */
   console.log(pathName[0])
-  switch (pathName[0]) {
-    case 'feed':
-      if (type == '2') {
-        if (category == '3') {
-          // 神议论
-          router.replace({
-            path: path.replace("feed", "comment")
-          })
-        } else if (category == "1" || category == "2") { //征稿1  投稿2 
-          router.replace({
-            path: path.replace("feed", "draft"),
-            query: query
-          })
-        } else {
-          router.replace({
-            path: path.replace("feed", "article")
-          })
-        }
-      } else if (type == '1') {
-        // 视频
-        router.replace({
-          path: path.replace("feed", "video")
-        })
-      } else if (type == '0') {
-        // 图集
-        router.replace({
-          path: path.replace("feed", "image")
-        })
-      } else {
-        next();
-      }
-      break;
-    default:
-      next();
-      break;
-  }
+  // switch (pathName[0]) {
+  //   case 'feed':
+  //     if (type == '2') {
+  //       if (category == '3') {
+  //         // 神议论
+  //         router.replace({
+  //           path: path.replace("feed", "comment")
+  //         })
+  //       } else if (category == "1" || category == "2") { //征稿1  投稿2 
+  //         router.replace({
+  //           path: path.replace("feed", "draft"),
+  //           query: query
+  //         })
+  //       } else {
+  //         router.replace({
+  //           path: path.replace("feed", "article")
+  //         })
+  //       }
+  //     } else if (type == '1') {
+  //       // 视频
+  //       router.replace({
+  //         path: path.replace("feed", "video")
+  //       })
+  //     } else if (type == '0') {
+  //       // 图集
+  //       router.replace({
+  //         path: path.replace("feed", "image")
+  //       })
+  //     } else {
+  //       next();
+  //     }
+  //     break;
+  //   default:
+  //     next();
+  //     break;
+  // }
+
+  next()
 })
 
 export default router

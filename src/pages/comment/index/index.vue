@@ -85,7 +85,7 @@
     mapState,
     mapActions
   } from "vuex";
-  import Notfound from '../../../components/error/notfound'
+  import Notfound from '../../../components/notfound'
   import FeedList from '../../../components/feedList'
   import DownloadBar from '../../../components/downloadBar'
   import FocusBar from '../../../components/focusBar'

@@ -387,13 +387,13 @@ export default new Vuex.Store({
               }
               if (content.images && content.images.length > 0) {
                 let d = content.images.map(x => {
-                  x = "[图片]";
+                  x = `[图片]\n贴近 @${authors} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.images[0].link);
               } else {
-                desc = "[图片]";
+                desc = `[图片]\n贴近 @${authors} 出品`;
                 imgUrl = "";
               }
             } else if (state.res.int_type === 1) {
@@ -405,13 +405,13 @@ export default new Vuex.Store({
               }
               if (content.videos && content.videos.length > 0) {
                 let d = content.videos.map(x => {
-                  x = `[视频]</br>\n贴近 @${authors} 出品`;
+                  x = `[视频]\n贴近 @${authors} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.videos[0].imageUrl);
               } else {
-                desc = `[视频]</br>\n贴近 @${authors} 出品`;
+                desc = `[视频]\n贴近 @${authors} 出品`;
                 imgUrl = "";
               }
             } else {
