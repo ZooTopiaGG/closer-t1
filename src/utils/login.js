@@ -131,7 +131,9 @@ function getUserInfoInWx(params) {
     plateform: 2,
     code: query.code,
     inviter: query.inviter,
-    protocol: "WEB_SOCKET"
+    protocol: "WEB_SOCKET",
+    udid: Cookies.get("h5cookies"),
+    adid: "closer-t1"
   });
   return axios.post(api.admin.login_with_wechat, _params).then(({
     data

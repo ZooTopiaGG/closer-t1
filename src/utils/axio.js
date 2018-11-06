@@ -19,16 +19,13 @@ axio.interceptors.request.use(
         config.headers['Closer-Agent'] = 'Closer-Android';
       }
     }
-    if (Cookies.get("uid")) {
-      config.headers['X-Udid'] = Cookies.get("uid");
+    if (Cookies.get("h5cookies")) {
+      config.headers['X-Udid'] = Cookies.get("h5cookies");
     }
-    if (Cookies.get("aid")) {
-      config.headers['X-Adid'] = Cookies.get("aid");
-    }
+    config.headers['X-Adid'] = Cookies.get('h5Adid') || 'closer-t1'
     if (Cookies.get("token") && config.url.indexOf("auth") == -1 && config.url.indexOf("account") == -1 || Cookies.get("token") && config.url.indexOf("closer_account.bind_phone") != -1) {
       config.headers.Authorization = Cookies.get("token");
     }
-    console.log(config.url)
     return config;
   },
   err => {
