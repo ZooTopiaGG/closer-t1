@@ -1,7 +1,7 @@
 <template>
   <div>
   
-    <section class="video" v-if="this.$store.state.content.exist">
+    <section class="video" v-if="this.$store.state.exist">
       <!-- 下载条 -->
       <download-bar :placeholder="videoInfo.height/videoInfo.width < 1"></download-bar>
       <!-- 帖子内容 -->

@@ -9,7 +9,7 @@
       </div>
       <!-- 图集详情 -->
       <div class="feed-images">
-        <section class="feed-img" id="imgListFeed" v-if="res && res.int_type === 0">
+        <section class="feed-img" id="imgListFeed" v-if="this.$store.state.res && this.$store.state.res.int_type === 0">
           <section class="feeder-title feeder-title-2 feeder-type-0" v-if="this.$store.state.content">{{this.$store.state.content.text}}</section>
           <!--  判断是否在app de预览 -->
           <!-- 图片排列  需判断GIF -->
@@ -103,7 +103,6 @@
       }
     },
     computed: {
-     
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       })
