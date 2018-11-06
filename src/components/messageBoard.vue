@@ -100,7 +100,7 @@
       // }
     },
     computed: {
-      ...mapState('article', [
+      ...mapState([
         'res',
         'content'
       ]),

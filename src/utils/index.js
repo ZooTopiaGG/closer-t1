@@ -478,7 +478,7 @@ export async function downApp(url) {
 export async function down_statistics({ store, route, str, defaultStr, redirectUrl }) {
   let result = await store.dispatch("down_adcookies");
   if (result) {
-    let _page, url, did = route.params.id || route.params.messageid,
+    let _page, url, did = route.params.id || route.params.messageid || route.params.sid,
       progress, _str, s = JSON.parse;
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
@@ -499,6 +499,9 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     } else if (route.path.indexOf("/draft") > -1) {
       _page = "draft";
       url = `closer://draft/${did}`;
+    } else if (route.path.indexOf("/message") > -1) {
+      _page = "message";
+      url = `closer://message/${did}`;
     } else {
       _page = "inviter";
       url = `closer://jump/to/mine`;

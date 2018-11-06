@@ -10,10 +10,10 @@
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
           <div class="draft-title" v-if="ENV.app&&res.int_category&&res.int_category==1||!ENV.app">
-            <span class="topic-logo">话题</span> {{ res.title }}
+            <span class="topic-logo">话题</span> {{ res.releaseSubjectTitle }}
           </div>
           <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
-            <span class="join"><img class="draft-icon"/>参与</span>
+            <span class="join" @click="join"><img class="draft-icon"/>参与</span>
             <span class="get-all" @click="toAll">查看话题全部内容 ></span>
           </div>
           <div class="line" v-if="!ENV.app"></div>
@@ -34,7 +34,7 @@
           </div>
         </div>
         <!-- 阅读 喜欢 -->
-        <!-- <like-bar class="like-bar"></like-bar> -->
+        <like-bar class="like-bar"></like-bar>
         <!-- 留言板 -->
         <message-board v-if="res.int_category&&res.int_category==2"></message-board>
         <!-- 热门文章 -->
@@ -43,6 +43,7 @@
         <hot-collections class="hot-collections" v-if="!ENV.app&&res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
         <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
+        <Login ref="login" :isFrom="'messagelist'"></Login>
       </div>
     </div>
     <Notfound v-else :isDelete="res.bool_delete"></Notfound>
@@ -61,7 +62,8 @@
     appPlayVideo,
     tabImg,
     makeFileUrl,
-    dateFromNow
+    dateFromNow,
+    downloadApp
   } from "../../utils";
   import Notfound from "../../components/error/notfound";
   import DownloadBar from "../../components/downloadBar";
@@ -72,7 +74,7 @@
   import FeedList from "../../components/feedList";
   import AuthorBar from "../../components/authorBar";
   import HotCollections from "../../components/hotCollections";
-  
+  import Login from "../../components/login";
   export default {
     name: "Feed",
     components: {
@@ -84,7 +86,8 @@
       MessageBoard,
       FeedList,
       AuthorBar,
-      HotCollections
+      HotCollections,
+      Login
     },
     data() {
       return {
@@ -111,7 +114,7 @@
     },
     methods: {
       ...mapActions("draft", ["fetch_content"]),
-      ...mapActions("common", ["getHotSubjects", "getUserInfoWithWx"]),
+      ...mapActions("common", ["getHotSubjects", "getUserInfoWithWx", "getWxAuth"]),
       async fetch() {
         console.log("fetch");
         await this.fetch_content(this.$route.params);
@@ -153,14 +156,33 @@
           "content draft-content";
       },
       toAll() {
+        console.log('toall', this.$route.query.fromid)
         if (this.$route.query.fromid) {
           this.$router.push({
             path: `/draft/${this.$route.query.fromid}`
           })
         }
+      },
+      join() {
+        if(Cookies.get('token')) {
+          downloadApp();
+        } else {
+          if(ENV.wx) {
+            // 通过微信授权 获取code
+          this.getWxAuth({
+            payload: {
+              path: this.$route.path, 
+              query: this.$route.query
+            }
+          });
+          } else {
+            this.$refs.login.open()
+          }
+        }
       }
     },
     async mounted() {
+      window.sessionStorage.setItem('title', this.res.title)
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -175,7 +197,7 @@
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
       this.$preview.init('.content');
-    },
+    },  
     watch: {
       '$route' (to, from) {
         this.$router.go(0);

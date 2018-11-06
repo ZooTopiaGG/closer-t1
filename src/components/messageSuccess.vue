@@ -9,7 +9,7 @@
         </div>
         <div class="pop-footer box box-lr">
           <div class="wait-btn" @click="goBack">再等等</div>
-          <div class="confirm-btn" @click="downloadApp($event, '')">好的</div>
+          <div class="confirm-btn" @click="downloadApp($event, '', sid)">好的</div>
         </div>
       </div>
     </div>
@@ -48,7 +48,8 @@
     data() {
       return {
         isApp: window.ENV.app,
-        visible2: false
+        visible2: false,
+        sid: this.$route.params.sid
       };
     },
     beforeMount() {
@@ -74,19 +75,9 @@
       close() {
         this.hide()
       },
-      downloadApp(e, str) {
-        let sid = this.$route.params.sid
-        let id = this.$route.params.id
-        let redirectUrl
-        if (sid && typeof(id) == 'undefined') {
-          console.log(123)
-          redirectUrl = `${baseUrl.download}&link=closer://feed/${sid}`;
-        }
-        if (sid && id) {
-          redirectUrl = `${baseUrl.download}&link=closer://feed/${sid}/${id}`;
-        }
-        console.log('sid===', sid)
-        console.log('id====', id)
+      downloadApp(e, str, id) {
+        console.log(id)
+        let redirectUrl = `${baseUrl.download}&link=closer://feed/${id}`;
         console.log('redirectUrl', redirectUrl);
         down_statistics({
           "store": this.$store,
