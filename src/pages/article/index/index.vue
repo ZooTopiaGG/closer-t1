@@ -99,7 +99,14 @@
       //   "getSubject"
       // ]),
       async fetch() {
-        await this.fetch_content(this.$route.params)
+       let params = {
+          subjectid: this.$route.params.id
+        }
+        if(this.$route.query.udid&&this.$route.query.sto){
+          params['udid']=this.$route.query.udid;
+          params['sto']=this.$route.query.sto;
+        }
+        await this.fetch_content(params)
         this.$player.init('.content', {
           muted: false,
           preload: true,
@@ -128,10 +135,10 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        // } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
-        //   this.clickImg(event);
-        // } else if (target.dataset.src && !this.ENV.app) {
-        //   this.clickImgOuter(target.dataset.src)
+          // } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
+          //   this.clickImg(event);
+          // } else if (target.dataset.src && !this.ENV.app) {
+          //   this.clickImgOuter(target.dataset.src)
         }
       },
       makeFileUrl(url = '') {

@@ -142,7 +142,14 @@
     async mounted() {
       console.log('params.id:', this.$route.params.id)
       if (this.$route.params.id) {
-        await this.fetch_content(this.$route.params)
+         let params = {
+          subjectid: this.$route.params.id
+        }
+        if(this.$route.query.udid&&this.$route.query.sto){
+          params['udid']=this.$route.query.udid;
+          params['sto']=this.$route.query.sto;
+        }
+        await this.fetch_content(params)
         this.$store.dispatch('wx_config');
         this.getHotSubjects();
         this.$preview.init('.comment');

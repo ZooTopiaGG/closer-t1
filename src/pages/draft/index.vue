@@ -110,10 +110,17 @@
       })
     },
     methods: {
-      ...mapActions("common", ["getHotSubjects", "getUserInfoWithWx", "getWxAuth","fetch_content"]),
+      ...mapActions("common", ["getHotSubjects", "getUserInfoWithWx", "getWxAuth", "fetch_content"]),
       async fetch() {
         console.log("fetch");
-        await this.fetch_content(this.$route.params);
+        let params = {
+          subjectid: this.$route.params.id
+        }
+        if (this.$route.query.udid && this.$route.query.sto) {
+          params['udid'] = this.$route.query.udid;
+          params['sto'] = this.$route.query.sto;
+        }
+        await this.fetch_content(params)
       },
       clickImg(e) {
         let target = e.target;

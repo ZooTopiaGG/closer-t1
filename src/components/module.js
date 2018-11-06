@@ -333,15 +333,10 @@ const actions = {
   async fetch_content({
     commit,
     state
-  }, {
-    id
-  }) {
+  }, params) {
     try {
-      console.log("idd", id)
-        // 获取贴子详情
-      let { data } = await service.fetchContent({
-        subjectid: id
-      })
+      // 获取贴子详情
+      let { data } = await service.fetchContent(params)
       if (data.code != 0) {
         // 贴子被删除状态
         commit("GET_EXIST_STATUS", false);
