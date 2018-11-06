@@ -307,78 +307,59 @@ export default new Vuex.Store({
         if (typeof(data.code) != "undefined" && data.code == 0) {
           commit('SET_WX_CONFIG', data.result);
           let wxConfig = data.result;
-          if (JSON.stringify(state.res) == "{}" && JSON.stringify(state.group.group) == "{}") {
+          let title, imgUrl, desc, author;
+          let {res, content, group} = state;
+          if (JSON.stringify(res) == "{}" && JSON.stringify(group.group) == "{}") {
             console.info("not index")
             if (Cookies.get("shareConfig")) {
               wxShareConfig(wxConfig, JSON.parse(Cookies.get("shareConfig")))
             }
             return;
           }
-          let title, imgUrl, desc, author;
           if (location.href.indexOf("/community") > -1) {
             // 分享栏目主页
-            title = state.res.name ?
-              state.res.name :
+            title = res.name ?
+              res.name :
               "栏目主页";
-            desc = state.res.description ?
-              state.res.description :
+            desc = res.description ?
+              res.description :
               "贴近一点 看身边";
-            imgUrl = state.res.slogo ?
-              state.res.slogo :
-              state.res.blogo;
+            imgUrl = res.slogo ?
+              res.slogo :
+              res.blogo;
           } else if (location.href.indexOf("/group") > -1) {
-            console.log("state.res", JSON.stringify(state.group.group))
+            console.log("res", JSON.stringify(group.group))
               // 分享群组
             if (
-              state.group.group &&
-              state.group.group.group_info.group
+              group.group &&
+              group.group.group_info.group
             ) {
-              let group = state.group.group.group_info.group;
+              let group = group.group.group_info.group;
               title = group.name ? group.name : "贴近群组";
               if (group.description) {
                 let description;
                 try {
                   description = JSON.parse(
-                    state.group.group.group_info.group.description
+                    group.group.group_info.group.description
                   );
                   desc = description[0].content ?
                     description[0].content :
                     "贴近一点 看身边";
                 } catch (e) {
                   desc =
-                    state.group.group.group_info.group.description;
+                    group.group.group_info.group.description;
                 }
               } else {
                 desc = "贴近一点 看身边";
               }
               imgUrl = makeFileUrl(group.avatar);
             }
-          } else if (location.href.indexOf("/draft") > -1) {
-            let content = state.content;
-            console.log("征稿分享", state.res)
-            imgUrl = makeFileUrl(state.res.cover) ?
-              makeFileUrl(state.res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
-            if (state.res.int_category == 1) {
-              title = state.res.title;
-              desc = `贴近号： ${state.res.communityName.substring(0,10)}`
-              if (state.res.collectionTotalCount > 0) {
-                desc += `\n ${state.res.collectionTotalCount}参与`;
-              }
-            } else if (state.res.int_category == 2) {
-              title = state.res.releaseSubjectTitle;
-              desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
-            }
-            if (state.res.user.attributes.roster.name || state.res.user.fullname) {
-              author = `贴近 @${state.res.user.attributes.roster.name.substring(0, 6) ||
-              state.res.user.fullname.substring(0, 6)} 出品`;
-              desc = `${desc}\n${author}`;
-            }
           } else {
-            let content = state.content;
-            let { authors } = state.res;
-            console.log("content", state.content)
+            console.log("content", content)
+            let authorName = res.user.attributes.roster.name || res.user.fullname
+            let shareAuthor = authorName.length > 6 ? (authorName.substr(0, 6) + '...') : authorName
               // 分享长图文
-            if (state.res.int_type === 0) {
+            if (res.int_type === 0) {
               // 图集
               if (content.text) {
                 title = content.text;
@@ -387,16 +368,16 @@ export default new Vuex.Store({
               }
               if (content.images && content.images.length > 0) {
                 let d = content.images.map(x => {
-                  x = `[图片]\n贴近 @${authors} 出品`;
+                  x = `[图片]\n贴近 @${shareAuthor} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.images[0].link);
               } else {
-                desc = `[图片]\n贴近 @${authors} 出品`;
+                desc = `[图片]\n贴近 @${shareAuthor} 出品`;
                 imgUrl = "";
               }
-            } else if (state.res.int_type === 1) {
+            } else if (res.int_type === 1) {
               // 视频
               if (content.text) {
                 title = content.text;
@@ -405,33 +386,50 @@ export default new Vuex.Store({
               }
               if (content.videos && content.videos.length > 0) {
                 let d = content.videos.map(x => {
-                  x = `[视频]\n贴近 @${authors} 出品`;
+                  x = `[视频]\n贴近 @${shareAuthor} 出品`;
                   return x;
                 });
                 desc = d.join(" ");
                 imgUrl = makeFileUrl(content.videos[0].imageUrl);
               } else {
-                desc = `[视频]\n贴近 @${authors} 出品`;
+                desc = `[视频]\n贴近 @${shareAuthor} 出品`;
                 imgUrl = "";
+              }
+            } else if (res.int_type === 2 && (res.int_category == 1 || res.int_category == 2)) {
+              console.log("征稿分享", res)
+              imgUrl = makeFileUrl(res.cover) ?
+                makeFileUrl(res.cover) : 'https://h5-qa.tiejin.cn/_nuxt/img/a6fa258.png'
+              if (res.int_category == 1) {
+                title = res.title;
+                desc = `贴近号： ${res.communityName.substring(0,10)}`
+                if (res.collectionTotalCount > 0) {
+                  desc += `\n ${res.collectionTotalCount}参与`;
+                }
+              } else if (res.int_category == 2) {
+                title = res.releaseSubjectTitle;
+                desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
+              }
+              if (res.user.attributes.roster.name || res.user.fullname) {
+                author = `贴近 @${shareAuthor} 出品`;
+                desc = `${desc}\n${author}`;
               }
             } else {
               // 长图文
-              if (state.res.title) {
-                title = state.res.title;
+              if (res.title) {
+                title = res.title;
               } else if (content.text) {
                 title = content.text;
               } else {
                 title = content.summary;
               }
               desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
-              if (state.res.user.attributes.roster.name || state.res.user.fullname) {
-                author = `贴近 @${state.res.user.attributes.roster.name.substring(0, 6) ||
-                state.res.user.fullname.substring(0, 6)} 出品`;
+              if (res.user.attributes.roster.name || res.user.fullname) {
+                author = `贴近 @${shareAuthor} 出品`;
                 desc = `${desc}\n${author}`;
               }
-              imgUrl = makeFileUrl(state.res.bigcover) ?
-                makeFileUrl(state.res.bigcover) :
-                makeFileUrl(state.res.cover);
+              imgUrl = makeFileUrl(res.bigcover) ?
+                makeFileUrl(res.bigcover) :
+                makeFileUrl(res.cover);
             }
           }
           let shareConfig = {
