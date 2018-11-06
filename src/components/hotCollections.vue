@@ -142,7 +142,7 @@
       },
       toFeedDetails(id) {
         this.$router.push({
-          path: `/draft/${id}?fromid=${this.$route.params.id}&from=paper`
+          path: `/feed/${id}?fromid=${this.$route.params.id}&from=paper&type=2&category=2`
         });
       },
   
