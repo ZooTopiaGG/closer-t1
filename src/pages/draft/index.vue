@@ -10,7 +10,7 @@
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
           <div class="draft-title" v-if="ENV.app&&res.int_category&&res.int_category==1||!ENV.app">
-            <span class="topic-logo">话题</span> {{ res.releaseSubjectTitle }}
+            <span class="topic-logo">话题</span> {{res.int_category==1 ? res.title :res.releaseSubjectTitle }}
           </div>
           <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
             <span class="join" @click="join"><img class="draft-icon"/>参与</span>
@@ -159,22 +159,22 @@
         console.log('toall', this.$route.query.fromid)
         if (this.$route.query.fromid) {
           this.$router.push({
-            path: `/draft/${this.$route.query.fromid}`
+            path: `/feed/${this.$route.query.fromid}?type=2&category=1`
           })
         }
       },
       join() {
-        if(Cookies.get('token')) {
+        if (Cookies.get('token')) {
           downloadApp();
         } else {
-          if(ENV.wx) {
+          if (ENV.wx) {
             // 通过微信授权 获取code
-          this.getWxAuth({
-            payload: {
-              path: this.$route.path, 
-              query: this.$route.query
-            }
-          });
+            this.getWxAuth({
+              payload: {
+                path: this.$route.path,
+                query: this.$route.query
+              }
+            });
           } else {
             this.$refs.login.open()
           }
@@ -197,7 +197,7 @@
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
       this.$preview.init('.content');
-    },  
+    },
     watch: {
       '$route' (to, from) {
         this.$router.go(0);
