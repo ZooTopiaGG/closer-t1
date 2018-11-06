@@ -17,7 +17,10 @@ function bindEvent(el) {
 
 function getSrc(img) {
   let src = img.src,
-    data_src = img.dataset['src'];
+    data_src = img.dataset.src;
+  console.log('src',src)
+  console.log('data_src',data_src)
+
   if (/^https?:\/\//.test(src)) {
     return src
   } else if (/^https?:\/\//.test(data_src)) {
@@ -32,7 +35,7 @@ function showPreview(target) {
 }
 
 function withNative(target) {
-  let index = $src.indexOf(getSrc(target));
+  let index = $list.indexOf(target);
   let imgJson = {
     imgs: $src,
     index
@@ -72,16 +75,21 @@ export default {
       init(container) {
         $container = document.querySelector(container) || $container;
         bindEvent($container);
-        $list.push(...Array.from($container.querySelectorAll('img')).filter(img => {
-          let src = getSrc(img);
-          let type = img.dataset.type;
-          if (src && type == 'preview') {
-            $src.push(src);
-            return true;
-          }
-          return false;
-        }))
-        console.log('preview imgs.length', $list.length, $src.length)
+        setTimeout(() => {
+          let imgs = $container.querySelectorAll('img[data-type="preview"]');
+          console.log('preview imgs:', imgs.length)
+          $list.push(...Array.from(imgs)
+          .filter(img => {
+            let src = getSrc(img);
+            let type = img.dataset.type;
+            if (src) {
+              $src.push(src);
+              return true;
+            }
+            return false;
+          }))
+          console.log('preview imgs.length', $list.length, $src.length)
+        }, 100)
       }
     }
 
