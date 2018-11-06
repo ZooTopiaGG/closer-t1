@@ -86,7 +86,9 @@ function pageResize() { //px2rem
 init();
 
 function init() {
-  let result = store.dispatch("get_adcookie", { webUdid: true }).then((() => {}));
+  if (!Cookies.get("h5cookies")) {
+    let result = store.dispatch("get_adcookie", { webUdid: true }).then(((data) => {}));
+  }
 }
 
 new Vue({

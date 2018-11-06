@@ -125,7 +125,15 @@
         'fetch_content'
       ]),
       async fetch() {
-        await this.fetch_content(this.$route.params)
+        let params = {
+          subjectid: this.$route.params.id
+        }
+        if (this.$route.query.udid && this.$route.query.sto) {
+          params['udid'] = this.$route.query.udid;
+          params['sto'] = this.$route.query.sto;
+        }
+        await this.fetch_content(params)
+  
       },
       stringToJson(str) {
         if (!str) return

@@ -237,8 +237,7 @@ export default new Vuex.Store({
         }
         let data = await service.get_adcookie(para)
         if (data.code === 0) {
-          commit('SET_H5COOKIES', data.result.udid)
-          return data.result.udid
+          Cookies.set("h5cookies", data.result.udid)
         }
       } catch (e) {
         console.log('e==', e)
@@ -314,8 +313,8 @@ export default new Vuex.Store({
         if (typeof(data.code) != "undefined" && data.code == 0) {
           commit('SET_WX_CONFIG', data.result);
           let wxConfig = data.result;
-          let title, imgUrl, desc, author;
-          let {res, content, group} = state;
+          let title, imgUrl, desc, author, link;
+          let { res, content, group } = state;
           if (JSON.stringify(res) == "{}" && JSON.stringify(group.group) == "{}") {
             console.info("not index")
             if (Cookies.get("shareConfig")) {
@@ -439,10 +438,16 @@ export default new Vuex.Store({
                 makeFileUrl(res.cover);
             }
           }
+          if (location.href.indexOf("?") > -1) {
+            link = `${location.href}&sto=h5&udid=${Cookies.get("h5cookies")}`
+          } else {
+            link = `${location.href}?sto=h5&udid=${Cookies.get("h5cookies")}`
+          }
           let shareConfig = {
             title,
             desc,
-            imgUrl
+            imgUrl,
+            link
           }
           Cookies.set("shareConfig", shareConfig)
           wxShareConfig(wxConfig, shareConfig)
