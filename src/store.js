@@ -366,7 +366,7 @@ export default new Vuex.Store({
               }
             } else if (state.res.int_category == 2) {
               title = state.res.releaseSubjectTitle;
-              desc = content.summary ? content.summary.substring(0, 28) : "分享文章";
+              desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
             }
             if (state.res.user.attributes.roster.name || state.res.user.fullname) {
               author = `贴近 @${state.res.user.attributes.roster.name.substring(0, 6) ||
@@ -423,7 +423,7 @@ export default new Vuex.Store({
               } else {
                 title = content.summary;
               }
-              desc = content.summary ? content.summary.substring(0, 28) : "分享文章";
+              desc = content.summary ? content.summary.substring(0, 14) : "分享文章";
               if (state.res.user.attributes.roster.name || state.res.user.fullname) {
                 author = `贴近 @${state.res.user.attributes.roster.name.substring(0, 6) ||
                 state.res.user.fullname.substring(0, 6)} 出品`;
