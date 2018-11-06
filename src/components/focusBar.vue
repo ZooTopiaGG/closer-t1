@@ -45,8 +45,13 @@ export default {
   },
   methods: {
     toCommunity() {
+      let { type, category } = this.$route.query
       this.$router.push({
-        path: `/community/${this.res.communityid}`
+        path: `/community/${this.res.communityid}`,
+        query: {
+          type: type,
+          category: category
+        }
       });
     }
   },

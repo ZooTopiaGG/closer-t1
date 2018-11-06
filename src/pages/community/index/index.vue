@@ -132,8 +132,13 @@
       },
       // 跳转到群组
       toGroup(id) {
+        let { type, category } = this.$route.query
         this.$router.push({
-          path: `/group/${id}`
+          path: `/group/${id}`,
+          query: {
+            type: type,
+            category: category
+          }
         });
       },
       closeAlert() {
