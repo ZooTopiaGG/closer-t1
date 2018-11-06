@@ -121,7 +121,7 @@
       dateFromNow(time) {
         return dateFromNow(time)
       },
-      writeMessage(type, id) {
+      writeMessage(_type, id) {
         // 渲染页面前 先判断cookies user是否存在
         console.log('Cookies--', Cookies.get("token"))
         if (this.res.int_type === 2) {
@@ -130,13 +130,13 @@
           window.sessionStorage.setItem("title", this.content.text);
         }
         if (Cookies.get("user")) {
-          this.gotoMessage(type, id);
+          this.gotoMessage(_type, id);
         } else {
           // 前期 仅微信后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (window.ENV.wx) {
             console.log(this.$route.query.code)
             let path;
-            if (type === 'comment') {
+            if (_type === 'comment') {
               path = '/message/' + this.$route.params.id
             } else {
               path = '/message/' + this.$route.params.id + '/' + id
@@ -160,19 +160,28 @@
             //       }/${id}`;
             // }
           } else {
-            this.gotoMessage(type, id)
+            this.gotoMessage(_type, id)
           }
         }
       },
       // 前往写留言
-      gotoMessage(type, id) {
-        if (type === "comment") {
+      gotoMessage(_type, id) {
+        let { type, category } = this.$route.query
+        if (_type === "comment") {
           this.$router.push({
-            path: `/message/${id}`
+            path: `/message/${id}`,
+            query: {
+              type: type,
+              category: category
+            }
           });
         } else {
           this.$router.push({
-            path: `/message/${this.$route.params.id}/${id}`
+            path: `/message/${this.$route.params.id}/${id}`,
+            query: {
+              type: type,
+              category: category
+            }
           });
         }
       },

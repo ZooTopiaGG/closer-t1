@@ -89,8 +89,13 @@
       },
       goBack() {
         let subjectid = this.$route.params.sid
+        let { type, category } = this.$route.query
         this.$router.push({
-          path: `/article/${subjectid}`
+          path: `/feed/${subjectid}`,
+          query: {
+            type: type,
+            category: category
+          }
         })
       }
     }
