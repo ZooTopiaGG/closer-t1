@@ -90,6 +90,7 @@ export default {
               rootState.CONTENT_IMGS = contentImgs;
               rootState.IMG_INDEX = imgIndex;
               commit("setContent", content);
+              rootState.content = content;
               delete data.result.content;
               rootState.res = data.result;
               commit("setSubject", data.result);
