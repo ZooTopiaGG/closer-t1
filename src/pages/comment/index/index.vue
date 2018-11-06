@@ -40,7 +40,7 @@
                   <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
                 <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill" controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true">
-                      </video>
+               </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->

@@ -13,7 +13,7 @@ const state = {
   // agent: '',
   // isPre: false,
   res: {},
-  content: {},
+  content: { bool_delete: false },
   exist: true,
 }
 
@@ -23,14 +23,10 @@ const actions = {
     commit,
     state,
     rootState
-  }, {
-    id
-  }) {
+  }, params) {
     try {
       // 获取贴子详情
-      let { data } = await fetchContent({
-        subjectid: id
-      })
+      let { data } = await fetchContent(params)
       if (data.code != 0) {
         // 贴子被删除状态
         commit("GET_EXIST_STATUS", false);
@@ -73,7 +69,7 @@ const actions = {
         rootState.res = data.result;
       }
     } catch (err) {
-      console.log('content.catch')
+      console.err('content.catch', err)
       commit("GET_EXIST_STATUS", false);
       return;
     }

@@ -439,9 +439,9 @@ export default new Vuex.Store({
             }
           }
           if (location.href.indexOf("?") > -1) {
-            link = `${location.href}&sto=h5&udid=${Cookies.get("h5cookies")}`
+            link = `${location.href}&sto=weixin2share&udid=${Cookies.get("h5cookies")}`
           } else {
-            link = `${location.href}?sto=h5&udid=${Cookies.get("h5cookies")}`
+            link = `${location.href}?sto=weixin2share&udid=${Cookies.get("h5cookies")}`
           }
           let shareConfig = {
             title,

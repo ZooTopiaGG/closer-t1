@@ -180,9 +180,6 @@ export function makeHtmlContent(html) {
           minH = '28.27vw';
           newM = x.replace(/src=/g, `style="width: ${nW}; background: #e7e7e7; max-width: 100%;" data-feedlazy="feedlazy2" data-type="preview" data-src=`);
         }
-        console.log("srcArray[i]", srcArray[i])
-        Store.state.CONTENT_IMGS.push(srcArray[i])
-        Store.state.IMG_INDEX++;
       } else {
         newM = '';
       }

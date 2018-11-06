@@ -361,6 +361,7 @@ const actions = {
             if (_html) {
               content.html = _html;
             }
+            // console.log("___html", _html)
             if (content.discuss) {
               let discuss = content.discuss.map(x => {
                 if (x.text) {
