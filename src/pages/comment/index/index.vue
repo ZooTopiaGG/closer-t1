@@ -247,6 +247,7 @@
         }
         .info {
           display: flex;
+          max-width:600pr;
           flex-direction: column;
           .info-up {
             color: #94928E;
