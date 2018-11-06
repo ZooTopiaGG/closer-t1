@@ -9,7 +9,7 @@
       <mt-tab-container-item id="0">
         <div class="empty" v-if="hotColletions0&&hotColletions0.length==0">
           <div class="empty-icon"></div>
-          <div class="empty-desc">暂时没有精选内容赶紧投稿吧</div>
+          <div class="empty-desc">暂时没有全部内容赶紧投稿吧</div>
         </div>
         <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails( item.subjectid)">
           <div class="top">
