@@ -152,6 +152,11 @@
         this.$preview.init('.comment');
       }
     },
+     watch: {
+      '$route' (to, from) {
+        this.$router.go(0);
+      }
+    },
     methods: {
       ...mapActions("common", [
         "getHotSubjects"
