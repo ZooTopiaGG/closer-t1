@@ -52,7 +52,7 @@ const actions = {
   }) {
     let self = this
     try {
-      let { data } = await service.subscription(payload);
+      let data = await service.subscription(payload);
       console.log('focus:',data)
       if (data.code === 0) {
         if (payload.flag == 0) {
