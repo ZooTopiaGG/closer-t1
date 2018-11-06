@@ -13,7 +13,7 @@
             <span class="topic-logo">话题</span> {{res.int_category==1 ? res.title :res.releaseSubjectTitle }}
           </div>
           <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
-            <span class="join" @click="join"><img class="draft-icon"/>参与</span>
+            <span class="join" @click="join"><span class="draft-icon"></span>参与</span>
             <span class="get-all" @click="toAll">查看话题全部内容 ></span>
           </div>
           <div class="line" v-if="!ENV.app"></div>
@@ -238,10 +238,12 @@
         border-radius: 8pr;
         text-align: center;
         .draft-icon {
+          display: inline-block;
           width: 24pr;
           height: 24pr;
           background: url("../../assets/images/draft-icon.png");
           background-size: cover;
+          margin-right: 10pr;
         }
       }
       .get-all {

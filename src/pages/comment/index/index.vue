@@ -31,8 +31,8 @@
               </div>
               <div v-else-if="item.type===1">
                 <!-- 图片 -->
-                <img v-if="ENV.app" class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" data-type="preview" @click="clickImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
-                <img v-else class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" data-type="preview" @click="clickImg($event)" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+                <img v-if="ENV.app" class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" data-type="preview" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
+                <img v-else class="image" :src="defaultImg" v-lazy="fileUrlParse(item.image.link)" data-type="preview" :style="{height: item.image.height * 73 / item.image.width + 'vw'}">
               </div>
               <div v-else-if="item.type===2">
                 <!-- 视频 -->
@@ -175,10 +175,6 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        } else if (target.dataset.index && ENV.app) { //app内部点击图片
-          this.clickImg(event);
-        } else if (target.dataset.src && !ENV.app) {
-          this.clickImgOuter(target.dataset.src)
         }
       },
       clickImg(e) {

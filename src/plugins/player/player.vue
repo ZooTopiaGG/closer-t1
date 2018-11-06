@@ -28,6 +28,8 @@
       
       playsinline="true"
       webkit-playsinline="true"
+      x5-video-player-fullscreen="true"
+      x5-video-orientation="portraint"
     >
       {{children}}
     </video>

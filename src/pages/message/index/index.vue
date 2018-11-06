@@ -67,6 +67,7 @@
     },
     mounted() {
       console.log('params---', this.$route.params)
+      console.log('query----', this.$route.query)
     },
     methods: {
       ...mapActions("message", [
