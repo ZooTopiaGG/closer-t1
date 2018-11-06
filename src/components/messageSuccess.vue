@@ -88,9 +88,10 @@
         });
       },
       goBack() {
-        let subjectid = this.$route.params.sid
+        let {params,query} = this.$route
         this.$router.push({
-          path: `/article/${subjectid}`
+          path: `/feed/${params.sid}`,
+          query
         })
       }
     }

@@ -480,25 +480,25 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
   if (result) {
     let _page, url, did = route.params.id || route.params.messageid || route.params.sid,
       progress, _str, s = JSON.parse;
+    let {res} = store.state;
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
       url = `closer://community/${did}`;
-    } else if (route.path.indexOf("/feed") > -1 || route.path.indexOf("/article") > -1 || route.path.indexOf("/comment") > -1 || route.path.indexOf("/video") > -1 || route.path.indexOf("/image") > -1) {
+    } else if (route.path.indexOf("/feed")) {
       _page = "article";
       url = `closer://feed/${did}`;
-      if (store.state.res.int_type === 1) {
+      if (res.int_type === 1) {
         _page = "video";
-      } else if (store.state.res.int_type === 0) {
+      } else if (res.int_type === 0) {
         _page = "images";
+      } else if (res.int_type === 2 && (res.int_category == 1 || res.int_category == 2)) {
+        _page = "draft";
       } else {
         _page = "article";
       }
     } else if (route.path.indexOf("/group") > -1) {
       _page = "group";
       url = `closer://group/${did}`;
-    } else if (route.path.indexOf("/draft") > -1) {
-      _page = "draft";
-      url = `closer://draft/${did}`;
     } else if (route.path.indexOf("/message") > -1) {
       _page = "message";
       url = `closer://message/${did}`;
@@ -700,7 +700,7 @@ export function dateFromNow(time, type = 'MM-dd') {
 
 // 时间戳转换为hh:mm:ss时间格式，所传参数time单位是秒
 export function secondsFormat(time) {
-  time = parseInt(time);
+  time = parseInt(time) || 0;
   let hour = parseInt(time / 3600),
     _hour = time % 3600,
     min = parseInt(_hour / 60),

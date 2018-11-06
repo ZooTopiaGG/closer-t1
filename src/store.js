@@ -367,11 +367,11 @@ export default new Vuex.Store({
                 title = "分享图片";
               }
               if (content.images && content.images.length > 0) {
-                let d = content.images.map(x => {
-                  x = `[图片]\n贴近 @${shareAuthor} 出品`;
-                  return x;
-                });
-                desc = d.join(" ");
+                // let d = content.images.map(x => {
+                //   x = `[图片]\n贴近 @${shareAuthor} 出品`;
+                //   return x;
+                // });
+                desc = `[图片]\n贴近 @${shareAuthor} 出品`;
                 imgUrl = makeFileUrl(content.images[0].link);
               } else {
                 desc = `[图片]\n贴近 @${shareAuthor} 出品`;
