@@ -480,18 +480,17 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
   if (result) {
     let _page, url, did = route.params.id || route.params.messageid || route.params.sid,
       progress, _str, s = JSON.parse;
-    let {res} = store.state;
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
       url = `closer://community/${did}`;
     } else if (route.path.indexOf("/feed")) {
       _page = "article";
       url = `closer://feed/${did}`;
-      if (res.int_type === 1) {
+      if (store.state.res.int_type === 1) {
         _page = "video";
-      } else if (res.int_type === 0) {
+      } else if (store.state.res.int_type === 0) {
         _page = "images";
-      } else if (res.int_type === 2 && (res.int_category == 1 || res.int_category == 2)) {
+      } else if (store.state.res.int_type === 2 && (store.state.res.int_category == 1 || store.state.res.int_category == 2)) {
         _page = "draft";
       } else {
         _page = "article";
