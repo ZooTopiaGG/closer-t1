@@ -73,5 +73,8 @@ export default {
   },
   getCollections(payload) {
     return Axios.post(`${api.command.collectionsV2}`, payload).then(res => res.data);
+  },
+  fetchContent(payload) {
+    return Axios.post(api.command.show, payload);
   }
 }

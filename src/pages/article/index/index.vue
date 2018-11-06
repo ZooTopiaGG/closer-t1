@@ -43,7 +43,6 @@
     mapActions,
     mapMutations
   } from 'vuex'
-  
   import {
     appPlayVideo,
     tabImg,
@@ -79,35 +78,27 @@
       };
     },
     computed: {
-      ...mapState("article", [
+      ...mapState([
         'res',
         'content',
-        'GET_MESSAGE_STATE',
-        'version_1_2',
-        'agent',
-        'exist'
+        'exist',
+        'hotSubjects'
       ]),
-      ...mapState("common", {
-        hotSubjects: state => state.hotSubjects,
-      }),
-      ...mapState(['CONTENT_IMGS']),
       cover() {
         if (!this.res.bigcover) return false;
         return (this.res.bigcover || this.res.cover);
       }
     },
     methods: {
-      ...mapActions("article", ['fetch_content']),
-      ...mapMutations("article", ['GET_USER_AGENT']),
       ...mapActions("common", [
         "getHotSubjects",
-        'getUserInfoWithWx'
+        'getUserInfoWithWx',
+        'fetch_content'
       ]),
       // ...mapActions("comment", [
       //   "getSubject"
       // ]),
       async fetch() {
-        console.log('fetch')
         await this.fetch_content(this.$route.params)
         this.$player.init('.content', {
           muted: false,

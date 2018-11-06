@@ -100,21 +100,17 @@
       };
     },
     computed: {
-      ...mapState("draft", [
-        "res",
-        "content",
-        "GET_MESSAGE_STATE",
-        "version_1_2",
-        "agent",
-        "exist"
-      ]),
+      ...mapState({
+        res: state => state.res,
+        content: state => state.content,
+        exist: state => state.exist
+      }),
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects
       })
     },
     methods: {
-      ...mapActions("draft", ["fetch_content"]),
-      ...mapActions("common", ["getHotSubjects", "getUserInfoWithWx", "getWxAuth"]),
+      ...mapActions("common", ["getHotSubjects", "getUserInfoWithWx", "getWxAuth","fetch_content"]),
       async fetch() {
         console.log("fetch");
         await this.fetch_content(this.$route.params);

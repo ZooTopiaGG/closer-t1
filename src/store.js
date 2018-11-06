@@ -32,7 +32,8 @@ export default new Vuex.Store({
     IMG_INDEX: 0,
     CONTENT_IMGS: [],
     content: '',
-    exist: false,
+    res: {},
+    exist: true,
     extension_text: '',
     alert_stat: false,
     is_follow: false,
@@ -47,6 +48,7 @@ export default new Vuex.Store({
     visibleLogin: false,
     authSuccess: false,
     res: {},
+    exist: true,
     shareLink: "",
     preShow: false,
     preImgs: [],
@@ -64,6 +66,7 @@ export default new Vuex.Store({
   mutations: {
     // 设置贴子详情内容
     SET_CONTENT(state, para) {
+      console.log("content", para)
       state.content = para
     },
     // 设置贴子是否被删除
@@ -73,6 +76,10 @@ export default new Vuex.Store({
     // 设置贴子返回详情
     SET_RES(state, para) {
       state.res = para
+    },
+    SET_DISCUSS(state, payload) {
+      state.discuss = payload;
+
     },
     // 设置来自某个按钮的状态
     SET_EXTENSION_TEXT(state, para) {
