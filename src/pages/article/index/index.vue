@@ -1,7 +1,7 @@
 <template>
   <div>
   
-    <section class="article" v-if="exist">
+    <section class="article" v-if="this.$store.state.exist">
       <!-- 下载条 -->
       <download-bar></download-bar>
       <!-- 帖子内容 -->
@@ -9,7 +9,7 @@
       <section class="article-wrap">
         <section class="article-container bg-f">
           <!-- 标题 -->
-          <section class="article-title" v-if="!ENV.app"> {{ res.title }} </section>
+          <section class="article-title" v-if="!ENV.app"> {{ this.$store.state.res.title }} </section>
           <!-- 关注bar -->
           <focus-bar showTime class="focus-bar"></focus-bar>
           <div class="article-content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
@@ -18,7 +18,7 @@
               <img :data-src="makeFileUrl(cover)" data-type="preview" class="article-cover-img">
             </div>
             <!-- 主内容 -->
-            <div class="content" v-html="content.html"></div>
+            <div class="content" v-html="this.$store.state.content.html"></div>
           </div>
           <author-bar></author-bar>
         </section>
@@ -32,7 +32,7 @@
         <foot-bar></foot-bar>
       </section>
     </section>
-    <Notfound v-else :isDelete="res.bool_delete"></Notfound>
+    <Notfound v-else :isDelete="this.$store.state.res.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -78,28 +78,21 @@
       };
     },
     computed: {
-      ...mapState([
-        'res',
-        'content',
-        'exist',
+      ...mapState('common',[
         'hotSubjects'
       ]),
       cover() {
-        if (!this.res.bigcover) return false;
-        return (this.res.bigcover || this.res.cover);
+        return ( this.$store.state.res.bigcover ||  this.$store.state.res.cover);
       }
     },
     methods: {
       ...mapActions("common", [
+        'fetch_content',
         "getHotSubjects",
-        'getUserInfoWithWx',
-        'fetch_content'
+        'getUserInfoWithWx'
       ]),
-      // ...mapActions("comment", [
-      //   "getSubject"
-      // ]),
       async fetch() {
-       let params = {
+        let params = {
           subjectid: this.$route.params.id
         }
         if(this.$route.query.udid&&this.$route.query.sto){
@@ -135,10 +128,10 @@
             target.dataset.uid,
             target.dataset.vid
           );
-          // } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
-          //   this.clickImg(event);
-          // } else if (target.dataset.src && !this.ENV.app) {
-          //   this.clickImgOuter(target.dataset.src)
+        // } else if (target.dataset.index && this.ENV.app) { //app内部点击图片
+        //   this.clickImg(event);
+        // } else if (target.dataset.src && !this.ENV.app) {
+        //   this.clickImgOuter(target.dataset.src)
         }
       },
       makeFileUrl(url = '') {

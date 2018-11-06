@@ -46,8 +46,6 @@ const actions = {
         // 验证content
         if (data.result.content) {
           var content = JSON.parse(data.result.content);
-          rootState.CONTENT_IMGS == [];
-          rootState.IMG_INDEX = 0;
           // 解析长图文html
           if (data.result.int_type === 2) {
             let _html = makeHtmlContent(
@@ -69,7 +67,7 @@ const actions = {
         rootState.res = data.result;
       }
     } catch (err) {
-      console.err('content.catch', err)
+      console.error('content.catch', err)
       commit("GET_EXIST_STATUS", false);
       return;
     }

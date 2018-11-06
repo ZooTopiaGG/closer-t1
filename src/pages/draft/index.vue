@@ -9,22 +9,22 @@
           <!-- 关注bar -->
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
-          <div class="draft-title" v-if="ENV.app&&res.int_category&&res.int_category==1||!ENV.app">
-            <span class="topic-logo">话题</span> {{res.int_category==1 ? res.title :res.releaseSubjectTitle }}
+          <div class="draft-title" v-if="ENV.app&&this.$store.state.int_category&&this.$store.state.int_category==1||!ENV.app">
+            <span class="topic-logo">话题</span> {{this.$store.state.int_category==1 ? this.$store.state.title :this.$store.state.releaseSubjectTitle }}
           </div>
-          <div class="join-in" v-if="!ENV.app&&res.int_category&&res.int_category==2">
+          <div class="join-in" v-if="!ENV.app&&this.$store.state.int_category&&this.$store.state.int_category==2">
             <span class="join" @click="join"><span class="draft-icon"></span>参与</span>
             <span class="get-all" @click="toAll">查看话题全部内容 ></span>
           </div>
           <div class="line" v-if="!ENV.app"></div>
-          <div class="draft-author" v-if="res.int_category&&res.int_category==2">
-            <img class="icon" :src="makeFileUrl(res.user.avatar)" />
-            <span class="name">{{res.user.fullname}}</span>
-            <span class="date">{{dateFormate(res.long_publish_time)}}</span>
+          <div class="draft-author" v-if="this.$store.state.int_category&&this.$store.state.int_category==2">
+            <img class="icon" :src="makeFileUrl(this.$store.state.user.avatar)" />
+            <span class="name">{{this.$store.state.user.fullname}}</span>
+            <span class="date">{{dateFormate(this.$store.state.long_publish_time)}}</span>
           </div>
-          <section id="draftContent" :class="!ENV.app&&res.int_category&&res.int_category==1 ? 'content draft-content hidden-content':'content draft-content'" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <section id="draftContent" :class="!ENV.app&&this.$store.state.int_category&&this.$store.state.int_category==1 ? 'content draft-content hidden-content':'content draft-content'" v-html="this.$store.state.content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
           </section>
-          <div v-if="!ENV.app&&res.int_category&&res.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
+          <div v-if="!ENV.app&&this.$store.state.int_category&&this.$store.state.int_category==1" class="click-more" id="clickMore" @click="clickMore($event)">
             <div class="folder">
               <div class="more-container">
                 <span class="more">展开全文</span>
@@ -36,17 +36,17 @@
         <!-- 阅读 喜欢 -->
         <like-bar class="like-bar"></like-bar>
         <!-- 留言板 -->
-        <message-board v-if="res.int_category&&res.int_category==2"></message-board>
+        <message-board v-if="this.$store.state.int_category&&this.$store.state.int_category==2"></message-board>
         <!-- 热门文章 -->
-        <feed-list v-if="res.int_category&&res.int_category==2" :subjectList="hotSubjects"></feed-list>
+        <feed-list v-if="this.$store.state.int_category&&this.$store.state.int_category==2" :subjectList="hotSubjects"></feed-list>
         <!-- 精华全部 -->
-        <hot-collections class="hot-collections" v-if="!ENV.app&&res.int_category&&res.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
+        <hot-collections class="hot-collections" v-if="!ENV.app&&this.$store.state.int_category&&this.$store.state.int_category==1" :subjectId='this.$route.params.id'></hot-collections>
         <!-- 底部Bar -->
         <foot-bar btnText='立即投稿赚取稿费'></foot-bar>
         <Login ref="login" :isFrom="'messagelist'"></Login>
       </div>
     </div>
-    <Notfound v-else :isDelete="res.bool_delete"></Notfound>
+    <Notfound v-else :isDelete="this.$store.state.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -100,11 +100,6 @@
       };
     },
     computed: {
-      ...mapState({
-        res: state => state.res,
-        content: state => state.content,
-        exist: state => state.exist
-      }),
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects
       })
@@ -185,7 +180,7 @@
       }
     },
     async mounted() {
-      window.sessionStorage.setItem('title', this.res.title)
+      window.sessionStorage.setItem('title', this.$store.state.title)
       if (this.$route.query.code) {
         let params = {
           plateform: 2,

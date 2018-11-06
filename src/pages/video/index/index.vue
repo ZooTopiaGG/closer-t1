@@ -1,11 +1,11 @@
 <template>
   <div>
   
-    <section class="video" v-if="exist">
+    <section class="video" v-if="this.$store.state.content.exist">
       <!-- 下载条 -->
       <download-bar :placeholder="videoInfo.height/videoInfo.width < 1"></download-bar>
       <!-- 帖子内容 -->
-      <!-- res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
+      <!-- this.$store.state.res.int_type==2长图文。int_category=== 3神议论 1是征稿 -->
       <section class="video-wrap">
         <div class="video-main">
           <video :src="videoInfo.src"
@@ -22,11 +22,11 @@
           <focus-bar showTime class="focus-bar"></focus-bar>
           <div class="content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
             <!-- 封面大图 -->
-            <div class="video-cover-box" v-if="res.bigcover || res.cover">
-              <img :data-src="makeFileUrl(res.bigcover || res.cover)" class="video-cover-img">
+            <div class="video-cover-box" v-if="this.$store.state.res.bigcover || this.$store.state.res.cover">
+              <img :data-src="makeFileUrl(this.$store.state.res.bigcover || this.$store.state.res.cover)" class="video-cover-img">
             </div>
             <!-- 主内容 -->
-            <div class="video-content" v-html="content.text"></div>
+            <div class="video-content" v-html="this.$store.state.content.text"></div>
           </div>
           <author-bar></author-bar>
         </section>
@@ -41,7 +41,7 @@
   
       </section>
     </section>
-    <Notfound v-else :isDelete="res.bool_delete"></Notfound>
+    <Notfound v-else :isDelete="this.$store.state.res.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -89,16 +89,12 @@
       };
     },
     computed: {
-      ...mapState( [
-        'res',
-        'content',
-        'exist'
-      ]),
+      
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       }),
       videoInfo() {
-        let video = this.content.videos && this.content.videos[0] || {};
+        let video = this.$store.state.content.videos && this.$store.state.content.videos[0] || {};
         console.log('video.duration',video.duration)
         return {
           src: video.src,

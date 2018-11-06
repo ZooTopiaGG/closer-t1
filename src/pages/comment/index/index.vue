@@ -11,9 +11,9 @@
         <div class="cover-box">
           <img :src="fileUrlParse(this.$store.state.res.bigcover || this.$store.state.res.cover)" alt="" class="cover-img" data-type="preview">
         </div>
-        <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+        <div class="content" v-html="this.$store.state.content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </div>
-        <div class="discuss" v-for="(item,key) in discuss" :key="key">
+        <div class="discuss" v-for="(item,key) in this.$store.state.discuss" :key="key">
           <div class="discuss-content">
             <div class="avatar" v-lazy:background-image="fileUrlParse(item.avatar)"></div>
             <div class="info">
@@ -56,7 +56,7 @@
           </div>
           <div class="line"></div>
         </div>
-        <div v-if="content.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="content.end_html" @click="openClick($event)"></div>
+        <div v-if="this.$store.state.end_html" class="content" v-lazy-container="{ selector: 'img' }" v-html="this.$store.state.content.end_html" @click="openClick($event)"></div>
         <author-bar></author-bar>
       </div>
       <!-- 阅读 喜欢 -->
@@ -120,12 +120,6 @@
     computed: {
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
-      }),
-      ...mapState({
-        res: state => state.res,
-        content: state => state.content,
-        discuss: state => state.discuss,
-        exist: state => state.this.$store.state.resExist
       })
     },
     beforeMount() {
