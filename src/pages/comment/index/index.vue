@@ -39,8 +39,8 @@
                 <div v-if="ENV.app" class="video" @click="openClick($event)" :data-uid="item.video.src" :data-vid="item.video.vid" :style="{background: 'url('+item.video.imageUrl+') no-repeat center','background-size':'cover'}">
                   <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
-                <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill"  controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true">
-                </video>
+                <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill" controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true">
+                  </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
@@ -152,6 +152,11 @@
         this.$preview.init('.comment');
       }
     },
+    watch: {
+      '$route' (to, from) {
+        this.$router.go(0);
+      }
+    },
     methods: {
       ...mapActions("common", [
         "getHotSubjects"
@@ -247,7 +252,7 @@
         }
         .info {
           display: flex;
-          max-width:600pr;
+          max-width: 600pr;
           flex-direction: column;
           .info-up {
             color: #94928E;
