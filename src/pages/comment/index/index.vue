@@ -1,15 +1,15 @@
 <template>
   <div>
     <!-- 下载条 -->
-    <div v-if="subjectExist">
+    <div v-if="this.$store.state.exist">
       <download-bar></download-bar>
       <div class="comment">
         <div class="title" v-if="!ENV.app">
-          {{subject.title}}
+          {{this.$store.state.res.title}}
         </div>
         <focus-bar showTime></focus-bar>
         <div class="cover-box">
-          <img :src="fileUrlParse(subject.bigcover || subject.cover)" alt="" class="cover-img" data-type="preview">
+          <img :src="fileUrlParse(this.$store.state.res.bigcover || this.$store.state.res.cover)" alt="" class="cover-img" data-type="preview">
         </div>
         <div class="content" v-html="content.html" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
         </div>
@@ -40,7 +40,7 @@
                   <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
                 <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill" controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true">
-                  </video>
+                      </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
@@ -63,13 +63,13 @@
       <like-bar class="like-bar"></like-bar>
       <!-- 留言板 -->
       <message-board></message-board>
-      <feed-list :subjectList="hotSubjects"></feed-list>
+      <feed-list :subject="hotSubjects"></feed-list>
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
       <preview-list :preview-src="preSrc" :preview-show="preShow" v-on:preview-show="listenToMyChild"></preview-list>
     </div>
-    <Notfound v-else :isDelete="subject.bool_delete"></Notfound>
+    <Notfound v-else :isDelete="this.$store.state.res.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -116,19 +116,17 @@
       }
     },
     created() {
-  
     },
     computed: {
-      ...mapState("comment", {
-        subject: state => state.subject,
-        content: state => state.content,
-        discuss: state => state.discuss,
-        subjectExist: state => state.subjectExist
-      }),
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
+      }),
+      ...mapState({
+        res: state => state.res,
+        content: state => state.content,
+        discuss: state => state.discuss,
+        exist: state => state.this.$store.state.resExist
       })
-  
     },
     beforeMount() {
       this.$store.commit("GET_VERSION");
@@ -144,12 +142,11 @@
     async mounted() {
       console.log('params.id:', this.$route.params.id)
       if (this.$route.params.id) {
-        await this.getSubject({
-          "subjectid": this.$route.params.id
-        });
+        await this.fetch_content(this.$route.params)
         this.$store.dispatch('wx_config');
         this.getHotSubjects();
         this.$preview.init('.comment');
+        console.info("mapstate",mapState)
       }
     },
     watch: {
@@ -159,13 +156,8 @@
     },
     methods: {
       ...mapActions("common", [
-        "getHotSubjects"
-      ]),
-      ...mapActions("comment", [
-        "getSubject"
-      ]),
-      ...mapActions("common", [
-        "getHotSubjects"
+        "getHotSubjects",
+        "fetch_content"
       ]),
   
       fileUrlParse(url, type, size) {

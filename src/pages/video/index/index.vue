@@ -89,7 +89,7 @@
       };
     },
     computed: {
-      ...mapState("video", [
+      ...mapState( [
         'res',
         'content',
         'exist'
@@ -97,7 +97,6 @@
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       }),
-      ...mapState(['CONTENT_IMGS']),
       videoInfo() {
         let video = this.content.videos && this.content.videos[0] || {};
         console.log('video.duration',video.duration)
@@ -111,11 +110,11 @@
       }
     },
     methods: {
-      ...mapActions("video", ['fetch_content']),
       ...mapMutations("video", ['GET_USER_AGENT']),
       ...mapActions("common", [
         "getHotSubjects",
-        'getUserInfoWithWx'
+        'getUserInfoWithWx',
+        'fetch_content'
       ]),
       // ...mapActions("comment", [
       //   "getSubject"

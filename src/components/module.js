@@ -1,5 +1,6 @@
 import {
-  addUrlParams
+  addUrlParams,
+  makeHtmlContent
 } from '../utils';
 import service from './service';
 import Cookie from 'js-cookie';
@@ -23,12 +24,16 @@ const state = {
     data: []
   },
   hotColletions0: null,
-  hotColletions1: null
+  hotColletions1: null,
+  res: {},
+  content: {},
+  exist: true,
+  discuss: {}
 }
 
 const actions = {
-  async getFocusState({commit}, payload) {
-    let {data} = await service.getCommunityShow({
+  async getFocusState({ commit }, payload) {
+    let { data } = await service.getCommunityShow({
       communityid: payload
     });
     if (data.code === 0) {
@@ -53,7 +58,7 @@ const actions = {
     let self = this
     try {
       let { data } = await service.subscription(payload);
-      console.log('focus:',data)
+      console.log('focus:', data)
       if (data.code === 0) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
@@ -324,10 +329,97 @@ const actions = {
         result && Toast(result)
       }
     }
+  },
+  async fetch_content({
+    commit,
+    state
+  }, {
+    id
+  }) {
+    try {
+      console.log("idd", id)
+        // 获取贴子详情
+      let { data } = await service.fetchContent({
+        subjectid: id
+      })
+      if (data.code != 0) {
+        // 贴子被删除状态
+        commit("GET_EXIST_STATUS", false);
+      } else {
+        if (!window.ENV.app) {
+          if (
+            data.result.int_verify === 0 ||
+            ((data.result.int_verify === -1 &&
+                data.result.int_category != 4 &&
+                data.result.int_category != 6) ||
+              data.result.bool_delete)
+          ) {
+            commit("GET_EXIST_STATUS", false, { root: true });
+            return;
+          }
+        }
+        // 验证content
+        if (data.result.content) {
+          let content = JSON.parse(data.result.content);
+          if (data.result.int_type === 2) {
+            let _html = makeHtmlContent(
+              content.html
+            );
+            if (_html) {
+              content.html = _html;
+            }
+            if (content.discuss) {
+              let discuss = content.discuss.map(x => {
+                if (x.text) {
+                  let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+                  let res = x.text.match(reg);
+                  if (res) {
+                    x.weblink = true;
+                    res.map(y => {
+                      // 正则替换文本
+                      let tag = `<a href="${y}" target="_blank">${y}</a>`;
+                      let newtag = x.text.replace(reg, tag);
+                      x.newText = newtag;
+                    });
+                  } else {
+                    x.weblink = false;
+                  }
+                }
+                return x;
+              });
+              commit("SET_DISCUSS", discuss, { root: true });
+            }
+            if (data.result.int_category === 3 && content.end_html) {
+              let end_html = makeHtmlContent(
+                content.end_html
+              );
+              if (end_html) {
+                content.end_html = end_html;
+              }
+            }
+          }
+          commit("SET_CONTENT", content, { root: true });
+          delete data.result.content;
+          commit("SET_RES", data.result, { root: true });
+          commit("SET_FOCUS_STAT", data.result.isFollowed, { root: true });
+
+        }
+      }
+    } catch (err) {
+      console.log('content.catch', err)
+      commit("GET_EXIST_STATUS", false);
+      return;
+    }
   }
+
 }
 
+
 const mutations = {
+  // 设置贴子是否被删除
+  GET_EXIST_STATUS(state, para) {
+    state.exist = para
+  },
   // 设置h5cookies到浏览器
   SET_H5COOKIES(state, para) {
     state.h5Cookies = para

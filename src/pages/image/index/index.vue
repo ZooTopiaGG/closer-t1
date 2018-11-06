@@ -1,64 +1,66 @@
 <template>
-  <div class="image-list">
-    <!-- 下载条 -->
-    <download-bar></download-bar>
-    <!-- 关注 -->
-    <div class="focus-box">
-      <focus-bar showTime></focus-bar>
-    </div>
-  
-    <!-- 图集详情 -->
-    <div class="feed-images">
-      <section class="feed-img" id="imgListFeed" v-if="res && res.int_type === 0">
-        <section class="feeder-title feeder-title-2 feeder-type-0" v-if="res.content">{{stringToJson(res.content).text}}</section>
-        <!--  判断是否在app de预览 -->
-        <!-- 图片排列  需判断GIF -->
-        <section class="feeder-images" v-if="!ENV.app">
-          <section class="feeder-img flex flex-pack-justify" v-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 1">
-            <section class="feeder-img-list feeder-img-list-cell-1" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
-              <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
-              <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
-              <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+  <div>
+    <div class="image-list" v-if="exist">
+      <!-- 下载条 -->
+      <download-bar></download-bar>
+      <!-- 关注 -->
+      <div class="focus-box">
+        <focus-bar showTime></focus-bar>
+      </div>
+      <!-- 图集详情 -->
+      <div class="feed-images">
+        <section class="feed-img" id="imgListFeed" v-if="res && res.int_type === 0">
+          <section class="feeder-title feeder-title-2 feeder-type-0" v-if="content">{{content.text}}</section>
+          <!--  判断是否在app de预览 -->
+          <!-- 图片排列  需判断GIF -->
+          <section class="feeder-images" v-if="!ENV.app">
+            <section class="feeder-img flex flex-pack-justify" v-if="content.images && content.images.length == 1">
+              <section class="feeder-img-list feeder-img-list-cell-1" v-for="(img, index) in content.images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
+                <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
+                <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
+                <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
+                <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+              </section>
             </section>
-          </section>
-          <section class="feeder-img flex flex-pack-justify" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 2">
-            <section class="feeder-img-list feeder-img-list-cell-2" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
-              <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
-              <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
-              <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+            <section class="feeder-img flex flex-pack-justify" v-else-if="content.images && content.images.length == 2">
+              <section class="feeder-img-list feeder-img-list-cell-2" v-for="(img, index) in content.images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
+                <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
+                <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
+                <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
+                <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+              </section>
             </section>
-          </section>
-          <section class="feeder-img flex" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 3 || stringToJson(res.content).images && stringToJson(res.content).images.length > 4">
-            <section class="feeder-img-list feeder-img-list-cell-3" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
-              <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
-              <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
-              <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+            <section class="feeder-img flex" v-else-if="content.images && content.images.length == 3 || content.images && content.images.length > 4">
+              <section class="feeder-img-list feeder-img-list-cell-3" v-for="(img, index) in content.images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
+                <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
+                <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
+                <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
+                <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+              </section>
             </section>
-          </section>
-          <section class="feeder-img flex flex-pack-justify" v-else-if="stringToJson(res.content).images && stringToJson(res.content).images.length == 4">
-            <section class="feeder-img-list feeder-img-list-cell-4" v-for="(img, index) in stringToJson(res.content).images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
-              <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
-              <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
-              <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
-              <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+            <section class="feeder-img flex flex-pack-justify" v-else-if="content.images && content.images.length == 4">
+              <section class="feeder-img-list feeder-img-list-cell-4" v-for="(img, index) in content.images" v-lazy:background-image="makeFileUrl(img.link)" :key="index">
+                <img class="feeder-cover-list" :data-src="makeFileUrl(img.link)" data-type="preview">
+                <span class="cover_img_type" v-if="img.link.indexOf('.gif') > -1 || img.link.indexOf('.GIF') > -1">GIF图</span>
+                <span class="cover_img_type" v-else-if="img.width / img.height >= 3 ">全景</span>
+                <span class="cover_img_type" v-else-if="img.height / img.width >= 3">长图</span>
+              </section>
             </section>
           </section>
         </section>
-      </section>
+      </div>
+      <!-- 阅读 喜欢 -->
+      <div class="read-like">
+        <like-bar :author="true"></like-bar>
+      </div>
+      <!-- 留言板 -->
+      <message-board></message-board>
+      <!-- 热门文章 -->
+      <feed-list :subjectList="hotSubjects"></feed-list>
+      <!-- footer -->
+      <foot-bar></foot-bar>
     </div>
-    <!-- 阅读 喜欢 -->
-    <div class="read-like">
-      <like-bar :author="true"></like-bar>
-    </div>
-    <!-- 留言板 -->
-    <message-board></message-board>
-    <!-- 热门文章 -->
-    <feed-list :subjectList="hotSubjects"></feed-list>
-    <!-- footer -->
-    <foot-bar></foot-bar>
+    <Notfound v-else :isDelete="res.bool_delete"></Notfound>
   </div>
 </template>
 
@@ -101,9 +103,11 @@
       }
     },
     computed: {
-      ...mapState('article', [
-        'res'
-      ]),
+      ...mapState({
+        res: state => state.res,
+        content: state => state.content,
+        exist: state => state.exist
+      }),
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
       })
@@ -115,10 +119,10 @@
       this.$preview.init('.feed-images');
     },
     methods: {
-      ...mapActions("article", ['fetch_content']),
       ...mapActions("common", [
         "getHotSubjects",
-        'getUserInfoWithWx'
+        'getUserInfoWithWx',
+        'fetch_content'
       ]),
       async fetch() {
         await this.fetch_content(this.$route.params)
