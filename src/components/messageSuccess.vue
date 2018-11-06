@@ -88,10 +88,14 @@
         });
       },
       goBack() {
-        let {params,query} = this.$route
+        let subjectid = this.$route.params.sid
+        let { type, category } = this.$route.query
         this.$router.push({
-          path: `/feed/${params.sid}`,
-          query
+          path: `/feed/${subjectid}`,
+          query: {
+            type: type,
+            category: category
+          }
         })
       }
     }
