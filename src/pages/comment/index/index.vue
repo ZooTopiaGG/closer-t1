@@ -45,7 +45,7 @@
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
                 <div class="feed" @click="tofeed(item.feed.feedId)">
-                  <img class="feed-img" :src="fileUrlParse(item.feed.imageUrl)">
+                  <img class="feed-img" v-lazy:background-image="fileUrlParse(item.feed.imageUrl)">
                   <div class="feed-info">
                     <div class="feed-title">{{ item.feed.title }}</div>
                     <div class="feed-summary">{{ item.feed.summary }}</div>
@@ -277,7 +277,9 @@
               margin: 20pr 0 20pr 20pr;
               width: 86pr;
               height: 86pr;
-              border-radius: 10pr
+              border-radius: 10pr;
+                  background-size: cover;
+    background-position: 50%;
             }
             .feed-info {
               margin: 22pr 10pr 0 28pr;
