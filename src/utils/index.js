@@ -515,7 +515,6 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     let res = await store.dispatch("down_statistics", {
       p1
     });
-    return;
     if (res) {
       if (redirectUrl) {
         if (redirectUrl === 'wx') {
