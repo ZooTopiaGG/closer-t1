@@ -170,13 +170,10 @@
           "defaultStr": '',
           'redirectUrl': 'wx'
         });
-        console.log('toall', this.$route.query.fromid)
         setTimeout(() => {
-          if (this.$route.query.fromid) {
             this.$router.push({
-              path: `/feed/${this.$route.query.fromid}?type=2&category=1`
+              path: `/feed/${this.$store.state.res.release_subjectid}?type=2&category=1`
             })
-          }
         }, 500);
       },
       join() {
