@@ -28,7 +28,8 @@ const state = {
   res: {},
   content: {},
   exist: true,
-  discuss: {}
+  discuss: {},
+  like: false
 }
 
 const actions = {
@@ -301,13 +302,15 @@ const actions = {
     }
   },
   async checkIsLike({
-    commit
+    commit, state
   }, payload) {
+    if(state.like) return
     let data = await service.isLike(payload).catch(err => {
       Toast('网络开小差啦~')
     })
-    if (typeof(data.code != undefined) && data.code == 0) {
-
+    let _data = data.data
+    if (typeof(_data.code != undefined) && _data.code == 0) {
+      commit('SET_LIKE')
     } else {
       data.result && Toast(data.result)
     }
@@ -454,6 +457,9 @@ const mutations = {
   SET_HOT_COLLECTIONS0(state, payload) {
     state.hotColletions0 = payload
 
+  },
+  SET_LIKE(state) {
+    state.like = true
   }
 }
 
