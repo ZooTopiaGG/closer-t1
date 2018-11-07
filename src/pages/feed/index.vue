@@ -31,12 +31,15 @@
       tjImage
     },
     computed: {
+      ...mapActions("common", [
+        'getUserInfoWithWx'
+      ])
 
     },
     beforeCreate() {
-      console.log('beforeCreate:', this.$route.params)
     },
     created() {
+      // 根据参数显示对应组件
       let { type, category } = this.$route.query;
       if (type == '2') {
         if (category == '3') {
@@ -56,6 +59,23 @@
       } else {
         this.currentComponent = 'notfound'
       }
+      // 微信授权后获取用户信息
+      if (this.$route.query.code) {
+        let params = {
+          plateform: 2,
+          code: this.$route.query.code,
+          protocol: "WEB_SOCKET",
+          adid: Cookies.get('h5Adid') || 'closer-t1'
+        }
+        // this.getUserInfoWithWx(params);
+        this.$store.dispatch('getUserInfoWithWx',params)
+      }
+
     },
+    beforeMount() {
+      
+    },
+    mounted() {
+    }
   }
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <mt-popup v-model="visible2" class="alert-pop">
+  <mt-popup v-model="display" class="alert-pop">
     <div class="header">
       <div class="close" @click="closeAlert"></div>
     </div>
     <div class="content">
-      <div class="text">您已成功关注了“{{communityName}}”贴近号，去快看看这个贴近号下的其他帖子吧~</div>
+      <div class="text">您已成功关注了“{{cname}}”贴近号，去快看看这个贴近号下的其他帖子吧~</div>
       <div class="desc-img"></div>
     </div>
     <div class="footer" @click="download">确认</div>
@@ -13,6 +13,9 @@
 
 <script>
   import Vue from 'vue'
+  import {
+    downloadApp
+  } from '../utils'
   import {
     mapState,
     mapMutations
@@ -24,41 +27,45 @@
   export default {
     name: 'alert-pop',
     props: {
-      communityName: {
+      show: {
+        type: Boolean,
+        default: false
+      },
+      cid: {
         type: String,
         default: ''
       },
-      downApp: Function,
-      close: Function
+      cname: {
+        type: String,
+        default: ''
+      }
     },
     data() {
       return {
-        visible2: false
+        display: false
       }
     },
     watch: {
-      visible(val) {
-        this.visible2 = val
+      show(val) {
+        this.display = val
       }
     },
     computed: {
-      ...mapState('community', {
-        visible: state => state.visible
-      })
     },
     methods: {
       download() {
-        let redirectUrl = baseUrl.download;
-            down_statistics({
-              'store': this.$store,
-              'route': this.$route,
-              'str':'follow',
-              "defaultStr": "",
-              redirectUrl
-            });
+        let redirectUrl = `${baseUrl.download}&link=closer://community/${this.cid}`;
+        down_statistics({
+          'store': this.$store,
+          'route': this.$route,
+          'str':'follow',
+          "defaultStr": "",
+          redirectUrl
+        });
+        downloadApp()
       },
       closeAlert() {
-        this.$emit('close')
+        this.display = false
       }
     }
   }

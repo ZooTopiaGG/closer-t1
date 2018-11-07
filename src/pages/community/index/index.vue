@@ -8,7 +8,7 @@
       <div class="cln-name">{{communityShow.name}}</div>
       <div class="cln-text" v-if="communityShow.description">{{communityShow.description}}</div>
       <div class="cln-text" v-else>用心写出有态度，有深度，有高度的文章 <br>请关注我们吧～</div>
-      <Focus :communityid="communityid" class="cln-btn"></Focus>
+      <Focus :cid="communityid" :cname="communityShow.name" class="cln-btn"></Focus>
     </div>
     <div class="group-wrap" v-if="groupList.data && groupList.data.length > 0">
       <div class="gr-line1 box box-lr">
@@ -31,7 +31,6 @@
     </div>
     <feed-list ref="feedlist" class="feed-list" :subjectList="hotSubjects"></feed-list>
     <foot-bar></foot-bar>
-    <focus-alert :communityName="communityShow.name" @close="closeAlert" @downApp="downApp('follow_confirm')"></focus-alert>
   </div>
 </template>
 
@@ -68,7 +67,7 @@
       }
     },
     async mounted() {
-    console.log('query params:---', this.$route.params)
+      console.log('query params:---', this.$route.params)
       if (this.$route.query.code) {
         let params = {
           plateform: 2,
@@ -87,7 +86,7 @@
         count: 3
       }
       this.$store.dispatch('wx_config');
-      this.getGroupList(groupPrm)
+      // this.getGroupList(groupPrm)
       this.getCommunitySubjects({
         communityid: this.communityid
       })
@@ -121,18 +120,13 @@
         'getSubscription'
       ]),
       ...mapActions('common', [
-        'getUserInfoWithWx',
         'getCommunitySubjects'
       ]),
-      downApp(str) {
-        let redirectUrl = baseUrl.download;
-            down_statistics({
-              'store': this.$store,
-              'route': this.$route,
-              str,
-              "defaultStr": "follow",
-              redirectUrl
-            });
+      ...mapActions([
+        'getUserInfoWithWx'
+      ]),
+      downApp() {
+        downloadApp()
       },
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);

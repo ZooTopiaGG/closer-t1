@@ -178,19 +178,6 @@
           );
         }
       },
-      clickImg(e) {
-        let target = e.target;
-        console.log("target", target.dataset)
-        if (ENV.app && target.dataset.index) {
-          tabImg(target.dataset.index);
-        } else if (target.dataset.src) {
-          this.clickImgOuter(target.dataset.src)
-        }
-      },
-      clickImgOuter(src) {
-        this.preSrc = src;
-        this.preShow = true;
-      },
       tofeed(fid) {
         if (ENV.app) {
           location.href = `closer://feed/${fid}`;
