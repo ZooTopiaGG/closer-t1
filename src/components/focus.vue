@@ -74,6 +74,7 @@
           // if (result) {
           //   self.$store.commit("SHOW_ALERT", true, {root: true});
           // }
+
           this.get_focus_stat({
             payload: {
               communityid: this.res.communityid ? this.res.communityid : this.communityid,
@@ -87,7 +88,13 @@
         } else {
           // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (this.ENV.wx) {
-            
+            // down_statistics({ //不跳下载
+            //   'store': this.$store,
+            //   'route': this.$route,
+            //   'str': 'message',
+            //   "defaultStr": '',
+            //   'redirectUrl': 'wx'
+            // });
             // 通过微信授权 获取code
             // await self.$store.dispatch("get_wx_auth", {
             //   // 正式

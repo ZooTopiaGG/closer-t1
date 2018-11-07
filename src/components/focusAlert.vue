@@ -48,7 +48,14 @@
     },
     methods: {
       download() {
-        this.$emit('downApp')
+        let redirectUrl = baseUrl.download;
+            down_statistics({
+              'store': this.$store,
+              'route': this.$route,
+              'str':'follow',
+              "defaultStr": "",
+              redirectUrl
+            });
       },
       closeAlert() {
         this.$emit('close')
