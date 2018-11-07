@@ -18,9 +18,9 @@
           </div>
           <div class="line" v-if="!ENV.app"></div>
           <div class="draft-author" v-if="this.$store.state.res.int_category&&this.$store.state.res.int_category==2">
-            <img class="icon" :src="makeFileUrl(this.$store.state.user.avatar)" />
-            <span class="name">{{this.$store.state.user.fullname}}</span>
-            <span class="date">{{dateFormate(this.$store.state.long_publish_time)}}</span>
+            <img class="icon" :src="makeFileUrl(this.$store.state.res.user.avatar)" />
+            <span class="name">{{this.$store.state.res.user.fullname}}</span>
+            <span class="date">{{dateFormate(this.$store.state.res.long_publish_time)}}</span>
           </div>
           <section id="draftContent" :class="!ENV.app&&this.$store.state.res.int_category&&this.$store.state.res.int_category==1 ? 'content draft-content hidden-content':'content draft-content'" v-html="this.$store.state.content.html" v-lazy-container="{ selector: 'img' }"
             @click="openClick($event)">
