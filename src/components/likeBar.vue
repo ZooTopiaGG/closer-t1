@@ -6,12 +6,12 @@
         <img class="like-icon" ref="sup" src="data:image/png;base64,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"
           alt="图片" />
       </div>
-      <span>赞&nbsp;<span class="like-num hide" ref="like" status='false'>{{ res.like }}</span></span>
+      <span>赞&nbsp;<span class="like-num" ref="like" status='false'>{{ res.like > 0 ? res.like : '' }}</span></span>
     </section>
     <!-- 栏目时间 -->
     <!-- <section class="publish" v-else>
-        <span> {{ getCommonTime }}</span>
-      </section> -->
+          <span> {{ getCommonTime }}</span>
+        </section> -->
     <!-- 作者信息 -->
     <section class="author-info" v-if="author">
       <div class="author" v-if="res.authorsString">作者：{{res.authorsString}}</div>
@@ -40,7 +40,7 @@
       }
     },
     computed: {
-      ...mapState( [
+      ...mapState([
         'res'
       ]),
       ...mapState('common', ['incr_view']),
@@ -57,14 +57,14 @@
       ...mapActions('common', ['get_incr_view']),
       // 点赞
       toSupport(e) {
-        console.log(1,this.$refs["like"].innerText)
+        console.log(1, this.$refs["like"].innerText)
         let t = this.$refs["like"].innerText;
         if (this.$refs["like"].getAttribute("status") === "false") {
-          this.$refs["like"].innerText = parseInt(t) + 1;
-          if(parseInt(t) + 1 > 0) {
-                    document.getElementsByClassName('like-num')[0].className = 'like-num show'
-
-          }
+          if(t === '') {
+            this.$refs["like"].innerText = 1
+          } else {
+            this.$refs["like"].innerText = parseInt(t) + 1;
+          }      
         }
         console.log('2', this.$refs["like"].innerText)
         this.$refs["like"].setAttribute("status", "true");
@@ -80,9 +80,6 @@
         subjectid: this.$route.params.id,
         timestamp: Date.now()
       })
-      if(this.res.like > 0) {
-        document.getElementsByClassName('like-num')[0].className = 'like-num show'
-      }
     }
   }
 </script>
@@ -114,14 +111,9 @@
       .like-num {
         display: inline-block;
       }
-      .hide {
-        opacity: 0;
-      }
-      .show {
-        opacity: 1;
-      }
     }
-    .author-info, .read {
+    .author-info,
+    .read {
       width: 100%;
       text-align: left;
       margin-top: 20pr;
