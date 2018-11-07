@@ -480,7 +480,7 @@ export async function down_statistics({ store, route, str, defaultStr, redirectU
     if (route.path.indexOf("/community") > -1) {
       _page = "community";
       url = `closer://community/${did}`;
-    } else if (route.path.indexOf("/feed")) {
+    } else if (route.path.indexOf("/feed") > -1) {
       _page = "article";
       url = `closer://feed/${did}`;
       if (store.state.res.int_type === 1) {
