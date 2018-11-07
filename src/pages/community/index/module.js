@@ -67,6 +67,10 @@ export default {
           type: "setCommunityShow",
           data
         })
+        console.log('SET_FOCUS_STAT', data.result.isFollowed);
+        commit("SET_FOCUS_STAT",data.result.isFollowed,{
+          root: true
+        })
         rootState.res = data.result;
       } else {
         data.result && Toast(data.result)

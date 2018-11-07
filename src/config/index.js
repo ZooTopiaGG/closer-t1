@@ -11,7 +11,7 @@ export default {
     build: 'https://t1.tiejin.cn',
     dev: 'https://t1-qa.tiejin.cn',
     sandbox: 'https://t1-sandbox.tiejin.cn',
-    local: 'http://local.tiejin.cn:9999'
+    local: 'http://t1-sandbox.tiejin.cn:9999'
   },
   file: {
     build: 'https://file.tiejin.cn',

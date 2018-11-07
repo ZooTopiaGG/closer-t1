@@ -40,7 +40,7 @@
       document.title = '贴近 - TieJin.cn'
     },
     computed: {
-      ...mapState('article', [
+      ...mapState([
         'res',
         'content'
       ]),

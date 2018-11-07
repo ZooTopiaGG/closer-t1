@@ -131,18 +131,6 @@
           loop: false
         })
       },
-      clickImg(e) {
-        let target = e.target;
-        if (ENV.app && target.dataset.index) {
-          tabImg(target.dataset.index);
-        } else if (target.dataset.src) {
-          this.clickImgOuter(target.dataset.src)
-        }
-      },
-      clickImgOuter(src) {
-        this.preSrc = src;
-        this.preShow = true;
-      },
       // 在app端 长图文贴子 打开原生视频
       openClick(event) {
         const target = event.target,
@@ -152,10 +140,6 @@
             target.dataset.uid,
             target.dataset.vid
           );
-        } else if (target.dataset.index ) { //app内部点击图片
-          this.clickImg(event);
-        } else if (target.dataset.src && !ENV.app) {
-          this.clickImgOuter(target.dataset.src)
         }
       },
       makeFileUrl(url = '') {
@@ -167,21 +151,10 @@
       },
     },
     async mounted() {
-      if (this.$route.query.code) {
-        let params = {
-          plateform: 2,
-          code: this.$route.query.code,
-          protocol: "WEB_SOCKET",
-          adid: Cookies.get('h5Adid') || 'closer-t1'
-        }
-        console.log('params---', params)
-        this.getUserInfoWithWx(params)
-      }
       await this.fetch();
       this.$store.dispatch('wx_config');
       console.log('params.id:', this.$route.params.id)
       this.getHotSubjects()
-      // this.$preview.show('https://file-sandbox.tiejin.cn/public/a4DI17gt2A/%E5%85%A8%E6%99%AF%E5%9B%BE1.jpg', this.CONTENT_IMGS)
     }
   };
 </script>
