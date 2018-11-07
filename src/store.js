@@ -5,7 +5,8 @@ import {
   makeHtmlContent,
   mergeJsonObject,
   wxShareConfig,
-  makeFileUrl
+  makeFileUrl,
+  replaceParamVal
 } from "./utils";
 
 import baseUrl from './config'
@@ -438,8 +439,14 @@ export default new Vuex.Store({
                 makeFileUrl(res.cover);
             }
           }
+
           if (location.href.indexOf("?") > -1) {
-            link = `${location.href}&sto=weixin2share&udid=${Cookies.get("h5cookies")}`
+            if (location.href.indexOf("sto") > -1 && location.href.indexOf("udid") > -1) {
+              link = replaceParamVal(location.href, "sto", "weixin2share");
+              link = replaceParamVal(link, "udid", Cookies.get("h5cookies"));
+            } else {
+              link = `${location.href}&sto=weixin2share&udid=${Cookies.get("h5cookies")}`
+            }
           } else {
             link = `${location.href}?sto=weixin2share&udid=${Cookies.get("h5cookies")}`
           }

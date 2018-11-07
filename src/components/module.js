@@ -333,6 +333,9 @@ const actions = {
     state
   }, params) {
     try {
+      if (Cookies.get("h5cookies")) {
+        params['udid'] = Cookies.get("h5cookies")
+      }
       // 获取贴子详情
       let { data } = await service.fetchContent(params)
       if (data.code != 0) {

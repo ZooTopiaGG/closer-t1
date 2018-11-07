@@ -592,6 +592,13 @@ function getParam(paramName, str) {
   }
   return paramValue;
 }
+export function replaceParamVal(url, paramName, replaceWith) {
+  var oUrl = url.toString();
+  var re = eval('/(' + paramName + '=)([^&]*)/gi');
+  var nUrl = oUrl.replace(re, paramName + '=' + replaceWith);
+  return nUrl;
+}
+
 
 export function wxShareConfig(wxConfig, shareConfig, jsApiList) {
   console.info("wxshare content:", shareConfig)
