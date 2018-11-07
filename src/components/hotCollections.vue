@@ -138,9 +138,11 @@
           "defaultStr": '',
           'redirectUrl': 'wx'
         });
-        this.$router.push({
+       setTimeout(() => {
+         this.$router.push({
           path: `/feed/${id}?fromid=${this.$route.params.id}&from=paper&type=2&category=2`
         });
+       }, 500);
       },
     },
     mounted() {

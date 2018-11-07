@@ -171,11 +171,13 @@
           'redirectUrl': 'wx'
         });
         console.log('toall', this.$route.query.fromid)
-        if (this.$route.query.fromid) {
-          this.$router.push({
-            path: `/feed/${this.$route.query.fromid}?type=2&category=1`
-          })
-        }
+        setTimeout(() => {
+          if (this.$route.query.fromid) {
+            this.$router.push({
+              path: `/feed/${this.$route.query.fromid}?type=2&category=1`
+            })
+          }
+        }, 500);
       },
       join() {
         if (Cookies.get('token')) {
