@@ -67,10 +67,10 @@
 <script>
 import DownloadBar from "../../components/downloadBar";
 import Feedlist from "../../components/feedList";
-import { addUrlParams, downloadApp } from "../../utils";
-import { makeFileUrl, down_statistics } from "../../utils";
+import { makeFileUrl, down_statistics ,addUrlParams} from "../../utils";
 import { mapState, mapActions } from "vuex";
 import { Spinner } from 'mint-ui';
+  import baseUrl from '../../config/index'
 export default {
   components: {
     DownloadBar,
@@ -148,10 +148,24 @@ export default {
       this.$store.commit("SET_EXTENSION_TEXT", "more_group_member");
       // 渲染页面前 先判断cookies token是否存在
       if (Cookies.get("token")) {
-        this.downloadApp();
+        let redirectUrl = baseUrl.download;
+            down_statistics({
+              'store': this.$store,
+              'route': this.$route,
+              'str':'more_group_member',
+              "defaultStr": "",
+              redirectUrl
+            });
       } else {
         // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
         if (ENV.wx) {
+          down_statistics({ //不跳下载
+              'store': this.$store,
+              'route': this.$route,
+              'str': 'more_group_member',
+              "defaultStr": '',
+              'redirectUrl': 'wx'
+            });
           // 通过微信授权 获取code
           this.getWxAuth({
             payload: {
@@ -194,9 +208,9 @@ export default {
         if (res) {
           self.showDownload = true;
           self.group.group_info.join_limit == 1 & (self.msg =  '您的入群申请已提交~');
-          setTimeout(downloadApp, 2e3);
+          setTimeout(downloadApp('enter_group'), 2e3);
         } else {
-          downloadApp();
+          downloadApp('enter_group');
         }
       } else {
         console.log('else')
@@ -211,7 +225,7 @@ export default {
             }
           })
         } else {
-          downloadApp();
+          downloadApp('enter_group');
         }
       }
     },

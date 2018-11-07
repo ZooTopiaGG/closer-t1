@@ -1,6 +1,6 @@
 <template>
   <section class="footer" v-if="!ENV.app">
-    <div class="footer-wrapper" @click="downApp">
+    <div class="footer-wrapper" @click="downApp(str)">
       <div class="footer-btn">{{btnText}}</div>
     </div>
   </section>
@@ -8,23 +8,34 @@
 
 <script>
   import {
-    downloadApp
+    down_statistics
   } from '../utils'
+  import baseUrl from '../config'
   export default {
     props: {
       btnText: {
         type: String,
-        default: '打开贴近app，查看更多精彩文章'
+        default: '打开贴近app，查看更多精彩文章',
+      },
+      str: {
+        type:String,
+        default:'direct_bottom' //统计用
       }
     },
     data() {
       return {
-  
       }
     },
     methods: {
-      downApp() {
-        downloadApp()
+      downApp(str) {
+        let redirectUrl = baseUrl.download;
+        down_statistics({
+          'store': this.$store,
+          'route': this.$route,
+          str,
+          "defaultStr": "",
+          redirectUrl
+        });
       },
     }
   }

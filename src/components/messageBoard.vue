@@ -34,13 +34,13 @@
             <span class="replay-content">{{ commentItem.content }}</span>
           </div>
           <!-- 更多回复补丁 -->
-          <div class="replay-total" v-if="item.replyNumber > 3" @click="downApp">
+          <div class="replay-total" v-if="item.replyNumber > 3" @click="downApp('more_reply')">
             <span>共{{ item.replyNumber }}条回复</span>
             <span class="right-icon"></span>
           </div>
         </div>
       </div>
-      <div class="more-comment" @click="downApp">点击查看更多评论<span></span></div>
+      <div class="more-comment" @click="downApp('more_message')">点击查看更多评论<span></span></div>
     </div>
     <div class="no-draft" v-else>
       <span class="text">暂无留言，赶紧留言吧~</span>
@@ -60,8 +60,8 @@
   import {
     makeFileUrl,
     dateFormat,
-    downloadApp,
-    dateFromNow
+    dateFromNow,
+    down_statistics
   } from '../utils'
   export default {
     name: 'wrapper',
@@ -77,7 +77,6 @@
     },
     beforeMount() {
       let code = this.$route.query.code
-  
       if (this.$route.params.id) {
         this.getCommentsList({
           "subjectid": this.$route.params.id,
@@ -122,6 +121,13 @@
         return dateFromNow(time)
       },
       writeMessage(_type, id) {
+        down_statistics({
+          'store': this.$store,
+          'route': this.$route,
+          'str':'message',
+          "defaultStr": '',
+          'redirectUrl':'wx'
+        });
         // 渲染页面前 先判断cookies user是否存在
         console.log('Cookies--', Cookies.get("token"))
         if (this.res.int_type === 2) {
@@ -163,6 +169,7 @@
             this.gotoMessage(_type, id)
           }
         }
+        
       },
       // 前往写留言
       gotoMessage(_type, id) {
@@ -187,8 +194,15 @@
       },
   
       // 先登录，在下载流程
-      downApp() {
-        downloadApp()
+      downApp(str) {
+       let redirectUrl = baseUrl.download;
+        down_statistics({
+          'store': this.$store,
+          'route': this.$route,
+          str,
+          "defaultStr": '',
+          redirectUrl
+        });
       },
       support(e, subjectid, commentid, isLike) {
         if (this.isSupport) return
