@@ -1,5 +1,5 @@
 <template>
-  <div class="pop box box-center-center" v-if="visible2">
+  <div class="pop" v-if="visible2">
     <div class="success-pop" :closeOnClickModal="closeOnClickModal">
       <div class="box box-tb box-center-center">
         <div class="close-icon" @click="close"></div>
@@ -105,16 +105,17 @@
 <style lang="less" scoped>
   .pop {
     z-index: 999;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     position: fixed;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
     background: rgba(0, 0, 0, .3);
     .success-pop {
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 654pr;
       border-radius: 10pr;
       background: #fff;
