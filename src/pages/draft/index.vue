@@ -10,7 +10,7 @@
           <focus-bar class="focus-bar"></focus-bar>
           <!-- 标题 -->
           <div class="draft-title" v-if="ENV.app&&this.$store.state.res.int_category&&this.$store.state.res.int_category==1||!ENV.app">
-            <span class="topic-logo">话题</span> {{this.$store.state.res.int_category==1 ? this.$store.state.title :this.$store.state.releaseSubjectTitle }}
+            <span class="topic-logo">话题</span> {{this.$store.state.res.int_category==1 ? this.$store.state.res.title :this.$store.state.res.releaseSubjectTitle }}
           </div>
           <div class="join-in" v-if="!ENV.app&&this.$store.state.res.int_category&&this.$store.state.res.int_category==2">
             <span class="join" @click="join"><span class="draft-icon"></span>参与</span>
@@ -47,7 +47,7 @@
         <Login ref="login" :isFrom="'messagelist'"></Login>
       </div>
     </div>
-    <Notfound v-else :isDelete="this.$store.state.bool_delete"></Notfound>
+    <Notfound v-else :isDelete="this.$store.state.res.bool_delete"></Notfound>
   </div>
 </template>
 
