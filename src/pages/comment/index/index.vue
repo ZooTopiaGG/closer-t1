@@ -63,7 +63,7 @@
       <like-bar class="like-bar"></like-bar>
       <!-- 留言板 -->
       <message-board></message-board>
-      <feed-list :subject="hotSubjects"></feed-list>
+      <feed-list :subjectList="hotSubjects"></feed-list>
       <!-- 底部Bar -->
       <foot-bar></foot-bar>
       <!-- 作者-->
