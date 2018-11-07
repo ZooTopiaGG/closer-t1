@@ -107,7 +107,8 @@
 
 <style lang="less" scoped>
   .write-message {
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     background: #fff;
     padding: 40pr;
     font-size: 36pr;
