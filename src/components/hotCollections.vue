@@ -11,7 +11,7 @@
           <div class="empty-icon"></div>
           <div class="empty-desc">暂时没有全部内容赶紧投稿吧</div>
         </div>
-        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails( item.subjectid)">
+        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails( item.subjectid,'draft_all_feed')">
           <div class="top">
             <img class="icon" :src="fileUrlParse(item.user.attributes.roster.avatar||item.user.avatar)" />
             <span class="column">{{item.user.attributes.roster.name||item.user.fullname}}</span>
@@ -47,7 +47,7 @@
           <div class="empty-icon"></div>
           <div class="empty-desc">暂时没有精选内容赶紧投稿吧</div>
         </div>
-        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails(item.subjectid)">
+        <div v-else class="collections-content" v-for="(item,key) in hotColletions1" :key="key" @click="toFeedDetails(item.subjectid,'draft_essence_feed')">
           <div class="top">
             <img class="icon" :src="fileUrlParse(item.user.attributes.roster.avatar||item.user.avatar)" />
             <span class="column">{{item.user.attributes.roster.name||item.user.fullname}}</span>
@@ -130,22 +130,18 @@
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
-      downloadApp(e, str, id) {
-        let redirectUrl = `${baseUrl.download}&link=closer://feed/${id}`;
-        down_statistics({
-          "store": this.$store,
-          "route": this.$route,
-          "str": str,
-          "defaultStr": "hot_feed",
-          "redirectUrl": redirectUrl
+      toFeedDetails(id,str) {
+         down_statistics({ //不跳下载
+          'store': this.$store,
+          'route': this.$route,
+          str,
+          "defaultStr": '',
+          'redirectUrl': 'wx'
         });
-      },
-      toFeedDetails(id) {
         this.$router.push({
           path: `/feed/${id}?fromid=${this.$route.params.id}&from=paper&type=2&category=2`
         });
       },
-  
     },
     mounted() {
       this.getHotCollections({
@@ -158,6 +154,19 @@
     watch: {
       selected: function(val, oldVal) {
         console.log(val, "---", oldVal)
+        let str = ''
+        if (parseInt(val) == 0) {
+          str = 'draft_all'
+        } else {
+          str = 'draft_essence'
+        }
+        down_statistics({ //不跳下载
+          'store': this.$store,
+          'route': this.$route,
+          str,
+          "defaultStr": '',
+          'redirectUrl': 'wx'
+        });
         //val     切换后 id
         //oldVal  切换前 id 
         this.getHotCollections({
@@ -279,7 +288,7 @@
               overflow: hidden;
             }
             .message {
-              margin-top:10pr;
+              margin-top: 10pr;
               color: #94928E;
               font-size: 24pr;
               .name {

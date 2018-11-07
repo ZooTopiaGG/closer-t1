@@ -13,7 +13,7 @@
     <div class="group-wrap" v-if="groupList.data && groupList.data.length > 0">
       <div class="gr-line1 box box-lr">
         <div class="gr-title">正在招募的群组</div>
-        <div class="gr-more" @click="downApp">更多群组 ></div>
+        <div class="gr-more" @click="downApp('more_group')">更多群组 ></div>
       </div>
       <div class="gr-group box box-lr" v-for="(item, index) in groupList.data" :key="index" @click="toGroup(item.id)">
         <div class="gr-left">
@@ -31,7 +31,7 @@
     </div>
     <feed-list ref="feedlist" class="feed-list" :subjectList="hotSubjects"></feed-list>
     <foot-bar></foot-bar>
-    <focus-alert :communityName="communityShow.name" @close="closeAlert" @downApp="downApp"></focus-alert>
+    <focus-alert :communityName="communityShow.name" @close="closeAlert" @downApp="downApp('follow_confirm')"></focus-alert>
   </div>
 </template>
 
@@ -50,7 +50,7 @@
   import {
     makeFileUrl,
     dateFormat,
-    downloadApp
+    down_statistics
   } from '../../../utils'
   export default {
     name: 'column',
@@ -124,14 +124,28 @@
         'getUserInfoWithWx',
         'getCommunitySubjects'
       ]),
-      downApp() {
-        downloadApp()
+      downApp(str) {
+        let redirectUrl = baseUrl.download;
+            down_statistics({
+              'store': this.$store,
+              'route': this.$route,
+              str,
+              "defaultStr": "follow",
+              redirectUrl
+            });
       },
       fileUrlParse(url, type, size) {
         return makeFileUrl(url, type, size);
       },
       // 跳转到群组
       toGroup(id) {
+        down_statistics({ //不跳下载
+              'store': this.$store,
+              'route': this.$route,
+              'str': 'group_list',
+              "defaultStr": '',
+              'redirectUrl': 'wx'
+            });
         let { type, category } = this.$route.query
         this.$router.push({
           path: `/group/${id}`,

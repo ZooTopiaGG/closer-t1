@@ -24,7 +24,7 @@
         </mt-swipe>
       </div>
       <div class="right">
-        <div class="right-btn" @click="handleClick">下载贴近</div>
+        <div class="right-btn" @click="handleClick('direct_top')">下载贴近</div>
       </div>
     </div>
   </section>
@@ -56,7 +56,7 @@
     mounted() {  
     },
     methods: {
-      handleClick(e, str) {
+      handleClick( str) {
         let redirectUrl = baseUrl.download;
         down_statistics({
           'store': this.$store,

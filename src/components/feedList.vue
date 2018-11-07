@@ -1,7 +1,7 @@
 <template>
   <div class="feed" v-if="!ENV.app">
     <div class="head">{{title}}</div>
-    <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, '', item.subjectid)">
+    <div class="feed-content" v-for="(item,key) in subjectList" :key="key" @click="downloadApp($event, 'hot_feed', item.subjectid)">
       <!-- <div class="top">
                             <img class="icon" :src="item.blogo" />
                             <span class="column">{{item.communityName}}</span>
@@ -101,7 +101,7 @@
           "store": this.$store,
           "route": this.$route,
           "str": str,
-          "defaultStr": "hot_feed",
+          "defaultStr": '',
           "redirectUrl": redirectUrl
         });
       }

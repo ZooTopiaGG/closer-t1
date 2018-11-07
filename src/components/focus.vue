@@ -23,8 +23,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { addUrlParams, downloadApp } from '../utils';
+  import {
+    mapState,
+    mapActions
+  } from 'vuex';
+  import {
+    addUrlParams,
+    down_statistics
+  } from '../utils';
+  import baseUrl from '../config'
   export default {
     props: {
       communityid: {
@@ -76,10 +83,17 @@ import { addUrlParams, downloadApp } from '../utils';
               sessionStorage.userAction = null;
             }
           })
-
+  
         } else {
           // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
           if (this.ENV.wx) {
+            down_statistics({ //不跳下载
+              'store': this.$store,
+              'route': this.$route,
+              'str': 'message',
+              "defaultStr": '',
+              'redirectUrl': 'wx'
+            });
             // 通过微信授权 获取code
             // await self.$store.dispatch("get_wx_auth", {
             //   // 正式
@@ -89,7 +103,7 @@ import { addUrlParams, downloadApp } from '../utils';
             // });
             this.getWxAuth({
               payload: {
-                path: this.$route.path, 
+                path: this.$route.path,
                 query: this.$route.query
               },
               before: () => {
@@ -97,13 +111,20 @@ import { addUrlParams, downloadApp } from '../utils';
               }
             })
           } else {
-            downloadApp();
+            let redirectUrl = baseUrl.download;
+            down_statistics({
+              'store': this.$store,
+              'route': this.$route,
+              'str':'follow',
+              "defaultStr": "",
+              redirectUrl
+            });
           }
         }
       }
     },
     mounted() {
-      
+  
     }
   };
 </script>
