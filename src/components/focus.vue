@@ -20,14 +20,16 @@
       </section>
     </section>
     <focus-alert :show="showAlert" :cid="cid" :cname="cname"></focus-alert>
+    <login isFrom="focus" :success="successLogin"></login>
   </section>
 </template>
 
 <script>
 import baseUrl from '../config'
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import { addUrlParams, down_statistics } from '../utils';
 import FocusAlert from './focusAlert.vue'
+import Login from './login.vue'
   export default {
     props: {
       cid: {
@@ -40,7 +42,8 @@ import FocusAlert from './focusAlert.vue'
       }
     },
     components: {
-      FocusAlert
+      FocusAlert,
+      Login
     },
     data() {
       return {
@@ -66,20 +69,13 @@ import FocusAlert from './focusAlert.vue'
     },
     methods: {
       ...mapActions('common', ['getFocusState', 'getWxAuth', 'get_focus_stat']),
+      ...mapMutations('common', ['show']),
       // 需要登录的操作 先判断后执行
       async tjFocus() {
         let self = this;
         // self.$store.commit("SET_EXTENSION_TEXT", "follow", {root: true});
         // 渲染页面前 先判断cookies token是否存在
         if (Cookies.get("token")) {
-          // 进行其他 ajax 操作
-          // let result = await self.$store.dispatch("get_focus_stat", {
-          //   communityid: self.$store.state.res.communityid,
-          //   flag: self.$store.state.is_follow ? 0 : 1
-          // });
-          // if (result) {
-          //   self.$store.commit("SHOW_ALERT", true, {root: true});
-          // }
           console.log('focus.get_focus_stat');
           this.get_focus_stat({
             payload: {
@@ -93,43 +89,23 @@ import FocusAlert from './focusAlert.vue'
             }
           })
   
+        } else if (this.ENV.wx) {
+          this.getWxAuth({
+            payload: {
+              path: this.$route.path,
+              query: this.$route.query
+            },
+            before: () => {
+              sessionStorage.userAction = 'focus';
+            }
+          })
         } else {
-          // 前期 仅微信 后期再做微博，qq等授权， 所以在其他浏览器 需使用默认登录
-          if (this.ENV.wx) {
-            // down_statistics({ //不跳下载
-            //   'store': this.$store,
-            //   'route': this.$route,
-            //   'str': 'message',
-            //   "defaultStr": '',
-            //   'redirectUrl': 'wx'
-            // });
-            // 通过微信授权 获取code
-            // await self.$store.dispatch("get_wx_auth", {
-            //   // 正式
-            //   url: `${location.protocol}//${location.hostname}${
-            //     self.$route.fullPath
-            //   }`
-            // });
-            this.getWxAuth({
-              payload: {
-                path: this.$route.path,
-                query: this.$route.query
-              },
-              before: () => {
-                sessionStorage.userAction = 'focus';
-              }
-            })
-          } else {
-            let redirectUrl = baseUrl.download;
-            down_statistics({
-              'store': this.$store,
-              'route': this.$route,
-              'str':'follow',
-              "defaultStr": "",
-              redirectUrl
-            });
-          }
+          console.log('showLogin');
+          this.show();
         }
+      },
+      successLogin() {
+        this.tjFocus();
       }
     },
     mounted() {
