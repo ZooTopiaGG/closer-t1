@@ -170,17 +170,18 @@ export default {
   .img {
     width: 100%;
   }
-  .loading-box {
+  .loading-box, .error {
     position: relative;
     left: 50%;
+  }
+  .loading-box {
     width: 128pr;
     height: 128pr;
     margin-left: -64pr;
-    // box-sizing: border-box;
-    // border: 16pr solid #fbd60a;
-    // border-left-color: transparent;
-    // border-radius: 200pr;
-    // animation: loadingAni 1s linear infinite;
+  }
+  .error {
+    width: 200pr;
+    margin-left: -100pr;
   }
   .loading {
     display: block;
