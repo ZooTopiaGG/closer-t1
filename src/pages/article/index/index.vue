@@ -82,6 +82,7 @@
         'hotSubjects'
       ]),
       cover() {
+        if (!this.$store.state.res.bigcover) return false;
         return ( this.$store.state.res.bigcover ||  this.$store.state.res.cover);
       }
     },
