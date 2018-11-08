@@ -16,9 +16,9 @@
   import {
     down_statistics
   } from '../utils'
+  import baseUrl from '../config'
   import {
     mapState,
-    mapMutations
   } from 'vuex'
   import {
     Popup
@@ -50,15 +50,14 @@
         this.display = val
       }
     },
-    computed: {
-    },
+    computed: {},
     methods: {
       download() {
         let redirectUrl = `${baseUrl.download}&link=closer://community/${this.cid}`;
         down_statistics({
           'store': this.$store,
           'route': this.$route,
-          'str':'follow',
+          'str': 'follow_confirm',
           "defaultStr": "",
           redirectUrl
         });
