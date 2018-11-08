@@ -62,7 +62,6 @@
           "defaultStr": "",
           redirectUrl
         });
-        downloadApp()
       },
       closeAlert() {
         this.display = false
