@@ -14,7 +14,7 @@
 <script>
   import Vue from 'vue'
   import {
-    downloadApp
+    down_statistics
   } from '../utils'
   import {
     mapState,
