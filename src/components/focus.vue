@@ -26,7 +26,7 @@
 <script>
 import baseUrl from '../config'
 import { mapState, mapActions } from 'vuex';
-import { addUrlParams, downloadApp } from '../utils';
+import { addUrlParams, down_statistics } from '../utils';
 import FocusAlert from './focusAlert.vue'
   export default {
     props: {
