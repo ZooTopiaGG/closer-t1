@@ -204,6 +204,13 @@
         });
       },
       support(e, subjectid, commentid, isLike) {
+         down_statistics({ //不跳下载
+          'store': this.$store,
+          'route': this.$route,
+          'str':'message_like',
+          "defaultStr": '',
+          'redirectUrl': 'wx'
+        });
         let params = {
           subjectid: subjectid,
           commentid: commentid,
