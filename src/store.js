@@ -54,6 +54,8 @@ export default new Vuex.Store({
     preShow: false,
     preImgs: [],
     preIndex: 0,
+    enter_time: 0, //进入页面时间
+    duration_time: 0, //内容进度
     wxConfig: {
 
     },
@@ -142,6 +144,9 @@ export default new Vuex.Store({
     // enter page time 
     SET_ENTER_TIME(state, para) {
       state.enter_time = para
+    },
+    SET_DURATION_TIME(state, para) {
+      state.duration_time = para
     },
     // 设置微信授权后用户信息
     SET_USER(state, para) {
