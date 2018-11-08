@@ -258,7 +258,7 @@ const actions = {
     if (Cookies.get("h5cookies")) {
       payload['udid'] = Cookies.get("h5cookies");
     }
-    adid: Cookie.get('h5Adid') || 'closer-share'
+    payload.adid = Cookie.get('h5Adid') || 'closer-t1'
     payload['protocol'] = 'WEB_SOCKET';
     Indicator.open({
       text: '加载中...',
@@ -288,6 +288,7 @@ const actions = {
       commit({
         type: 'hide'
       })
+      return true;
     } else {
       Toast('网络开小差啦，请稍后再试')
       Indicator.close()

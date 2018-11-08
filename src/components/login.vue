@@ -53,6 +53,14 @@
       isFrom: {
         type: String,
         default: ''
+      },
+      success: {
+        type: Function,
+        default: () => {}
+      },
+      fail: {
+        type: Function,
+        default: () => {}
       }
     },
     data() {
@@ -102,7 +110,7 @@
       close() {
         this.hide()
       },
-      userLogin() {
+      async userLogin() {
         let phoneReg = /^(0|86|17951)?(1[23456789][0-9])[0-9]{8}$/
         let codeReg = /^\d{6}$/
         if (!this.phoneNum || !phoneReg.test(this.phoneNum)) {
@@ -125,7 +133,9 @@
           phone: this.phoneNum,
           token: this.code
         }
-        this.login(params)
+        if (await this.login(params)) {
+          this.$emit('success')
+        }
       },
       getSmsCode(phone) {
         console.log('getcode', phone)
