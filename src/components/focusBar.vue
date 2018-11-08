@@ -8,14 +8,14 @@
           <p v-if="showTime" class="community-time">{{dateFromNow}}</p>
         </div>
       </section>
-      <t-focus :communityid="res.communityid"></t-focus>
+      <t-focus :cid="res.communityid" :cname="res.communityName"></t-focus>
     </section>
   </section>
 </template>
 <script>
 import Cookie from "js-cookie";
 import tFocus from "./focus";
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { dateFromNow } from '../utils'
 export default {
   props: {
@@ -31,6 +31,14 @@ export default {
   components: {
     tFocus
   },
+  watch: {
+    res: function(newVal, oldVal) {
+      if (newVal.communityid) {
+        console.log('res.communityid', newVal.communityid)
+        this.getFocusState(newVal.communityid)
+      }
+    }
+  },
   computed: {
     ...mapState(['res']),
     communityLogo() {
@@ -44,6 +52,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('common', ['getFocusState']),
     toCommunity() {
       let { type, category } = this.$route.query
       this.$router.push({

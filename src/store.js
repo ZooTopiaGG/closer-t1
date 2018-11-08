@@ -34,6 +34,7 @@ export default new Vuex.Store({
     CONTENT_IMGS: [],
     content: '',
     res: {},
+    community: {},
     exist: true,
     extension_text: '',
     alert_stat: false,
@@ -78,6 +79,7 @@ export default new Vuex.Store({
     },
     // 设置贴子返回详情
     SET_RES(state, para) {
+      console.log('SET_RES', para);
       state.res = para
     },
     SET_DISCUSS(state, payload) {
@@ -158,6 +160,9 @@ export default new Vuex.Store({
     },
     SET_WX_CONFIG(state, para) {
       state.wxConfig = para
+    },
+    SET_COMMUNITY(state, para) {
+      state.community = para
     }
   },
   modules: {
@@ -196,11 +201,10 @@ export default new Vuex.Store({
       commit,
       state
     }, payload) {
-      console.log(payload)
+      console.log('store.getUserInfoWithWx')
       let user = Cookies.get('user')
       let token = Cookies.get('token')
       if (user && token) {
-        console.log('user-from-cookie:', JSON.parse(user));
         commit('SET_USER', JSON.parse(user));
         return true;
       } else {

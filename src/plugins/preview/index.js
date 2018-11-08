@@ -18,8 +18,8 @@ function bindEvent(el) {
 function getSrc(img) {
   let src = img.src,
     data_src = img.dataset.src;
-  console.log('src',src)
-  console.log('data_src',data_src)
+  // console.log('src',src)
+  // console.log('data_src',data_src)
 
   if (/^https?:\/\//.test(src)) {
     return src

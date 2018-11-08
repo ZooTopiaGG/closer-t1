@@ -19,43 +19,48 @@
         </section>
       </section>
     </section>
+    <focus-alert :show="showAlert" :cid="cid" :cname="cname"></focus-alert>
   </section>
 </template>
 
 <script>
-  import {
-    mapState,
-    mapActions
-  } from 'vuex';
-  import {
-    addUrlParams,
-    down_statistics
-  } from '../utils';
-  import baseUrl from '../config'
+import baseUrl from '../config'
+import { mapState, mapActions } from 'vuex';
+import { addUrlParams, downloadApp } from '../utils';
+import FocusAlert from './focusAlert.vue'
   export default {
     props: {
-      communityid: {
+      cid: {
+        type: String,
+        default: ''
+      },
+      cname: {
         type: String,
         default: ''
       }
     },
+    components: {
+      FocusAlert
+    },
     data() {
-      return {};
+      return {
+        showAlert: false,
+      };
     },
     computed: {
-      ...mapState(['is_follow']),
-      ...mapState('article', ['res']),
-      ...mapState('common', ['isLogin'])
+      ...mapState(['is_follow','isLogin']),
     },
     watch: {
       isLogin: function(newVal, oldVal) {
-        if (newVal && sessionStorage.userAction == 'focus') {
+        console.log('isLogin',newVal );
+        if (newVal && this.cid && sessionStorage.userAction == 'focus') {
           this.tjFocus()
         }
       },
-      communityid: function(newVal) {
-        if (newVal) {
-          this.getFocusState(newVal)
+      cid: function(newVal, oldVal) {
+        console.log('isLogin',newVal );
+        if (newVal && this.isLogin && sessionStorage.userAction == 'focus') {
+          this.tjFocus()
         }
       }
     },
@@ -63,6 +68,7 @@
       ...mapActions('common', ['getFocusState', 'getWxAuth', 'get_focus_stat']),
       // 需要登录的操作 先判断后执行
       async tjFocus() {
+        let self = this;
         // self.$store.commit("SET_EXTENSION_TEXT", "follow", {root: true});
         // 渲染页面前 先判断cookies token是否存在
         if (Cookies.get("token")) {
@@ -74,14 +80,16 @@
           // if (result) {
           //   self.$store.commit("SHOW_ALERT", true, {root: true});
           // }
-
+          console.log('focus.get_focus_stat');
           this.get_focus_stat({
             payload: {
-              communityid: this.res.communityid ? this.res.communityid : this.communityid,
+              communityid: this.cid,
               flag: this.is_follow ? 0 : 1
             },
             after: () => {
+              console.log('after');
               sessionStorage.userAction = null;
+              self.showAlert = true;
             }
           })
   

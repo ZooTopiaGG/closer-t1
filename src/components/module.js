@@ -28,7 +28,8 @@ const state = {
   res: {},
   content: {},
   exist: true,
-  discuss: {}
+  discuss: {},
+  like: false
 }
 
 const actions = {
@@ -45,6 +46,12 @@ const actions = {
             root: true
           }
         );
+        commit(
+          "SET_COMMUNITY",
+          data.result, {
+            root: true
+          }
+        );
       }
     }
   },
@@ -58,7 +65,7 @@ const actions = {
     let self = this
     try {
       let data = await service.subscription(payload);
-      console.log('focus:', data)
+      console.log('focus:', after, data)
       if (data.code === 0) {
         if (payload.flag == 0) {
           commit('SET_FOCUS_STAT', false, {
@@ -72,8 +79,8 @@ const actions = {
             //   message: '关注成功',
             //   position: 'top'
             // })
-          return true
         }
+        after && after();
       } else {
         Toast({
           message: data.result,
@@ -86,7 +93,6 @@ const actions = {
         position: 'top'
       })
     }
-    after && after();
   },
 
   // 阅读数量
@@ -176,21 +182,25 @@ const actions = {
     let token = Cookies.get('token')
     if (user && token) {
       console.log('user-from-cookie:', JSON.parse(user));
-      commit('SET_USER', JSON.parse(user));
+      commit('SET_USER', JSON.parse(user), {
+        root: true
+      });
       return true;
     } else {
-
+      console.log('getUserInfoWithWx:', payload)
       let {
         data
       } = await service.loginWithWechat(payload).catch(err => {
         Toast('网络开小差啦~')
       })
-      console.log('data:', data)
+      console.log('data:')
       if (typeof(data.code != undefined) && data.code == 0) {
         user = data.result.user
         token = data.result.token
         console.log('user-from-server:', user)
-        commit('SET_USER', user)
+        commit('SET_USER', user, {
+          root: true
+        })
         console.log('token', token)
         console.log('user', user)
         Cookies.set('token', token, {
@@ -301,13 +311,15 @@ const actions = {
     }
   },
   async checkIsLike({
-    commit
+    commit, state
   }, payload) {
+    if(state.like) return
     let data = await service.isLike(payload).catch(err => {
       Toast('网络开小差啦~')
     })
-    if (typeof(data.code != undefined) && data.code == 0) {
-
+    let _data = data.data
+    if (typeof(_data.code != undefined) && _data.code == 0) {
+      commit('SET_LIKE')
     } else {
       data.result && Toast(data.result)
     }
@@ -454,6 +466,9 @@ const mutations = {
   SET_HOT_COLLECTIONS0(state, payload) {
     state.hotColletions0 = payload
 
+  },
+  SET_LIKE(state) {
+    state.like = true
   }
 }
 
