@@ -9,7 +9,6 @@ function bindEvent(el) {
   el && el.addEventListener('click', function(e) {
     let target = e.target;
     if (target.tagName.toLowerCase() == 'img' && target.dataset.type == 'preview') {
-      console.log('touch')
       showPreview(target);
     }
   })
@@ -31,7 +30,25 @@ function getSrc(img) {
 }
 
 function showPreview(target) {
+  if (!$list.length || !$src.length) {
+    findImgs();
+  }
   opts.isApp ? withNative(target) : withPlugin(target)
+}
+
+function findImgs() {
+  let imgs = $container.querySelectorAll('img[data-type="preview"]');
+  console.log('preview imgs:', imgs.length)
+  $list.push(...Array.from(imgs)
+  .filter(img => {
+    let src = getSrc(img);
+    let type = img.dataset.type;
+    if (src) {
+      $src.push(src);
+      return true;
+    }
+    return false;
+  }))
 }
 
 function withNative(target) {
@@ -74,22 +91,12 @@ export default {
     let preview = {
       init(container) {
         $container = document.querySelector(container) || $container;
+        console.log('preview.init', $container)
         bindEvent($container);
         setTimeout(() => {
-          let imgs = $container.querySelectorAll('img[data-type="preview"]');
-          console.log('preview imgs:', imgs.length)
-          $list.push(...Array.from(imgs)
-          .filter(img => {
-            let src = getSrc(img);
-            let type = img.dataset.type;
-            if (src) {
-              $src.push(src);
-              return true;
-            }
-            return false;
-          }))
+          findImgs()
           console.log('preview imgs.length', $list.length, $src.length)
-        }, 100)
+        }, 500)
       }
     }
 

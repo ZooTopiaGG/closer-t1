@@ -12,7 +12,7 @@
           <section class="article-title" v-if="!ENV.app"> {{ this.$store.state.res.title }} </section>
           <!-- 关注bar -->
           <focus-bar showTime class="focus-bar"></focus-bar>
-          <div class="article-content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
+          <div id="articleContent" class="article-content" v-lazy-container="{ selector: 'img' }" @click="openClick($event)">
             <!-- 封面大图 -->
             <div class="article-cover-box" v-if="cover">
               <img :data-src="makeFileUrl(cover)" data-type="preview" class="article-cover-img">
@@ -128,7 +128,7 @@
       await this.fetch();
       this.$store.dispatch('wx_config');
       this.getHotSubjects()
-      this.$preview.init('.article-content');
+      this.$preview.init('#articleContent');
     }
   };
 </script>

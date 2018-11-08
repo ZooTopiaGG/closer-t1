@@ -8,7 +8,7 @@
         <focus-bar showTime></focus-bar>
       </div>
       <!-- 图集详情 -->
-      <div class="feed-images">
+      <div id="imageContent" class="feed-images">
         <section class="feed-img" id="imgListFeed" v-if="this.$store.state.res && this.$store.state.res.int_type === 0">
           <section class="feeder-title feeder-title-2 feeder-type-0" v-if="this.$store.state.content">{{this.$store.state.content.text}}</section>
           <!--  判断是否在app de预览 -->
@@ -111,7 +111,7 @@
       await this.fetch();
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
-      this.$preview.init('.feed-images');
+      this.$preview.init('#imageContent');
     },
     methods: {
       ...mapActions("common", [

@@ -3,7 +3,7 @@
     <!-- 下载条 -->
     <div v-if="this.$store.state.exist">
       <download-bar></download-bar>
-      <div class="comment">
+      <div id="commentContent" class="comment">
         <div class="title" v-if="!ENV.app">
           {{this.$store.state.res.title}}
         </div>
@@ -146,7 +146,7 @@
         await this.fetch_content(params)
         this.$store.dispatch('wx_config');
         this.getHotSubjects();
-        this.$preview.init('.comment');
+        this.$preview.init('#commentContent');
         console.info("mapstate",mapState)
       }
     },
