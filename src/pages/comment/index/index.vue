@@ -40,7 +40,7 @@
                   <div class="play-icon" :data-uid="item.video.src" :data-vid="item.video.vid"></div>
                 </div>
                 <video v-else class="video-out" :src="item.video.src" preload="auto" style="object-fit:fill" controls :poster="item.video.imageUrl" playsinline="true" webkit-playsinline="true">
-               </video>
+                     </video>
               </div>
               <div v-else-if="item.type===3">
                 <!-- 帖子 -->
@@ -115,8 +115,7 @@
         preShow: false
       }
     },
-    created() {
-    },
+    created() {},
     computed: {
       ...mapState("common", {
         hotSubjects: state => state.hotSubjects,
@@ -134,20 +133,21 @@
   
     },
     async mounted() {
+ 
       console.log('params.id:', this.$route.params.id)
       if (this.$route.params.id) {
-         let params = {
+        let params = {
           subjectid: this.$route.params.id
         }
-        if(this.$route.query.udid&&this.$route.query.sto){
-           params['share_udid']=this.$route.query.udid;
-          params['sto']=this.$route.query.sto;
+        if (this.$route.query.udid && this.$route.query.sto) {
+          params['share_udid'] = this.$route.query.udid;
+          params['sto'] = this.$route.query.sto;
         }
         await this.fetch_content(params)
         this.$store.dispatch('wx_config');
         this.getHotSubjects();
         this.$preview.init('.comment');
-        console.info("mapstate",mapState)
+        console.info("mapstate", mapState)
       }
     },
     watch: {
@@ -265,8 +265,8 @@
               width: 86pr;
               height: 86pr;
               border-radius: 10pr;
-                  background-size: cover;
-    background-position: 50%;
+              background-size: cover;
+              background-position: 50%;
             }
             .feed-info {
               margin: 22pr 10pr 0 28pr;

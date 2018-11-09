@@ -19,6 +19,7 @@ axio.interceptors.request.use(
         config.headers['Closer-Agent'] = 'Closer-Android';
       }
     }
+
     if (Cookies.get("h5cookies")) {
       config.headers['X-Udid'] = Cookies.get("h5cookies");
     }

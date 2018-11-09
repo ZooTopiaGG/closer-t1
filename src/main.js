@@ -87,6 +87,7 @@ init();
 
 function init() {
   if (!Cookies.get("h5cookies")) {
+    Cookies.set("h5cookies", 'h5-SRjHazKvYslHxwZxjy5tql9G4edf3d')
     let result = store.dispatch("get_adcookie", { webUdid: true }).then(((data) => {}));
   }
 }
