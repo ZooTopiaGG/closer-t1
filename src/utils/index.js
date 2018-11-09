@@ -677,14 +677,17 @@ export function countImgs() {
 }
 
 // 所传时间距离当前时间的时长
-export function dateFromNow(time, type = 'MM-dd') {
+export function dateFromNow(time, type = 'yyyy-MM-dd') {
   let now = Date.now(),
     _time = +new Date(time),
     diff = now - _time,
     str = '';
-  if (diff >= 6.048e8) {
-    // 超过7天直接显示type格式的日期
+  if (diff >= 3.1536e10) {
+    // 超过365天直接显示type格式的日期
     str = new Date(time).Format(type)
+  } else if (diff >= 2.592e9) {
+    // 大于30天显示“月”
+    str = parseInt(diff / 2.592e9) + '个月前';
   } else if (diff >= 8.64e7) {
     // 大于24小时显示“天”
     str = parseInt(diff / 8.64e7) + '天前';

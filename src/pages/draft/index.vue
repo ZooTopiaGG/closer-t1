@@ -201,7 +201,7 @@
       await this.fetch();
       this.$store.dispatch("wx_config");
       this.getHotSubjects();
-      this.$preview.init('.content');
+      this.$preview.init('#draftContent');
     },
     watch: {
       '$route' (to, from) {

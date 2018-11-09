@@ -8,9 +8,9 @@ let UA = navigator.userAgent.toLowerCase() || navigator.userAgent.toLowerCase(),
 function initENV() {
   // 根据href值设置当前开发环境（build,dev,local）
   for (let key in href) {
-    let host = new(URL || webkitURL)(href[key]).hostname;
-    let index = HREF.indexOf(host);
-    index > -1 && index <= 8 && (ENV.env = key)
+    let origin = new(URL || webkitURL)(href[key]).origin;
+    let index = HREF.indexOf(origin);
+    index == 0 && (ENV.env = key)
   }
   if (!ENV.env) {
     console.error('ENV.env不可为空，请确保当前测试页面的location.origin是~/src/config/index.js配置的href值之一!');
